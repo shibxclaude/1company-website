@@ -14,6 +14,7 @@ public class AppProperties {
     private Sms sms = new Sms();
     private Pay pay = new Pay();
     private Notify notify = new Notify();
+    private Shop shop = new Shop();
 
     @Data
     public static class Jwt {
@@ -70,5 +71,13 @@ public class AppProperties {
     public static class Notify {
         private String mailFrom;
         private String adminEmail;
+    }
+
+    /** 在线购买与会员服务（下单、支付、短信、注册登录、用户中心）总开关。支付、短信未接入前保持关闭。 */
+    @Data
+    public static class Shop {
+        private boolean enabled = false;
+        /** 关闭时提示用户致电咨询的号码 */
+        private String servicePhone = "136 9928 5133";
     }
 }

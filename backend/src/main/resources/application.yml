@@ -60,7 +60,7 @@ app:
   # 运行环境：prod 时启动前校验 SMS_MOCK / PAY_MODE / JWT_SECRET，不安全直接拒绝启动（见 ProductionGuard）。
   # systemd 单元用 -Dapp.env=prod 固定设置，env 文件改不掉。
   env: ${APP_ENV:dev}
-  site-url: ${SITE_URL:https://www.cn01.com.cn}
+  site-url: ${SITE_URL:https://www.yilinga.com}
   jwt:
     # 生产环境必须通过环境变量设置为至少 32 字节的随机串
     secret: ${JWT_SECRET:}
@@ -76,14 +76,18 @@ app:
     expire-minutes: 30
     agreement-version: v1.0
     create-limit-per-hour: 20     # 同一 IP 每小时最多下单次数
+  shop:
+    # 在线购买与会员服务（下单、支付、短信、注册登录、用户中心）。支付、短信接入前保持 false：前台显示电话咨询，相关接口返回"暂未开放"
+    enabled: ${SHOP_ENABLED:false}
+    service-phone: ${SERVICE_PHONE:136 9928 5133}
   sms:
     # mock=true：验证码只打印到日志并在接口里返回，便于开发演示；上线前必须改为 false 并接入短信服务
     mock: ${SMS_MOCK:true}
   pay:
     # mock：模拟支付（开发/演示）；wechat：微信支付 Native
     mode: ${PAY_MODE:mock}
-    notify-url: ${PAY_NOTIFY_URL:https://www.cn01.com.cn/api/pay/notify/wechat}
-    refund-notify-url: ${PAY_REFUND_NOTIFY_URL:https://www.cn01.com.cn/api/pay/notify/wechat-refund}
+    notify-url: ${PAY_NOTIFY_URL:https://www.yilinga.com/api/pay/notify/wechat}
+    refund-notify-url: ${PAY_REFUND_NOTIFY_URL:https://www.yilinga.com/api/pay/notify/wechat-refund}
     wechat:
       app-id: ${WXPAY_APP_ID:}
       mch-id: ${WXPAY_MCH_ID:}

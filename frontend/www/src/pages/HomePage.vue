@@ -6,6 +6,9 @@ import PriceTag from '../components/PriceTag.vue'
 import { useSeo } from '../composables/useSeo.js'
 import { useCatalogStore } from '../stores/catalog.js'
 import { serviceAreas, company, SITE_URL } from '../data/site.js'
+import { useSiteStore } from '../stores/site.js'
+
+const site = useSiteStore()
 
 // 方案列表由 App.vue 统一加载（预渲染时取数，浏览器里刷新）
 const catalog = useCatalogStore()
@@ -87,7 +90,7 @@ useSeo({
           <PriceTag :price="s.minPrice" :unit="s.priceUnit" :from="s.multipleVersions" />
           <div class="rec-actions">
             <RouterLink :to="`/solutions/${s.slug}`" class="link">了解详情</RouterLink>
-            <RouterLink :to="`/solutions/${s.slug}#buy`" class="buy">立即购买</RouterLink>
+            <RouterLink :to="`/solutions/${s.slug}#buy`" class="buy">{{ site.shopEnabled ? '立即购买' : '咨询购买' }}</RouterLink>
           </div>
         </div>
       </li>

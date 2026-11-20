@@ -1,5 +1,5 @@
 // 预渲染路径与 sitemap 生成（vite.config.js 调用，单元测试也直接测这里）
-export const SITE_URL = 'https://www.cn01.com.cn'
+export const SITE_URL = 'https://www.yilinga.com'
 
 /**
  * 静态路由去掉动态段、兜底路由和只在浏览器渲染的路由，再补上动态详情页。

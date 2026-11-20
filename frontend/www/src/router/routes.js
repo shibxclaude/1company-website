@@ -22,14 +22,14 @@ export const routes = [
   { path: '/agreement/purchase', name: 'agreementPurchase', component: page('AgreementPurchasePage'), meta: { solidHeader: true } },
   { path: '/agreement/privacy', name: 'agreementPrivacy', component: page('AgreementPrivacyPage'), meta: { solidHeader: true } },
 
-  // 以下只在浏览器渲染
-  { path: '/order/confirm', name: 'orderConfirm', component: page('OrderConfirmPage'), meta: { nav: 'solutions', prerender: false, solidHeader: true } },
-  { path: '/pay/:orderNo', name: 'pay', component: page('PayPage'), meta: { prerender: false, solidHeader: true } },
+  // 以下只在浏览器渲染。meta.shop：属于在线购买与会员服务，未开放时由 App.vue 显示"暂未开放"
+  { path: '/order/confirm', name: 'orderConfirm', component: page('OrderConfirmPage'), meta: { shop: true, nav: 'solutions', prerender: false, solidHeader: true } },
+  { path: '/pay/:orderNo', name: 'pay', component: page('PayPage'), meta: { shop: true, prerender: false, solidHeader: true } },
   { path: '/user', redirect: '/user/orders' },
-  { path: '/user/login', name: 'login', component: page('LoginPage'), meta: { nav: 'user', prerender: false, solidHeader: true } },
-  { path: '/user/register', name: 'register', component: page('RegisterPage'), meta: { nav: 'user', prerender: false, solidHeader: true } },
-  { path: '/user/orders', name: 'myOrders', component: page('MyOrdersPage'), meta: { nav: 'user', prerender: false, auth: true, solidHeader: true } },
-  { path: '/user/orders/:orderNo', name: 'myOrder', component: page('OrderDetailPage'), meta: { nav: 'user', prerender: false, solidHeader: true } },
+  { path: '/user/login', name: 'login', component: page('LoginPage'), meta: { shop: true, nav: 'user', prerender: false, solidHeader: true } },
+  { path: '/user/register', name: 'register', component: page('RegisterPage'), meta: { shop: true, nav: 'user', prerender: false, solidHeader: true } },
+  { path: '/user/orders', name: 'myOrders', component: page('MyOrdersPage'), meta: { shop: true, nav: 'user', prerender: false, auth: true, solidHeader: true } },
+  { path: '/user/orders/:orderNo', name: 'myOrder', component: page('OrderDetailPage'), meta: { shop: true, nav: 'user', prerender: false, solidHeader: true } },
   { path: '/:pathMatch(.*)*', name: 'notFound', component: page('NotFoundPage'), meta: { prerender: false, solidHeader: true } },
 ]
 

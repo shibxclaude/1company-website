@@ -7,6 +7,9 @@ import PriceTag from '../components/PriceTag.vue'
 import StateBlock from '../components/StateBlock.vue'
 import { useSeo } from '../composables/useSeo.js'
 import { useCatalogStore } from '../stores/catalog.js'
+import { useSiteStore } from '../stores/site.js'
+
+const site = useSiteStore()
 
 const catalog = useCatalogStore()
 const route = useRoute()
@@ -87,7 +90,7 @@ useSeo({
               <PriceTag :price="s.minPrice" :original-price="s.multipleVersions ? null : s.minOriginalPrice" :unit="s.priceUnit" :from="s.multipleVersions" />
               <div class="actions">
                 <RouterLink :to="`/solutions/${s.slug}`" class="detail">详情</RouterLink>
-                <RouterLink :to="`/solutions/${s.slug}#buy`" class="buy">立即购买</RouterLink>
+                <RouterLink :to="`/solutions/${s.slug}#buy`" class="buy">{{ site.shopEnabled ? '立即购买' : '咨询购买' }}</RouterLink>
               </div>
             </div>
           </div>

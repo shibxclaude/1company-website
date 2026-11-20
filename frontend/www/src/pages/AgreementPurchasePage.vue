@@ -11,7 +11,7 @@ useSeo({ title: '产品购买服务协议', description: '北京一零科技有�
   <LegalDoc title="产品购买服务协议" :version="PURCHASE_AGREEMENT_VERSION" :effective-date="EFFECTIVE_DATE">
     <p>
       本协议由您（以下称"买方"）与{{ company.name }}（以下称"卖方"，地址：{{ company.address }}，联系电话：{{ company.phoneDisplay }}）
-      就买方通过本网站（www.cn01.com.cn）购买卖方软件产品及相关技术服务（以下统称"产品"）事宜订立。
+      就买方通过本网站（www.yilinga.com）购买卖方软件产品及相关技术服务（以下统称"产品"）事宜订立。
       <strong>买方在下单页勾选同意并提交订单，即视为已阅读、理解并同意本协议全部条款。</strong>
     </p>
 

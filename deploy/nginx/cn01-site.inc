@@ -2,9 +2,9 @@
 # HTTP 阶段（cn01.conf）与 HTTPS 阶段（cn01-https.conf）共用，改规则只改这一个文件。
 # 安装位置：/etc/nginx/snippets/cn01-site.inc
 
-    # 裸域名统一到 www
-    if ($host = cn01.com.cn) {
-        return 301 $scheme://www.cn01.com.cn$request_uri;
+    # 主域名 www.yilinga.com：yilinga.com 与旧域名 cn01.com.cn / www.cn01.com.cn 一律 301 过来
+    if ($host != www.yilinga.com) {
+        return 301 $scheme://www.yilinga.com$request_uri;
     }
 
     root /var/www/cn01/current/www;

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 生产环境启动校验：APP_ENV=prod（systemd 单元里已固定设置）时，只要还开着模拟短信、模拟支付或 JWT 密钥不合格，
+ * 生产环境启动校验：APP_ENV=prod（systemd 单元里已固定设置）时，开放了在线购买（SHOP_ENABLED=true）却还开着模拟短信、模拟支付，或 JWT 密钥不合格，
  * 直接拒绝启动——漏改一项不能"静默上线"。开发、测试环境不受影响。
  */
 @Slf4j
@@ -35,8 +35,11 @@ public class ProductionGuard implements BeanFactoryPostProcessor, EnvironmentAwa
 
     public static List<String> violations(AppProperties p) {
         List<String> v = new ArrayList<>();
-        if (p.getSms().isMock()) v.add("SMS_MOCK=true：验证码会在接口中返回，任何人都能冒用他人手机号登录");
-        if (p.getPay().isMock()) v.add("PAY_MODE=mock：任何人都能调用模拟支付接口把订单改成已支付");
+        // 购买与会员服务关闭时，短信、支付相关接口整体不可用（ShopGate），模拟通道无从利用
+        if (p.getShop().isEnabled()) {
+            if (p.getSms().isMock()) v.add("SMS_MOCK=true：验证码会在接口中返回，任何人都能冒用他人手机号登录（或保持 SHOP_ENABLED=false）");
+            if (p.getPay().isMock()) v.add("PAY_MODE=mock：任何人都能调用模拟支付接口把订单改成已支付（或保持 SHOP_ENABLED=false）");
+        }
         if (weakSecret(p.getJwt().getSecret())) v.add("JWT_SECRET 未配置、不足 32 字节或仍是示例占位符");
         return v;
     }

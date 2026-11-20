@@ -103,4 +103,9 @@ class AuthHardeningIT extends IntegrationTestBase {
         assertThat(pool.awaitTermination(10, java.util.concurrent.TimeUnit.SECONDS)).isTrue();
         assertThat(passed.get()).isEqualTo(1);
     }
+
+    @Test
+    void 站点配置_购买开放时告知前台() throws Exception {
+        assertThat(ok(get("/api/portal/site-config")).get("shopEnabled").asBoolean()).isTrue();
+    }
 }

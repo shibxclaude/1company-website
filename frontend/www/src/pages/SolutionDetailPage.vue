@@ -10,9 +10,11 @@ import StateBlock from '../components/StateBlock.vue'
 import NotFoundPage from './NotFoundPage.vue'
 import { useSeo } from '../composables/useSeo.js'
 import { useCatalogStore } from '../stores/catalog.js'
+import { useSiteStore } from '../stores/site.js'
 import { estimateTotal, formatCents } from '../utils/money.js'
 
 const route = useRoute()
+const site = useSiteStore()
 const router = useRouter()
 const catalog = useCatalogStore()
 
@@ -162,11 +164,17 @@ useSeo({
               <span>合计</span>
               <strong>¥{{ formatCents(totalCents) }}</strong>
             </div>
-            <div class="actions">
+            <div v-if="site.shopEnabled" class="actions">
               <button type="button" class="buy" :disabled="!version" @click="buy">立即购买</button>
-              <a class="consult" href="tel:13699285133">电话咨询</a>
+              <a class="consult" :href="site.telHref">电话咨询</a>
             </div>
-            <p class="hint">无需注册即可下单，支持微信扫码支付；最终金额以订单确认页为准。</p>
+            <p v-if="site.shopEnabled" class="hint">无需注册即可下单，支持微信扫码支付；最终金额以订单确认页为准。</p>
+            <template v-else>
+              <div class="actions">
+                <a class="buy" :href="site.telHref">电话咨询 {{ site.servicePhone }}</a>
+              </div>
+              <p class="hint">在线购买暂未开放，请电话咨询下单；以上为公示价格。</p>
+            </template>
           </section>
         </div>
 

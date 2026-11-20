@@ -10,7 +10,7 @@
 # 可选环境变量：
 #   DEPLOY_ROOT    默认 /var/www/cn01
 #   KEEP           保留的历史版本数，默认 5
-#   SSG_API_BASE   预渲染取数的后端地址，默认 https://www.cn01.com.cn（首次部署后端未上线时设为空，
+#   SSG_API_BASE   预渲染取数的后端地址，默认 https://www.yilinga.com（首次部署后端未上线时设为空，
 #                  动态内容改由浏览器加载，上线后再发布一次即可）
 #   SKIP_TESTS=1   跳过测试（不建议；后端集成测试需要本机 Docker）
 #   SKIP_BACKEND=1 只发布前端（沿用当前版本的后端 jar）
@@ -21,7 +21,7 @@ DEPLOY_ROOT="${DEPLOY_ROOT:-/var/www/cn01}"
 KEEP="${KEEP:-5}"
 RELEASE="$(date +%Y%m%d%H%M%S)"
 REMOTE="${DEPLOY_HOST:+${DEPLOY_USER:-root}@${DEPLOY_HOST}}"
-export SSG_API_BASE="${SSG_API_BASE-https://www.cn01.com.cn}"
+export SSG_API_BASE="${SSG_API_BASE-https://www.yilinga.com}"
 SUDO="${SUDO-sudo}"
 
 run() { if [[ -n "$REMOTE" ]]; then ssh "$REMOTE" "$@"; else bash -c "$*"; fi; }

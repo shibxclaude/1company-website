@@ -4,9 +4,11 @@ import { useRoute } from 'vue-router'
 import { nav as baseNav } from '../data/site.js'
 import { useCatalogStore } from '../stores/catalog.js'
 import { useUserStore } from '../stores/user.js'
+import { useSiteStore } from '../stores/site.js'
 
 const catalog = useCatalogStore()
 const user = useUserStore()
+const site = useSiteStore()
 const nav = computed(() =>
   baseNav.map((item) =>
     item.dynamic === 'solutions' ? { ...item, children: [...catalog.navSolutions, ...item.children] } : item,
@@ -55,8 +57,10 @@ watch(menuOpen, (open) => {
 
       <div class="right">
         <RouterLink to="/price" class="price-link">价格公示</RouterLink>
-        <RouterLink v-if="user.loggedIn" to="/user/orders" class="user-link">我的订单</RouterLink>
-        <RouterLink v-else to="/user/login" class="user-link">登录 / 注册</RouterLink>
+        <template v-if="site.shopEnabled">
+          <RouterLink v-if="user.loggedIn" to="/user/orders" class="user-link">我的订单</RouterLink>
+          <RouterLink v-else to="/user/login" class="user-link">登录 / 注册</RouterLink>
+        </template>
       </div>
 
       <button
@@ -83,7 +87,7 @@ watch(menuOpen, (open) => {
           <RouterLink :to="item.to" :class="{ active: activeKey === item.key }" :tabindex="menuOpen ? 0 : -1">{{ item.label }}</RouterLink>
         </li>
         <li><RouterLink to="/price" :tabindex="menuOpen ? 0 : -1">价格公示</RouterLink></li>
-        <li>
+        <li v-if="site.shopEnabled">
           <RouterLink :to="user.loggedIn ? '/user/orders' : '/user/login'" :class="{ active: activeKey === 'user' }" :tabindex="menuOpen ? 0 : -1">
             {{ user.loggedIn ? '我的订单' : '登录 / 注册' }}
           </RouterLink>

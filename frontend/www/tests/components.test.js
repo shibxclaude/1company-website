@@ -4,6 +4,7 @@ import { createRouter, createMemoryHistory } from 'vue-router'
 import { createHead } from '@unhead/vue/client'
 import { createPinia, setActivePinia } from 'pinia'
 import { useCatalogStore } from '../src/stores/catalog.js'
+import { useSiteStore } from '../src/stores/site.js'
 import SiteHeader from '../src/components/SiteHeader.vue'
 import SiteFooter from '../src/components/SiteFooter.vue'
 import { routes } from '../src/router/routes.js'
@@ -42,8 +43,8 @@ describe('SiteHeader', () => {
     expect(links).toContain('/solutions')
   })
 
-  it('未登录时显示登录入口', async () => {
-    const w = await mountAt(SiteHeader, '/')
+  it('在线购买开放且未登录时显示登录入口', async () => {
+    const w = await mountAt(SiteHeader, '/', () => { useSiteStore().shopEnabled = true })
     expect(w.find('.user-link').text()).toBe('登录 / 注册')
     expect(w.find('.user-link').attributes('href')).toBe('/user/login')
   })

@@ -7,6 +7,9 @@ import { useSeo } from '../composables/useSeo.js'
 import { useCatalogStore } from '../stores/catalog.js'
 import { money } from '../utils/money.js'
 import { company } from '../data/site.js'
+import { useSiteStore } from '../stores/site.js'
+
+const site = useSiteStore()
 
 const catalog = useCatalogStore()
 onServerPrefetch(() => catalog.loadPrice())
@@ -16,7 +19,7 @@ const unitText = (u) => (u ? `/${u}` : '')
 
 useSeo({
   title: '价格公示',
-  description: '一零科技全部解决方案价格公示：各版本价格、计费方式（一次性买断/按年订阅）与增值服务（运维、部署、培训）价目，公开透明，支持在线购买。',
+  description: '一零科技全部解决方案价格公示：各版本价格、计费方式（一次性买断/按年订阅）与增值服务（运维、部署、培训）价目，公开透明。',
 })
 </script>
 
@@ -51,7 +54,7 @@ useSeo({
                   </td>
                   <td class="desc">{{ v.description || '—' }}</td>
                   <td v-if="i === 0" :rowspan="s.versions.length">{{ s.deliveryLabel }}</td>
-                  <td v-if="i === 0" :rowspan="s.versions.length"><RouterLink :to="`/solutions/${s.slug}#buy`" class="buy">购买</RouterLink></td>
+                  <td v-if="i === 0" :rowspan="s.versions.length"><RouterLink :to="`/solutions/${s.slug}#buy`" class="buy">{{ site.shopEnabled ? '购买' : '咨询' }}</RouterLink></td>
                 </tr>
               </template>
             </tbody>

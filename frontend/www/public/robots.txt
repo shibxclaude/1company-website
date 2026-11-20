@@ -6,4 +6,4 @@ Disallow: /user/
 Disallow: /order/
 Disallow: /pay/
 
-Sitemap: https://www.cn01.com.cn/sitemap.xml
+Sitemap: https://www.yilinga.com/sitemap.xml

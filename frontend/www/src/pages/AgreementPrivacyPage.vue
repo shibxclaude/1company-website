@@ -10,7 +10,7 @@ useSeo({ title: '隐私政策', description: '北京一零科技有限公司隐�
 <template>
   <LegalDoc title="隐私政策" :version="PRIVACY_POLICY_VERSION" :effective-date="EFFECTIVE_DATE">
     <p>
-      {{ company.name }}（以下称"我们"）非常重视您的个人信息保护。本政策说明我们在您使用本网站（www.cn01.com.cn）浏览、注册、下单和支付时，
+      {{ company.name }}（以下称"我们"）非常重视您的个人信息保护。本政策说明我们在您使用本网站（www.yilinga.com）浏览、注册、下单和支付时，
       如何收集、使用、存储、共享和保护您的个人信息，以及您享有的权利。请您在使用前仔细阅读。
     </p>
 

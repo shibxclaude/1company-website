@@ -1,5 +1,8 @@
 <script setup>
 import { company, nav } from '../data/site.js'
+import { useSiteStore } from '../stores/site.js'
+
+const site = useSiteStore()
 
 const year = new Date().getFullYear()
 const siteMap = nav
@@ -23,7 +26,7 @@ const siteMap = nav
         <RouterLink to="/price">价格公示</RouterLink>
         <RouterLink to="/agreement/purchase">产品购买服务协议</RouterLink>
         <RouterLink to="/agreement/privacy">隐私政策</RouterLink>
-        <RouterLink to="/user/orders">订单查询</RouterLink>
+        <RouterLink v-if="site.shopEnabled" to="/user/orders">订单查询</RouterLink>
       </nav>
 
       <div class="col contact">

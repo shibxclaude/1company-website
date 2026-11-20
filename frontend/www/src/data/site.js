@@ -1,7 +1,7 @@
 // 站点级静态信息：公司、备案、导航、首页内容、FAQ、发展历程。
 // 解决方案、价格、新闻由后台维护、接口提供（见 stores/catalog.js），这里只保留不需要后台维护的内容。
 
-export const SITE_URL = 'https://www.cn01.com.cn'
+export const SITE_URL = 'https://www.yilinga.com'
 
 export const company = {
   name: '北京一零科技有限公司',

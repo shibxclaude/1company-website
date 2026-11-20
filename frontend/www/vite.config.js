@@ -5,7 +5,7 @@ import { resolve } from 'node:path'
 import { prerenderPaths, buildSitemap, buildSpaShell, fetchDynamicData } from './build/prerender.js'
 import { clientOnlyPaths } from './src/router/clientOnly.js'
 
-// 预渲染时从这个地址的后端取数（如 https://www.cn01.com.cn 或 http://127.0.0.1:8080）。
+// 预渲染时从这个地址的后端取数（如 https://www.yilinga.com 或 http://127.0.0.1:8080）。
 // 不配置时，依赖接口的内容在浏览器端加载，详情页不做预渲染。
 const API_BASE = process.env.SSG_API_BASE || ''
 let rendered = []

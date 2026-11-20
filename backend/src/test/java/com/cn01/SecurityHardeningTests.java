@@ -22,6 +22,7 @@ class SecurityHardeningTests {
         p.getJwt().setSecret("0123456789abcdef0123456789abcdef-strong");
         p.getSms().setMock(false);
         p.getPay().setMode("wechat");
+        p.getShop().setEnabled(true);
         return p;
     }
 
@@ -50,8 +51,19 @@ class SecurityHardeningTests {
     }
 
     @Test
+    void 生产校验_购买未开放时不要求真实短信和支付_但仍校验JWT() {
+        AppProperties p = new AppProperties();   // 默认：购买关闭、模拟短信、模拟支付
+        p.getJwt().setSecret("0123456789abcdef0123456789abcdef-strong");
+        assertThat(p.getShop().isEnabled()).isFalse();
+        assertThat(ProductionGuard.violations(p)).isEmpty();
+        p.getJwt().setSecret("short");
+        assertThat(ProductionGuard.violations(p)).hasSize(1).allMatch(s -> s.contains("JWT_SECRET"));
+    }
+
+    @Test
     void 生产校验_只有prod环境才拒绝启动() {
         AppProperties bad = new AppProperties();
+        bad.getShop().setEnabled(true);
         assertThatCode(() -> ProductionGuard.enforce("dev", bad)).doesNotThrowAnyException();
         assertThatThrownBy(() -> ProductionGuard.enforce("prod", bad))
                 .isInstanceOf(IllegalStateException.class).hasMessageContaining("SMS_MOCK");

@@ -176,14 +176,15 @@ DEPLOY_HOST=服务器IP ./deploy/rollback.sh --list
 | # | 事项 | 说明 |
 |---|---|---|
 | 1 | **在后台替换示例价格** | 种子数据中的版本价格和增值服务价格都是示例 |
-| 2 | **微信支付商户配置** | 商户号、AppID、商户 API 证书私钥、证书序列号、APIv3 密钥，填入 `/etc/cn01/backend.env`，并设置 `PAY_MODE=wechat`。商户平台需开通 Native 支付 |
-| 3 | **HTTPS** | 微信回调要求 HTTPS；证书就绪后用 `deploy/nginx/cn01-https.conf` 替换 `cn01.conf`（步骤见文件头） |
-| 4 | **短信服务** | 对接云短信（实现 `SmsSender`），并设置 `SMS_MOCK=false`。没接入时启动日志会报错提醒 |
+| 2 | 微信支付商户配置（**暂不提供**，`SHOP_ENABLED=false`） | 开放在线购买前完成：商户号、AppID、商户 API 证书私钥、证书序列号、APIv3 密钥，填入 `/etc/cn01/backend.env`，并设置 `PAY_MODE=wechat`。商户平台需开通 Native 支付 |
+| 3 | **HTTPS（证书已有）** | 主域名 `www.yilinga.com`，`yilinga.com` 与旧域名 `cn01.com.cn`/`www.cn01.com.cn` 一律 301 到主域名。yilinga.com 证书放 `/etc/nginx/ssl/yilinga.com.pem`/`.key`（需覆盖 www 与裸域名），用 `deploy/nginx/cn01-https.conf` 替换 `cn01.conf`。旧域名走 HTTPS 访问需另有 cn01.com.cn 证书并安装 `cn01-legacy-https.conf`，否则只有 http://cn01.com.cn 能跳转 |
+| 4 | 短信服务（**暂不提供**，`SHOP_ENABLED=false`） | 开放在线购买前完成：对接云短信（实现 `SmsSender`），并设置 `SMS_MOCK=false`。没接入时启动日志会报错提醒 |
 | 5 | 邮件 | 配置企业邮箱 SMTP（`MAIL_*`、`MAIL_FROM`、`NOTIFY_ADMIN_EMAIL`） |
 | 6 | **法务审核协议** | 《产品购买服务协议》《隐私政策》是按 Task1 要求起草的模板（退款规则、管辖法院、个人信息保存期限等），需法务确认。修改后同时更新前端 `src/data/agreement.js` 和后端 `app.order.agreement-version` 中的版本号 |
 | 7 | 初始管理员密码 | 设置 `ADMIN_INIT_PASSWORD`，或从首次启动日志里取随机密码，登录后立即修改 |
-| 8 | 服务器端口 | MySQL、Redis、8080 只监听 127.0.0.1（后端已默认如此），Redis 必须设置密码 |
+| 8 | 服务器端口（已确认） | MySQL、Redis 不对外开放；8080 只监听 127.0.0.1（后端已默认如此） |
 | 9 | 销售模式确认 | 部分方案面向公安机关，通常走政府采购流程。在线下单的交付和退款说法请与 ICP 审核口径保持一致 |
 | 10 | JWT 密钥 | `JWT_SECRET` 设置为至少 32 字节的随机串。未设置时每次重启都会让所有登录失效 |
-| 11 | 启动安全校验（自动） | systemd 以 `-Dapp.env=prod` 启动；`SMS_MOCK=true`、`PAY_MODE=mock` 或 `JWT_SECRET` 不合格（不足 32 字节/仍是示例占位符）时后端直接拒绝启动，日志列出具体原因（`ProductionGuard`） |
-| 12 | 退款配置 | 微信商户平台开通退款权限；`PAY_REFUND_NOTIFY_URL` 指向 `https://www.cn01.com.cn/api/pay/notify/wechat-refund`；商户账户需留有可退余额。退款原因会展示给客户，协议中的退款条款需与后台操作口径一致 |
+| 11 | 启动安全校验（自动） | systemd 以 `-Dapp.env=prod` 启动；`JWT_SECRET` 不合格，或开放了在线购买（`SHOP_ENABLED=true`）却仍是 `SMS_MOCK=true`/`PAY_MODE=mock`（不足 32 字节/仍是示例占位符）时后端直接拒绝启动，日志列出具体原因（`ProductionGuard`） |
+| 12 | 退款配置 | 微信商户平台开通退款权限；`PAY_REFUND_NOTIFY_URL` 指向 `https://www.yilinga.com/api/pay/notify/wechat-refund`；商户账户需留有可退余额。退款原因会展示给客户，协议中的退款条款需与后台操作口径一致 |
+| 13 | **在线购买开关** | `SHOP_ENABLED=false`（当前）：前台隐藏登录与订单入口，"立即购买"改为电话咨询（`SERVICE_PHONE`），直接访问下单/支付/登录/用户中心页面显示"暂未开放"，对应接口返回 403。支付、短信接入后改为 `true` 并重启后端即可，前台无需重新构建 |

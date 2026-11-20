@@ -31,7 +31,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
         "app.order.create-limit-per-hour=10000",
         "app.upload.dir=target/test-uploads",
         "app.pay.mode=mock",
-        "app.sms.mock=true"
+        "app.sms.mock=true",
+        "app.shop.enabled=true"
 })
 @AutoConfigureMockMvc
 public abstract class IntegrationTestBase {

@@ -81,6 +81,7 @@ export async function request(path, { method = 'GET', query, body, auth = true, 
 const orderHeader = (token) => (token ? { 'X-Order-Token': token } : {})
 
 export const api = {
+  siteConfig: () => request('/api/portal/site-config', { auth: false }),
   categories: () => request('/api/portal/categories', { auth: false }),
   solutions: (query) => request('/api/portal/solutions', { query, auth: false }),
   solution: (slug) => request(`/api/portal/solutions/${encodeURIComponent(slug)}`, { auth: false }),
