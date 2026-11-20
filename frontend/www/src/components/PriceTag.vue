@@ -24,8 +24,8 @@ const unitText = computed(() => (props.unit === '年' ? '/年' : props.unit ? `/
 
 <style scoped>
 .price-tag { display: inline-flex; align-items: baseline; flex-wrap: wrap; gap: 2px 8px; }
-.now { color: #e4393c; font-weight: 700; font-size: 20px; }
-.unit { font-size: 13px; color: #e4393c; }
+.now { color: var(--c-price); font-weight: 700; font-size: 20px; }
+.unit { font-size: 13px; color: var(--c-price); }
 .orig { font-size: 13px; color: #999; }
 .tbd { font-size: 14px; color: #999; }
 .price-tag--lg .now { font-size: 30px; }

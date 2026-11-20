@@ -1,27 +1,58 @@
-/* 视觉规范，取值见 docs/phase1/README.md 第 2 节 */
+/*
+ * 视觉规范：现代科技风（2026-11 改版）
+ * 题材：公安 / 政务数据融合、物联网、"区域一张网"。
+ * 墨蓝承载首屏与页脚，地图纸灰承载内容，政务蓝负责操作，信号琥珀只出现在数据点上。
+ */
 :root {
-  --c-primary: #409eff;
-  --c-heading-blue: #2a9be0;
-  --c-nav-bg: #004081;
-  --c-nav-text: #fff;
-  --c-nav-active: #d71618;
-  --c-nav-scrolled: rgba(128, 128, 128, 0.5);
-  --c-nav-hover-bg: #d2d2d2;
-  --c-dropdown-bg: rgba(255, 255, 255, 0.92);
-  --c-section-alt: #f7f7f7;
-  --c-section: #fff;
-  --c-text: #333;
-  --c-text-body: #666;
-  --c-text-muted: #a0a0a0;
-  --c-footer-bg: #3c4957;
-  --c-footer-line: #696969;
-  --c-faq-accent: #0a84ff;
-  --c-faq-title: #0a1628;
-  --c-mobile-menu-bg: rgba(44, 57, 71, 0.98);
-  --c-mobile-active: #00a8ff;
+  /* 色板 */
+  --c-ink: #0b1f3a;          /* 深色面（首屏、页脚）、正文标题 */
+  --c-ink-2: #12305e;        /* 深色面的渐变端 */
+  --c-paper: #f3f6fa;        /* 内容区底色（地图纸） */
+  --c-surface: #ffffff;
+  --c-line: #dce3ee;         /* 细分隔线 */
+  --c-line-dark: rgba(255, 255, 255, 0.12);
+  --c-brand: #1d5bff;        /* 操作、链接 */
+  --c-brand-strong: #0f45d6;
+  --c-brand-soft: #e8efff;
+  --c-signal: #ffaa2c;       /* 数据点、轨迹 */
+  --c-price: #e8590c;        /* 价格 */
+  --c-text: #1a2b45;
+  --c-text-2: #4d5d77;
+  --c-text-3: #8492a8;
+  --c-on-dark: #e9eef7;
+  --c-on-dark-2: #9fb0cc;
+  --c-ok: #0f9d6b;
+  --c-danger: #d9363e;
 
-  --font-base: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', 'Heiti SC', Tahoma, Arial, 'Helvetica Neue', sans-serif;
-  --header-h: 90px;
+  /* 兼容旧变量名（各页面内仍在引用） */
+  --c-primary: var(--c-brand);
+  --c-heading-blue: var(--c-brand);
+  --c-section-alt: var(--c-paper);
+  --c-section: var(--c-surface);
+  --c-text-body: var(--c-text-2);
+  --c-text-muted: var(--c-text-3);
+  --c-nav-active: var(--c-signal);
+  --c-faq-accent: var(--c-brand);
+  --c-faq-title: var(--c-ink);
+  --c-nav-bg: var(--c-ink);
+
+  /* 字体：中文用系统黑体；数字、价格、坐标刻度用 Barlow Semi Condensed（自托管） */
+  --font-base: 'PingFang SC', 'HarmonyOS Sans SC', 'Microsoft YaHei', 'Hiragino Sans GB', 'Noto Sans CJK SC', system-ui, sans-serif;
+  --font-num: 'Barlow Semi Condensed', 'DIN Alternate', 'Bahnschrift', var(--font-base);
+
+  /* 字号阶梯（1.25） */
+  --fs-xs: 12px;
+  --fs-sm: 14px;
+  --fs-md: 16px;
+  --fs-lg: 20px;
+  --fs-xl: 25px;
+  --fs-2xl: 31px;
+  --fs-3xl: 39px;
+  --fs-hero: clamp(32px, 4.6vw, 56px);
+
+  --radius-sm: 4px;
+  --radius: 8px;
+  --header-h: 68px;
   --content-w: 1000px;
   --wide-w: 1200px;
 }

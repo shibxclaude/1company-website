@@ -77,6 +77,11 @@ function validate() {
   return Object.keys(errors).length === 0
 }
 
+// 提交过一次出现错误后，用户每改一处就重新校验，改对的提示立即消失
+watch(form, () => {
+  if (Object.keys(errors).length) validate()
+})
+
 async function submit() {
   submitError.value = ''
   if (!validate() || !version.value) return
@@ -193,7 +198,7 @@ async function submit() {
 .page { max-width: var(--wide-w); margin: 0 auto; padding: 120px 16px 0; }
 .page-title { font-size: 24px; margin-bottom: 20px; }
 .layout { display: grid; grid-template-columns: 1.3fr 1fr; gap: 24px; align-items: start; }
-.card { padding: 22px 24px; background: #fff; border: 1px solid #ebeef5; border-radius: 8px; }
+.card { padding: 22px 24px; background: #fff; border: 1px solid var(--c-line); border-radius: 8px; }
 .card h2 { font-size: 17px; margin-bottom: 16px; }
 .sol { display: flex; gap: 14px; align-items: center; padding-bottom: 14px; border-bottom: 1px solid #f0f0f0; }
 .sol img { width: 120px; height: 78px; object-fit: cover; border-radius: 4px; }
@@ -204,34 +209,34 @@ async function submit() {
 .items th, .items td { padding: 10px 6px; border-bottom: 1px solid #f0f0f0; text-align: left; }
 .items th { font-weight: 500; color: #888; }
 .items small { display: block; font-size: 12px; color: #999; }
-.items select { max-width: 100%; padding: 6px 8px; font-size: 14px; border: 1px solid #dcdfe6; border-radius: 4px; }
+.items select { max-width: 100%; padding: 6px 8px; font-size: 14px; border: 1px solid var(--c-line); border-radius: 4px; }
 .num { text-align: right !important; white-space: nowrap; }
 .total { margin-top: 16px; text-align: right; font-size: 15px; }
-.total strong { font-size: 26px; color: #e4393c; }
+.total strong { font-size: 26px; color: var(--c-price); }
 .tip { margin-top: 6px; text-align: right; font-size: 12px; color: #999; }
 .guest { margin: -6px 0 14px; font-size: 13px; color: #888; }
 .guest a, .agree a { color: var(--c-primary); }
 .form label { display: block; margin-bottom: 14px; }
 .form label > span { display: block; margin-bottom: 6px; font-size: 14px; color: #555; }
-.form i { margin-left: 2px; color: #e4393c; font-style: normal; }
+.form i { margin-left: 2px; color: var(--c-danger); font-style: normal; }
 .form input:not([type='checkbox']), .form textarea {
   width: 100%;
   padding: 9px 12px;
   font: inherit;
   font-size: 15px;
-  border: 1px solid #dcdfe6;
+  border: 1px solid var(--c-line);
   border-radius: 4px;
   outline: none;
 }
-.form input:focus, .form textarea:focus { border-color: #00a8ff; }
-.form .err input { border-color: #e4393c; }
-.form em { display: block; margin-top: 4px; font-size: 12px; font-style: normal; color: #e4393c; }
+.form input:focus, .form textarea:focus { border-color: var(--c-brand); }
+.form .err input { border-color: var(--c-danger); }
+.form em { display: block; margin-top: 4px; font-size: 12px; font-style: normal; color: var(--c-danger); }
 .agree { display: flex !important; gap: 8px; align-items: flex-start; font-size: 13px; color: #555; }
-.agree input { margin-top: 3px; accent-color: #e4393c; }
+.agree input { margin-top: 3px; accent-color: var(--c-brand); }
 .agree span { display: inline !important; margin: 0 !important; }
-.agree-err { margin: -8px 0 10px; font-size: 12px; font-style: normal; color: #e4393c; }
+.agree-err { margin: -8px 0 10px; font-size: 12px; font-style: normal; color: var(--c-danger); }
 .submit-err { margin-bottom: 10px; padding: 8px 12px; font-size: 14px; color: #c0392b; background: #fdecea; border-radius: 4px; }
-.submit { width: 100%; height: 46px; font-size: 17px; color: #fff; background: #e4393c; border: 0; border-radius: 23px; }
+.submit { width: 100%; height: 46px; font-size: 17px; color: #fff; background: var(--c-brand); border: 0; border-radius: var(--radius-sm); }
 .submit:disabled { background: #ccc; cursor: not-allowed; }
 @media (max-width: 991px) {
   .page { padding-top: 84px; }

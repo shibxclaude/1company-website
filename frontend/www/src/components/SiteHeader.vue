@@ -18,8 +18,7 @@ const scrolled = ref(false)
 const menuOpen = ref(false)
 
 function onScroll() {
-  // 原站：滚动超过 500px 后导航变为半透明灰
-  scrolled.value = window.scrollY > 500
+  scrolled.value = window.scrollY > 24
 }
 onMounted(() => {
   onScroll()
@@ -45,6 +44,7 @@ watch(menuOpen, (open) => {
           <li v-for="item in nav" :key="item.key" class="pc-item" :class="{ 'has-children': item.children }">
             <RouterLink :to="item.to" class="pc-link" :class="{ active: activeKey === item.key }">
               {{ item.label }}
+              <svg v-if="item.children" class="caret" viewBox="0 0 10 6" aria-hidden="true"><path d="M1 1l4 4 4-4" /></svg>
             </RouterLink>
             <div v-if="item.children" class="dropdown">
               <RouterLink v-for="c in item.children" :key="c.to" :to="c.to">{{ c.label }}</RouterLink>
@@ -54,9 +54,9 @@ watch(menuOpen, (open) => {
       </nav>
 
       <div class="right">
+        <RouterLink to="/price" class="price-link">价格公示</RouterLink>
         <RouterLink v-if="user.loggedIn" to="/user/orders" class="user-link">我的订单</RouterLink>
         <RouterLink v-else to="/user/login" class="user-link">登录 / 注册</RouterLink>
-        <img class="lang" src="/images/topRight.png" alt="" width="120" height="60" aria-hidden="true" />
       </div>
 
       <button
@@ -67,28 +67,29 @@ watch(menuOpen, (open) => {
         aria-controls="mobile-menu"
         @click="menuOpen = true"
       >
-        <img src="/images/menuIcon.png" alt="" width="30" height="30" />
+        <span /><span /><span />
       </button>
     </div>
 
     <div id="mobile-menu" class="mobile-menu" :class="{ open: menuOpen }" :aria-hidden="!menuOpen">
-      <button class="close-btn" type="button" aria-label="关闭菜单" @click="menuOpen = false">
-        <img src="/images/closeIcon.png" alt="" width="30" height="30" />
-      </button>
+      <div class="m-top">
+        <img src="/images/topLeft.png" alt="一零科技" width="96" height="48" />
+        <button class="close-btn" type="button" aria-label="关闭菜单" @click="menuOpen = false">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16" /></svg>
+        </button>
+      </div>
       <ul>
         <li v-for="item in nav" :key="item.key">
-          <RouterLink :to="item.to" :class="{ active: activeKey === item.key }" :tabindex="menuOpen ? 0 : -1">
-            <i class="m-icon" :class="`m-icon--${item.mobileIcon}`" aria-hidden="true" />
-            {{ item.label }}
-          </RouterLink>
+          <RouterLink :to="item.to" :class="{ active: activeKey === item.key }" :tabindex="menuOpen ? 0 : -1">{{ item.label }}</RouterLink>
         </li>
+        <li><RouterLink to="/price" :tabindex="menuOpen ? 0 : -1">价格公示</RouterLink></li>
         <li>
           <RouterLink :to="user.loggedIn ? '/user/orders' : '/user/login'" :class="{ active: activeKey === 'user' }" :tabindex="menuOpen ? 0 : -1">
-            <i class="m-icon m-icon--user" aria-hidden="true" />
             {{ user.loggedIn ? '我的订单' : '登录 / 注册' }}
           </RouterLink>
         </li>
       </ul>
+      <a class="m-phone" href="tel:13699285133" :tabindex="menuOpen ? 0 : -1">咨询电话 <span class="num">136 9928 5133</span></a>
     </div>
   </header>
 </template>
@@ -99,182 +100,137 @@ watch(menuOpen, (open) => {
   inset: 0 0 auto 0;
   z-index: 100;
   height: var(--header-h);
-  transition: background-color 0.3s;
+  color: var(--c-on-dark);
+  border-bottom: 1px solid transparent;
+  transition: background-color 0.25s, border-color 0.25s;
 }
-.site-header.is-scrolled { background-color: var(--c-nav-scrolled); }
-.site-header.is-solid { background-color: var(--c-nav-bg); }
+.site-header.is-scrolled,
+.site-header.is-solid {
+  background: rgba(11, 31, 58, 0.94);
+  border-bottom-color: var(--c-line-dark);
+  backdrop-filter: saturate(160%) blur(10px);
+}
 
 .bar {
-  height: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  border-bottom: 1px solid #889cb5;
-  padding: 0 16px;
+  gap: 24px;
+  height: 100%;
+  max-width: var(--wide-w);
+  margin: 0 auto;
+  padding: 0 24px;
 }
-.logo img, .lang { width: 120px; height: 60px; }
-.right { display: flex; align-items: center; gap: 12px; }
-.user-link {
-  padding: 6px 14px;
-  font-size: 14px;
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  border-radius: 16px;
-  white-space: nowrap;
-  transition: background-color 0.3s;
-}
-.user-link:hover { background: rgba(255, 255, 255, 0.2); }
+.logo img { display: block; width: 104px; height: 52px; }
 
-.pc-nav ul { display: flex; }
-.pc-item {
-  position: relative;
-  width: 160px;
-  height: 70px;
-  margin-top: 20px;
-  text-align: center;
-  border-radius: 10px 10px 0 0;
-  transition: background-color 0.3s;
-}
-.pc-item:hover, .pc-item:focus-within { background-color: var(--c-nav-hover-bg); }
+.pc-nav { flex: 1; }
+.pc-nav ul { display: flex; justify-content: center; gap: 4px; }
+.pc-item { position: relative; }
 .pc-link {
-  display: block;
-  line-height: 70px;
-  font-size: 17px;
-  color: var(--c-nav-text);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: var(--header-h);
+  padding: 0 14px;
+  font-size: 15px;
+  color: var(--c-on-dark-2);
+  transition: color 0.2s;
 }
-.pc-link.active { color: var(--c-nav-active); }
+.pc-link:hover, .pc-item:focus-within .pc-link { color: #fff; }
+.pc-link.active { color: #fff; box-shadow: inset 0 -2px 0 var(--c-signal); }
+.caret { width: 9px; height: 6px; fill: none; stroke: currentColor; stroke-width: 1.5; opacity: 0.7; }
 
 .dropdown {
-  display: none;
   position: absolute;
-  top: 100%;
-  left: 0;
-  width: 160px;
-  padding: 10px;
-  text-align: left;
-  background: var(--c-dropdown-bg);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  border-radius: 0 0 10px 10px;
+  top: calc(100% - 6px);
+  left: 50%;
+  min-width: 220px;
+  padding: 8px;
+  background: #102a50;
+  border: 1px solid var(--c-line-dark);
+  border-radius: var(--radius);
+  box-shadow: 0 18px 40px rgba(3, 12, 30, 0.45);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 6px);
+  transition: opacity 0.18s, transform 0.18s, visibility 0.18s;
 }
-.pc-item:hover .dropdown, .pc-item:focus-within .dropdown { display: block; }
+.pc-item:hover .dropdown, .pc-item:focus-within .dropdown { opacity: 1; visibility: visible; transform: translate(-50%, 0); }
 .dropdown a {
   display: block;
-  padding: 5px 0;
-  line-height: 2em;
+  padding: 8px 12px;
   font-size: 14px;
-  color: #333;
-  border-bottom: 1px solid #d2d2d2;
-  transition: color 0.3s;
+  line-height: 1.5;
+  color: var(--c-on-dark-2);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
 }
-.dropdown a:last-child { border-bottom: 0; }
-.dropdown a:hover, .dropdown a.router-link-exact-active { color: var(--c-nav-active); }
+.dropdown a:hover, .dropdown a.router-link-exact-active { color: #fff; background: rgba(255, 255, 255, 0.07); }
+
+.right { display: flex; align-items: center; gap: 18px; }
+.price-link { font-size: 14px; color: var(--c-on-dark-2); }
+.price-link:hover { color: #fff; }
+.user-link {
+  padding: 7px 16px;
+  font-size: 14px;
+  color: #fff;
+  background: var(--c-brand);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  transition: background-color 0.2s;
+}
+.user-link:hover { background: var(--c-brand-strong); }
 
 .menu-btn {
   display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
   margin-left: auto;
-  padding: 0;
+  padding: 0 9px;
   background: none;
   border: 0;
 }
+.menu-btn span { display: block; height: 2px; background: #fff; border-radius: 1px; }
 
 .mobile-menu {
   position: fixed;
   inset: 0;
   z-index: 200;
-  padding: 20vh 0 10vh;
-  background: var(--c-mobile-menu-bg);
+  display: flex;
+  flex-direction: column;
+  padding: 0 24px 32px;
+  background: var(--c-ink);
   transform: translateX(100%);
   visibility: hidden;
-  transition: transform 0.5s, visibility 0.5s;
+  transition: transform 0.35s ease, visibility 0.35s;
   overflow-y: auto;
 }
 .mobile-menu.open { transform: none; visibility: visible; }
-.close-btn {
-  position: absolute;
-  top: 5%;
-  right: 5%;
-  padding: 0;
-  background: none;
-  border: 0;
-}
-.mobile-menu a {
-  display: flex;
-  align-items: center;
-  width: min(70%, 320px);
-  margin: 0 auto;
-  padding: 10px 20px;
+.m-top { display: flex; align-items: center; justify-content: space-between; height: var(--header-h); }
+.close-btn { width: 40px; height: 40px; padding: 10px; background: none; border: 0; }
+.close-btn svg { width: 20px; height: 20px; stroke: #fff; stroke-width: 2; }
+.mobile-menu ul { margin-top: 12px; }
+.mobile-menu li a {
+  display: block;
+  padding: 14px 0;
   font-size: 18px;
-  line-height: 50px;
-  color: #fff;
-  border-bottom: 1px solid #122b40;
+  color: var(--c-on-dark);
+  border-bottom: 1px solid var(--c-line-dark);
 }
-.mobile-menu li:last-child a { border-bottom: 0; }
-.mobile-menu a.active { color: var(--c-mobile-active); }
-.m-icon {
-  flex: none;
-  width: 44px;
-  height: 44px;
-  margin-right: 20px;
-  border: 2px solid rgba(255, 255, 255, 0.8);
-  border-radius: 50%;
-  background: no-repeat center / 100% auto;
-}
-.active .m-icon { border-color: rgba(0, 168, 255, 0.8); }
-.m-icon--home { background-image: url('/images/homeIcon01.png'); }
-.active .m-icon--home { background-image: url('/images/homeIcon02.png'); }
-.m-icon--about { background-image: url('/images/aboutIcon01.png'); }
-.active .m-icon--about { background-image: url('/images/aboutIcon02.png'); }
-.m-icon--solution { background-image: url('/images/solutionIcon01.png'); }
-.active .m-icon--solution { background-image: url('/images/solutionIcon02.png'); }
-.m-icon--product { background-image: url('/images/productIcon01.png'); }
-.active .m-icon--product { background-image: url('/images/productIcon02.png'); }
-.m-icon--news { background-image: url('/images/newsIcon01.png'); }
-.active .m-icon--news { background-image: url('/images/newsIcon02.png'); }
-.m-icon--user::before {
-  content: '';
-  display: block;
-  width: 16px;
-  height: 16px;
-  margin: 8px auto 0;
-  border: 2px solid currentColor;
-  border-radius: 50%;
-  box-shadow: 0 14px 0 -2px transparent;
-}
-.m-icon--user::after {
-  content: '';
-  display: block;
-  width: 24px;
-  height: 10px;
-  margin: 2px auto 0;
-  border: 2px solid currentColor;
-  border-bottom: 0;
-  border-radius: 12px 12px 0 0;
-}
-.m-icon--faq::before {
-  content: '?';
-  display: block;
-  text-align: center;
-  line-height: 40px;
-  font-size: 22px;
-  font-weight: 700;
-}
+.mobile-menu li a.active { color: var(--c-signal); }
+.m-phone { margin-top: auto; padding-top: 24px; font-size: 14px; color: var(--c-on-dark-2); }
+.m-phone .num { font-size: 18px; color: #fff; }
 
-@media (max-width: 1399px) {
-  .pc-item { width: 120px; }
-  .pc-link { font-size: 16px; }
-  .lang { display: none; }
-}
-@media (max-width: 1099px) {
-  .pc-item { width: 100px; }
-  .pc-link { font-size: 15px; }
+@media (max-width: 1199px) {
+  .pc-link { padding: 0 10px; font-size: 14px; }
+  .price-link { display: none; }
 }
 @media (max-width: 991px) {
-  .site-header { height: 60px; }
-  .bar { justify-content: flex-start; }
-  .logo img { width: 90px; height: 45px; }
   .pc-nav, .right { display: none; }
-  .menu-btn { display: block; }
-  /* 移动端始终给导航一个底色，避免白色 logo 压在浅色内容上看不清 */
-  .site-header { background-color: rgba(0, 64, 129, 0.85); }
+  .menu-btn { display: flex; }
+  .bar { padding: 0 16px; }
+  .site-header { background: rgba(11, 31, 58, 0.94); border-bottom-color: var(--c-line-dark); }
 }
 </style>

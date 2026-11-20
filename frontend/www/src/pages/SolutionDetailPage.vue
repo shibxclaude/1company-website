@@ -94,14 +94,9 @@ useSeo({
 <template>
   <NotFoundPage v-if="solution === null" />
   <template v-else>
-    <PageBanner image="/images/jiejue.png" :title="solution?.name || '解决方案'" />
+    <PageBanner :title="solution?.name || '解决方案'" :subtitle="solution?.subtitle || ''" :parent="{ label: '解决方案', to: '/solutions' }" />
     <StateBlock :loading="loading && !solution" :error="!solution ? loadError : ''" @retry="load(true)">
       <article v-if="solution" class="detail">
-        <nav class="crumbs" aria-label="面包屑">
-          <RouterLink to="/">首页</RouterLink><span>›</span>
-          <RouterLink to="/solutions">解决方案</RouterLink><span>›</span>
-          <span aria-current="page">{{ solution.name }}</span>
-        </nav>
 
         <div class="head">
           <ImageGallery :images="solution.gallery.length ? solution.gallery : [solution.mainImage]" :alt="solution.name" />
@@ -200,14 +195,14 @@ useSeo({
 .detail { max-width: var(--wide-w); margin: 0 auto; padding: 24px 16px 0; }
 .crumbs { display: flex; flex-wrap: wrap; gap: 6px; font-size: 14px; color: #999; }
 .crumbs a:hover { color: var(--c-primary); }
-.crumbs [aria-current] { color: #00a8ff; }
+.crumbs [aria-current] { color: var(--c-brand); }
 
 .head { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 24px; align-items: start; }
 .buybox { scroll-margin-top: 100px; }
-.tag { display: inline-block; padding: 2px 10px; font-size: 13px; color: var(--c-primary); background: #ecf5ff; border-radius: 4px; }
+.tag { display: inline-block; padding: 2px 10px; font-size: 13px; color: var(--c-primary); background: var(--c-brand-soft); border-radius: 4px; }
 .title { margin-top: 10px; font-size: 26px; line-height: 1.35; color: #222; }
 .subtitle { margin-top: 8px; font-size: 15px; color: #888; }
-.price-row { margin-top: 16px; padding: 14px 18px; background: #fff6f6; border-radius: 6px; }
+.price-row { margin-top: 16px; padding: 14px 18px; background: #fff4ec; border-radius: 6px; }
 .opts { display: grid; grid-template-columns: 80px 1fr; gap: 18px 12px; margin: 22px 0 0; }
 .opts dt { padding-top: 7px; font-size: 14px; color: #888; }
 .opts dd { margin: 0; }
@@ -221,18 +216,18 @@ useSeo({
   font-size: 15px;
   color: #333;
   background: #fff;
-  border: 1px solid #dcdfe6;
+  border: 1px solid var(--c-line);
   border-radius: 4px;
 }
 .versions button small { font-size: 12px; color: #999; }
-.versions button.on { color: #e4393c; border-color: #e4393c; box-shadow: inset 0 0 0 1px #e4393c; }
+.versions button.on { color: var(--c-brand); border-color: var(--c-brand); box-shadow: inset 0 0 0 1px var(--c-brand); }
 .vdesc { margin-top: 8px; font-size: 13px; line-height: 1.7; color: #888; }
 .qty-row { display: flex; align-items: center; gap: 8px; }
 .unit { font-size: 14px; color: #666; }
 .services li { padding: 8px 0; border-bottom: 1px dashed #eee; }
 .services li:last-child { border-bottom: 0; }
 .services label { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; cursor: pointer; }
-.services input[type='checkbox'] { width: 16px; height: 16px; accent-color: #e4393c; }
+.services input[type='checkbox'] { width: 16px; height: 16px; accent-color: var(--c-brand); }
 .sv-name { font-size: 14px; color: #333; }
 .services .qty { margin: 8px 0 0 24px; }
 .sv-desc { margin: 4px 0 0 24px; font-size: 12px; color: #999; }
@@ -246,27 +241,27 @@ useSeo({
   border-top: 1px solid #eee;
   font-size: 15px;
 }
-.total strong { font-size: 26px; color: #e4393c; }
+.total strong { font-size: 26px; color: var(--c-price); }
 .actions { display: flex; gap: 12px; margin-top: 14px; }
 .buy {
   flex: 1;
   height: 46px;
   font-size: 18px;
   color: #fff;
-  background: #e4393c;
+  background: var(--c-brand);
   border: 0;
-  border-radius: 23px;
+  border-radius: var(--radius-sm);
 }
-.buy:hover { background: #c82f32; }
+.buy:hover { background: var(--c-brand-strong); }
 .buy:disabled { background: #ccc; cursor: not-allowed; }
 .consult {
   display: inline-flex;
   align-items: center;
   padding: 0 24px;
   font-size: 16px;
-  color: #00a8ff;
-  border: 1px solid #00a8ff;
-  border-radius: 23px;
+  color: var(--c-brand);
+  border: 1px solid var(--c-brand);
+  border-radius: var(--radius-sm);
 }
 .hint { margin-top: 10px; font-size: 12px; color: #999; }
 

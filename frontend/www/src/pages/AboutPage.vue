@@ -1,6 +1,5 @@
 <script setup>
 import PageBanner from '../components/PageBanner.vue'
-import SectionTitle from '../components/SectionTitle.vue'
 import CredentialIcon from '../components/CredentialIcon.vue'
 import { useSeo } from '../composables/useSeo.js'
 import { aboutParagraphs, credentials } from '../data/site.js'
@@ -13,9 +12,8 @@ useSeo({
 </script>
 
 <template>
-  <PageBanner image="/images/guanyu.png" title="公司简介" />
+  <PageBanner title="公司简介" subtitle="2015 年成立于北京海淀，国家高新技术企业。" />
   <section class="section">
-    <SectionTitle highlight="公司简介" as="h2" />
     <div class="intro">
       <p v-for="(p, i) in aboutParagraphs" :key="i">{{ p }}</p>
     </div>
@@ -30,7 +28,8 @@ useSeo({
 
 <style scoped>
 .intro { max-width: 940px; margin: 0 auto; padding: 0 16px; }
-.intro p { font-size: 16px; line-height: 2.4; color: #333; text-indent: 2em; }
+.intro p { max-width: 42em; font-size: 17px; line-height: 2; color: var(--c-text); }
+.intro p + p { margin-top: 12px; }
 .creds {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -40,7 +39,8 @@ useSeo({
   padding: 0 16px;
   text-align: center;
 }
-.creds li { display: flex; flex-direction: column; align-items: center; gap: 16px; font-size: 22px; color: #333; }
+.creds { border-top: 1px solid var(--c-line); padding-top: 36px; }
+.creds li { display: flex; flex-direction: column; align-items: center; gap: 14px; font-size: 18px; font-weight: 600; color: var(--c-ink); }
 @media (max-width: 767px) {
   .intro p { font-size: 15px; line-height: 2; }
   .creds { grid-template-columns: repeat(2, 1fr); margin-top: 36px; }

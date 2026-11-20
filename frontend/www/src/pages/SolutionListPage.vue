@@ -3,7 +3,6 @@
 import { ref, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import PageBanner from '../components/PageBanner.vue'
-import SectionTitle from '../components/SectionTitle.vue'
 import PriceTag from '../components/PriceTag.vue'
 import StateBlock from '../components/StateBlock.vue'
 import { useSeo } from '../composables/useSeo.js'
@@ -43,9 +42,8 @@ useSeo({
 </script>
 
 <template>
-  <PageBanner image="/images/jiejue.png" title="解决方案" />
+  <PageBanner title="解决方案" subtitle="深入公安、政务与城市治理的实战场景。价格公开透明，支持在线下单、微信扫码支付。" />
   <section class="section">
-    <SectionTitle lead="我们的" highlight="解决方案" tip="价格公开透明，支持在线下单、微信扫码支付" />
 
     <div class="toolbar">
       <div class="tabs" role="tablist" aria-label="分类">
@@ -96,7 +94,7 @@ useSeo({
         </li>
       </ul>
     </StateBlock>
-    <p class="price-link"><RouterLink to="/price">查看价格公示（全部版本与增值服务价目） →</RouterLink></p>
+    <p class="price-link"><RouterLink to="/price">查看价格公示（全部版本与增值服务价目）</RouterLink></p>
   </section>
 </template>
 
@@ -119,19 +117,19 @@ useSeo({
   color: #333;
   background: #fff;
   border: 1px solid #ddd;
-  border-radius: 20px;
+  border-radius: var(--radius-sm);
 }
-.tabs button.on { color: #fff; background: #00a8ff; border-color: #00a8ff; }
+.tabs button.on { color: #fff; background: var(--c-brand); border-color: var(--c-brand); }
 .search input {
   width: 240px;
   height: 38px;
   padding: 0 16px;
   font-size: 14px;
   border: 1px solid #ddd;
-  border-radius: 19px;
+  border-radius: var(--radius-sm);
   outline: none;
 }
-.search input:focus { border-color: #00a8ff; }
+.search input:focus { border-color: var(--c-brand); }
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -150,9 +148,9 @@ useSeo({
   transition: box-shadow 0.3s, transform 0.3s;
 }
 .card:hover { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14); transform: translateY(-2px); }
-.cover { position: relative; display: block; aspect-ratio: 380 / 244; overflow: hidden; background: #87ceeb; }
+.cover { position: relative; display: block; aspect-ratio: 380 / 244; overflow: hidden; background: #c9d6ea; }
 .cover img { width: 100%; height: 100%; object-fit: cover; }
-.badge { position: absolute; top: 10px; left: 10px; padding: 2px 10px; font-size: 12px; color: #fff; background: #e4393c; border-radius: 3px; }
+.badge { position: absolute; top: 10px; left: 10px; padding: 2px 10px; font-size: 12px; color: #fff; background: var(--c-brand); border-radius: 3px; }
 .body { display: flex; flex: 1; flex-direction: column; padding: 16px 20px 20px; }
 .cat { font-size: 12px; color: var(--c-primary); }
 .body h3 { margin-top: 4px; font-size: 18px; line-height: 1.4; }
@@ -160,10 +158,10 @@ useSeo({
 .summary { flex: 1; margin: 10px 0 16px; font-size: 14px; line-height: 1.8; color: var(--c-text-body); }
 .foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
 .actions { display: flex; gap: 8px; }
-.detail, .buy { padding: 6px 16px; font-size: 14px; border-radius: 16px; white-space: nowrap; }
-.detail { color: #00a8ff; border: 1px solid #00a8ff; }
-.buy { color: #fff; background: #e4393c; }
-.buy:hover { background: #c82f32; }
+.detail, .buy { padding: 6px 16px; font-size: 14px; border-radius: var(--radius-sm); white-space: nowrap; }
+.detail { color: var(--c-brand); border: 1px solid var(--c-brand); }
+.buy { color: #fff; background: var(--c-brand); }
+.buy:hover { background: var(--c-brand-strong); }
 .price-link { margin-top: 30px; text-align: center; }
 .price-link a { color: var(--c-primary); }
 @media (max-width: 991px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 20px; } }

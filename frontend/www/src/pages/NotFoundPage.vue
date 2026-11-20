@@ -23,7 +23,7 @@ useHead({ title: `页面不存在 - ${company.name}`, meta: [{ name: 'robots', c
 h1 { margin-top: 16px; font-size: 24px; }
 .tip { margin-top: 10px; color: #888; }
 .links { display: flex; justify-content: center; gap: 16px; margin-top: 28px; }
-.links a { padding: 8px 24px; color: #fff; background: #00a8ff; border-radius: 20px; }
-.links a + a { color: #00a8ff; background: #fff; border: 1px solid #00a8ff; }
+.links a { padding: 8px 24px; color: #fff; background: var(--c-brand); border-radius: var(--radius-sm); }
+.links a + a { color: var(--c-brand); background: #fff; border: 1px solid var(--c-brand); }
 @media (max-width: 991px) { .nf { padding-top: 110px; } }
 </style>

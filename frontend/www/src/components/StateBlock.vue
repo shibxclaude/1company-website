@@ -21,7 +21,7 @@ defineEmits(['retry'])
 <style scoped>
 .state { padding: 60px 16px; text-align: center; color: #999; font-size: 15px; }
 .error { color: #c0392b; }
-.error button { margin-top: 12px; padding: 6px 22px; color: #fff; background: #00a8ff; border: 0; border-radius: 16px; }
+.error button { margin-top: 12px; padding: 6px 22px; color: #fff; background: var(--c-brand); border: 0; border-radius: var(--radius-sm); }
 .spinner {
   display: inline-block;
   width: 16px;
@@ -29,7 +29,7 @@ defineEmits(['retry'])
   margin-right: 8px;
   vertical-align: -3px;
   border: 2px solid #cfe9ff;
-  border-top-color: #00a8ff;
+  border-top-color: var(--c-brand);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }

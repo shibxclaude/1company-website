@@ -2,7 +2,6 @@
 // 价格公示：全部在售解决方案的版本价格、计费方式、增值服务价目。无需登录。
 import { onMounted, onServerPrefetch } from 'vue'
 import PageBanner from '../components/PageBanner.vue'
-import SectionTitle from '../components/SectionTitle.vue'
 import StateBlock from '../components/StateBlock.vue'
 import { useSeo } from '../composables/useSeo.js'
 import { useCatalogStore } from '../stores/catalog.js'
@@ -22,9 +21,8 @@ useSeo({
 </script>
 
 <template>
-  <PageBanner image="/images/chanpinzhongxin.png" title="价格公示" />
+  <PageBanner title="价格公示" subtitle="全部在售解决方案的公开价格（人民币，含税）。无需注册即可在线下单，通过微信扫码支付。" :parent="{ label: '产品中心', to: '/products' }" />
   <section class="section">
-    <SectionTitle lead="价格" highlight="公示" tip="以下为全部在售解决方案的公开价格（人民币，含税），可在线下单并通过微信扫码支付" />
     <StateBlock
       :loading="!catalog.price && !catalog.error"
       :error="!catalog.price ? catalog.error || '' : ''"
@@ -96,18 +94,18 @@ useSeo({
 .wrap { max-width: var(--wide-w); margin: 0 auto; padding: 0 16px; }
 .h { margin: 32px 0 14px; font-size: 18px; }
 .h:first-child { margin-top: 0; }
-.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid #ebeef5; border-radius: 6px; }
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--c-line); border-radius: 6px; }
 table { width: 100%; min-width: 760px; border-collapse: collapse; font-size: 14px; }
-th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid #ebeef5; vertical-align: middle; }
+th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--c-line); vertical-align: middle; }
 thead th { font-weight: 600; color: #555; background: #f5f7fa; white-space: nowrap; }
-tbody th.sol { font-weight: 600; color: #222; background: #fafbfc; border-right: 1px solid #ebeef5; min-width: 180px; }
+tbody th.sol { font-weight: 600; color: #222; background: #fafbfc; border-right: 1px solid var(--c-line); min-width: 180px; }
 .sol small { display: block; margin-top: 2px; font-weight: 400; font-size: 12px; color: var(--c-primary); }
 .num { text-align: right; white-space: nowrap; }
-.num strong { color: #e4393c; font-size: 15px; }
-.num .u { margin-left: 2px; font-size: 12px; color: #e4393c; }
+.num strong { color: var(--c-price); font-size: 15px; }
+.num .u { margin-left: 2px; font-size: 12px; color: var(--c-price); }
 .num del { display: block; font-size: 12px; color: #aaa; }
 .desc { color: #777; min-width: 200px; }
-.buy { padding: 4px 14px; font-size: 13px; color: #fff; background: #e4393c; border-radius: 14px; white-space: nowrap; }
+.buy { padding: 4px 14px; font-size: 13px; color: #fff; background: var(--c-brand); border-radius: var(--radius-sm); white-space: nowrap; }
 .notes { margin-left: 1.4em; list-style: decimal; font-size: 14px; line-height: 2; color: #555; }
 .notes a { color: var(--c-primary); }
 </style>

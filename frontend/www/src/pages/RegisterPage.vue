@@ -79,5 +79,5 @@ async function submit() {
 
 <style scoped>
 .agree { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; font-size: 13px; color: #555; }
-.agree a { color: #00a8ff; }
+.agree a { color: var(--c-brand); }
 </style>

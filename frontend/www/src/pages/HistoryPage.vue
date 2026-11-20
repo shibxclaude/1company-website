@@ -1,6 +1,5 @@
 <script setup>
 import PageBanner from '../components/PageBanner.vue'
-import SectionTitle from '../components/SectionTitle.vue'
 import { useSeo } from '../composables/useSeo.js'
 import { history } from '../data/site.js'
 
@@ -11,9 +10,8 @@ useSeo({
 </script>
 
 <template>
-  <PageBanner image="/images/guanyu.png" title="发展历程" />
+  <PageBanner title="发展历程" subtitle="从 2015 年获得首批软件著作权，到服务多地公安与政务部门的数据平台。" :parent="{ label: '关于我们', to: '/about' }" />
   <section class="section">
-    <SectionTitle highlight="发展历程" />
     <ol class="timeline">
       <li v-for="(h, i) in history" :key="h.year" :class="i % 2 ? 'right' : 'left'">
         <div class="card">
@@ -41,7 +39,7 @@ useSeo({
   width: 4px;
   margin-left: -2px;
   border-radius: 2px;
-  background: linear-gradient(#a9c5ea, #2b5aa8 15%, #e3b417 25%, #9a9a9a 40%, #9a9a9a 80%, #3b4f9c);
+  background: linear-gradient(var(--c-brand), var(--c-line) 85%);
 }
 .timeline li { position: relative; width: 50%; padding: 0 36px 28px; }
 .timeline li.left { text-align: right; }
@@ -52,15 +50,14 @@ useSeo({
   top: 14px;
   width: 14px;
   height: 14px;
-  border: 3px solid var(--c-primary);
+  border: 3px solid var(--c-signal);
   border-radius: 50%;
   background: #fff;
 }
 .timeline li.left::after { right: -7px; }
 .timeline li.right::after { left: -7px; }
 .year { display: block; font-size: 30px; font-weight: 700; line-height: 1.3; color: var(--c-heading-blue); }
-.timeline li:nth-child(4n + 2) .year,
-.timeline li:nth-child(4n + 3) .year { color: #4fb89a; }
+
 .card p { font-size: 14px; line-height: 1.9; color: #555; }
 
 @media (max-width: 767px) {

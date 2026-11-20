@@ -10,7 +10,7 @@ useSeo({
 </script>
 
 <template>
-  <PageBanner image="/images/chanpinzhongxin.png" title="产品生态图总览" />
+  <PageBanner title="产品生态图总览" subtitle="从感知层、传输层到业务应用与智能应用的完整产品体系。" :parent="{ label: '产品中心', to: '/products' }" />
   <div class="figure">
     <img
       src="/images/chanpinshengtai.png"
@@ -23,6 +23,7 @@ useSeo({
 </template>
 
 <style scoped>
-.figure { display: flex; justify-content: center; }
-.figure img { display: block; width: 100%; max-width: 1920px; }
+.figure { max-width: var(--wide-w); margin: 40px auto 0; padding: 0 24px; }
+.figure img { display: block; width: 100%; border: 1px solid var(--c-line); border-radius: var(--radius); }
+@media (max-width: 767px) { .figure { margin-top: 24px; padding: 0 16px; } }
 </style>

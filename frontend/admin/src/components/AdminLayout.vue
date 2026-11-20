@@ -32,7 +32,7 @@ function onCommand(cmd) {
   <el-container class="layout">
     <el-aside :width="collapsed ? '64px' : '208px'" class="aside">
       <div class="brand">{{ collapsed ? '一零' : '一零科技 · 管理后台' }}</div>
-      <el-menu :default-active="active" :collapse="collapsed" router background-color="#001529" text-color="#bfcbd9" active-text-color="#fff">
+      <el-menu :default-active="active" :collapse="collapsed" router background-color="#0b1f3a" text-color="#bfcbd9" active-text-color="#fff">
         <el-menu-item v-for="m in menus" :key="m.path" :index="m.path">
           <el-icon><component :is="m.icon" /></el-icon>
           <template #title>{{ m.title }}</template>
@@ -64,7 +64,7 @@ function onCommand(cmd) {
 
 <style scoped>
 .layout { height: 100%; }
-.aside { background: #001529; transition: width 0.2s; overflow-x: hidden; }
+.aside { background: #0b1f3a; transition: width 0.2s; overflow-x: hidden; }
 .aside .el-menu { border-right: 0; }
 .brand { height: 56px; line-height: 56px; text-align: center; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; }
 .header { display: flex; align-items: center; gap: 8px; height: 56px; background: #fff; box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08); }

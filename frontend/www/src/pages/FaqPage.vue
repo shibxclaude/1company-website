@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue'
 import PageBanner from '../components/PageBanner.vue'
-import SectionTitle from '../components/SectionTitle.vue'
 import { useSeo } from '../composables/useSeo.js'
 import { faqs, company } from '../data/site.js'
 
@@ -22,9 +21,8 @@ useSeo({
 </script>
 
 <template>
-  <PageBanner image="/images/guanyu.png" title="常见问题" />
+  <PageBanner title="常见问题" subtitle="关于一零科技产品与服务的常见疑问。" />
   <section class="section">
-    <SectionTitle lead="常见" highlight="问题" tip="为您解答关于一零科技产品与服务的常见疑问" />
     <div class="faq-list">
       <div v-for="(f, i) in faqs" :key="i" class="faq-item" :class="{ active: open === i }">
         <h3>

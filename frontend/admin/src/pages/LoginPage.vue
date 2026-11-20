@@ -43,7 +43,7 @@ async function submit() {
 </template>
 
 <style scoped>
-.login { display: flex; align-items: center; justify-content: center; min-height: 100%; padding: 16px; box-sizing: border-box; background: linear-gradient(135deg, #004081, #2a9be0); }
+.login { display: flex; align-items: center; justify-content: center; min-height: 100%; padding: 16px; box-sizing: border-box; background: linear-gradient(135deg, #0b1f3a, #12305e); }
 .card { width: 100%; max-width: 380px; }
 h1 { margin: 6px 0 24px; font-size: 20px; text-align: center; color: #303133; }
 .btn { width: 100%; }

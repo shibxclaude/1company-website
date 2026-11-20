@@ -96,26 +96,26 @@ watch(status, (s) => {
 <style scoped>
 .page { max-width: 960px; margin: 0 auto; padding: 120px 16px 0; }
 .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
-.tabs button { padding: 7px 16px; font-size: 14px; color: #555; background: #fff; border: 1px solid #e4e7ed; border-radius: 16px; }
-.tabs button.on { color: #fff; background: #00a8ff; border-color: #00a8ff; }
-.order { margin-bottom: 14px; background: #fff; border: 1px solid #ebeef5; border-radius: 8px; overflow: hidden; }
+.tabs button { padding: 7px 16px; font-size: 14px; color: #555; background: #fff; border: 1px solid #e4e7ed; border-radius: var(--radius-sm); }
+.tabs button.on { color: #fff; background: var(--c-brand); border-color: var(--c-brand); }
+.order { margin-bottom: 14px; background: #fff; border: 1px solid var(--c-line); border-radius: 8px; overflow: hidden; }
 .top { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding: 10px 18px; font-size: 13px; color: #888; background: #fafbfc; }
 .st { font-weight: 600; }
 .st--PENDING_PAY { color: #e6a23c; }
-.st--PAID, .st--IN_SERVICE { color: #00a8ff; }
+.st--PAID, .st--IN_SERVICE { color: var(--c-brand); }
 .st--COMPLETED { color: #07a35a; }
 .st--CANCELLED { color: #aaa; }
 .mid { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 16px 18px; }
 .name { font-size: 16px; font-weight: 600; }
 .sum { margin-top: 6px; font-size: 13px; color: #888; }
 .right { text-align: right; }
-.money { font-size: 18px; font-weight: 700; color: #e4393c; }
+.money { font-size: 18px; font-weight: 700; color: var(--c-price); }
 .btns { display: flex; gap: 8px; justify-content: flex-end; margin-top: 8px; }
-.btns a { padding: 5px 14px; font-size: 13px; border-radius: 14px; }
-.pay { color: #fff; background: #e4393c; }
-.view { color: #00a8ff; border: 1px solid #00a8ff; }
+.btns a { padding: 5px 14px; font-size: 13px; border-radius: var(--radius-sm); }
+.pay { color: #fff; background: var(--c-brand); }
+.view { color: var(--c-brand); border: 1px solid var(--c-brand); }
 .more { text-align: center; }
-.more button { padding: 8px 30px; color: #00a8ff; background: #fff; border: 1px solid #00a8ff; border-radius: 18px; }
+.more button { padding: 8px 30px; color: var(--c-brand); background: #fff; border: 1px solid var(--c-brand); border-radius: var(--radius-sm); }
 @media (max-width: 991px) { .page { padding-top: 84px; } }
 @media (max-width: 599px) { .right { text-align: left; } .btns { justify-content: flex-start; } }
 </style>

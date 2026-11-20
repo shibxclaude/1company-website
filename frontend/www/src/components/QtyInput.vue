@@ -31,7 +31,7 @@ function set(v) {
 </template>
 
 <style scoped>
-.qty { display: inline-flex; align-items: stretch; height: 34px; border: 1px solid #dcdfe6; border-radius: 4px; overflow: hidden; }
+.qty { display: inline-flex; align-items: stretch; height: 34px; border: 1px solid var(--c-line); border-radius: 4px; overflow: hidden; }
 .qty button { width: 34px; font-size: 18px; color: #606266; background: #f5f7fa; border: 0; }
 .qty button:disabled { color: #c0c4cc; cursor: not-allowed; }
 .qty input {
@@ -39,8 +39,8 @@ function set(v) {
   text-align: center;
   font-size: 15px;
   border: 0;
-  border-left: 1px solid #dcdfe6;
-  border-right: 1px solid #dcdfe6;
+  border-left: 1px solid var(--c-line);
+  border-right: 1px solid var(--c-line);
   -moz-appearance: textfield;
 }
 .qty input::-webkit-outer-spin-button, .qty input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }

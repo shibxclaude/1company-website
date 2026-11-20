@@ -92,6 +92,6 @@ async function submit() {
 <style scoped>
 .tabs { display: flex; margin-bottom: 18px; border-bottom: 1px solid #eee; }
 .tabs button { flex: 1; padding: 10px 0; font-size: 15px; color: #666; background: none; border: 0; border-bottom: 2px solid transparent; }
-.tabs button.on { color: #00a8ff; border-bottom-color: #00a8ff; }
+.tabs button.on { color: var(--c-brand); border-bottom-color: var(--c-brand); }
 .tip { margin: -6px 0 12px; font-size: 12px; color: #999; }
 </style>

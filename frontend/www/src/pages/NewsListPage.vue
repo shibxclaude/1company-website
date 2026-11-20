@@ -2,7 +2,6 @@
 // 新闻动态列表：后台维护，接口提供。第一页在预渲染时取数，翻页在浏览器加载。
 import { ref, onMounted, onServerPrefetch } from 'vue'
 import PageBanner from '../components/PageBanner.vue'
-import SectionTitle from '../components/SectionTitle.vue'
 import StateBlock from '../components/StateBlock.vue'
 import { useSeo } from '../composables/useSeo.js'
 import { api, ssrApiAvailable } from '../api/http.js'
@@ -38,9 +37,8 @@ useSeo({ title: '新闻动态', description: '一零科技新闻动态：公司�
 </script>
 
 <template>
-  <PageBanner image="/images/guanyu.png" title="新闻动态" />
+  <PageBanner title="新闻动态" subtitle="公司新闻与项目进展。" />
   <section class="section">
-    <SectionTitle lead="新闻" highlight="动态" tip="了解一零科技的最新动态与项目进展" />
     <StateBlock
       :loading="!store.loaded && (loading || !error)"
       :error="!store.list.length ? error : ''"
@@ -74,10 +72,10 @@ useSeo({ title: '新闻动态', description: '一零科技新闻动态：公司�
 .cover { flex: none; width: 200px; height: 128px; object-fit: cover; border-radius: 6px; }
 .txt { flex: 1; min-width: 0; }
 h3 { font-size: 18px; line-height: 1.5; transition: color 0.2s; }
-.top { margin-right: 8px; padding: 1px 6px; font-size: 12px; color: #fff; background: #e4393c; border-radius: 3px; vertical-align: 2px; }
+.top { margin-right: 8px; padding: 1px 6px; font-size: 12px; color: #fff; background: var(--c-brand); border-radius: 3px; vertical-align: 2px; }
 .txt p { margin-top: 8px; font-size: 14px; line-height: 1.8; color: #777; }
 time { display: block; margin-top: 8px; font-size: 13px; color: #aaa; }
 .more { margin-top: 24px; text-align: center; }
-.more button { padding: 8px 30px; color: #00a8ff; background: #fff; border: 1px solid #00a8ff; border-radius: 18px; }
+.more button { padding: 8px 30px; color: var(--c-brand); background: #fff; border: 1px solid var(--c-brand); border-radius: var(--radius-sm); }
 @media (max-width: 599px) { .cover { width: 110px; height: 72px; } h3 { font-size: 16px; } }
 </style>

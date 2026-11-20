@@ -154,23 +154,23 @@ onBeforeUnmount(stop)
 
 <style scoped>
 .page { max-width: 720px; margin: 0 auto; padding: 120px 16px 0; }
-.card { padding: 28px 32px; background: #fff; border: 1px solid #ebeef5; border-radius: 8px; }
+.card { padding: 28px 32px; background: #fff; border: 1px solid var(--c-line); border-radius: 8px; }
 .head { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
 .label { font-size: 13px; color: #999; }
 .no { margin-top: 4px; font-size: 16px; font-family: Consolas, monospace; letter-spacing: 0.5px; }
 .amount { text-align: right; }
-.money { margin-top: 2px; font-size: 28px; font-weight: 700; color: #e4393c; }
+.money { margin-top: 2px; font-size: 28px; font-weight: 700; color: var(--c-price); }
 .sol { margin-top: 12px; padding-bottom: 16px; font-size: 14px; color: #666; border-bottom: 1px solid #f0f0f0; }
 .paybox { padding-top: 22px; text-align: center; }
 .countdown { font-size: 15px; color: #555; }
-.countdown strong { color: #e4393c; font-size: 18px; font-variant-numeric: tabular-nums; }
+.countdown strong { color: var(--c-price); font-size: 18px; font-variant-numeric: tabular-nums; }
 .qr { display: inline-block; margin: 18px 0 10px; padding: 10px; border: 1px solid #eee; border-radius: 8px; }
 .qr img { display: block; width: 240px; height: 240px; }
 .scan { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 15px; }
 .wx { width: 22px; height: 22px; border-radius: 50%; background: #07c160; }
 .waiting { margin-top: 6px; font-size: 13px; color: #999; }
 .mock { margin-top: 22px; padding: 14px; font-size: 13px; color: #8a6d3b; background: #fcf8e3; border-radius: 6px; }
-.mock button { margin-top: 10px; padding: 8px 26px; font-size: 15px; color: #fff; background: #07c160; border: 0; border-radius: 18px; }
+.mock button { margin-top: 10px; padding: 8px 26px; font-size: 15px; color: #fff; background: #07c160; border: 0; border-radius: var(--radius-sm); }
 .mock button:disabled { background: #9ad8b5; }
 .closed { padding: 40px 0; color: #999; }
 .result { padding: 30px 0 10px; text-align: center; }
@@ -189,9 +189,9 @@ onBeforeUnmount(stop)
 .result h1 { margin-top: 14px; font-size: 22px; }
 .result p { margin: 10px auto 0; max-width: 520px; font-size: 14px; line-height: 1.8; color: #666; }
 .btns { display: flex; justify-content: center; gap: 12px; margin-top: 22px; flex-wrap: wrap; }
-.btns a { padding: 9px 26px; font-size: 15px; border-radius: 20px; }
-.primary { color: #fff; background: #00a8ff; }
-.ghost { color: #00a8ff; border: 1px solid #00a8ff; }
+.btns a { padding: 9px 26px; font-size: 15px; border-radius: var(--radius-sm); }
+.primary { color: #fff; background: var(--c-brand); }
+.ghost { color: var(--c-brand); border: 1px solid var(--c-brand); }
 .err { margin-top: 14px; font-size: 14px; color: #c0392b; text-align: center; }
 @media (max-width: 991px) { .page { padding-top: 84px; } }
 @media (max-width: 599px) {

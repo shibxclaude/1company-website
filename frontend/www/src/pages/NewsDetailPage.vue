@@ -38,13 +38,9 @@ useSeo({
 <template>
   <NotFoundPage v-if="news === null" />
   <template v-else>
-    <PageBanner image="/images/guanyu.png" :title="news?.title || '新闻动态'" />
+    <PageBanner :title="news?.title || '新闻动态'" :parent="{ label: '新闻动态', to: '/news' }" />
     <StateBlock :loading="!news && !error" :error="error" @retry="load">
       <article v-if="news" class="news">
-        <nav class="crumbs" aria-label="面包屑">
-          <RouterLink to="/">首页</RouterLink><span>›</span><RouterLink to="/news">新闻动态</RouterLink>
-        </nav>
-        <h2 class="title">{{ news.title }}</h2>
         <p class="meta"><time>{{ news.publishedAt }}</time></p>
         <div class="rich" v-html="news.content" />
         <p class="back"><RouterLink to="/news">‹ 返回新闻列表</RouterLink></p>
@@ -58,7 +54,7 @@ useSeo({
 .crumbs { display: flex; gap: 6px; font-size: 14px; color: #999; }
 .crumbs a:hover { color: var(--c-primary); }
 .title { margin-top: 20px; font-size: 26px; line-height: 1.4; text-align: center; }
-.meta { margin-top: 10px; font-size: 13px; color: #999; text-align: center; padding-bottom: 18px; border-bottom: 1px solid #eee; }
+.meta { font-size: 13px; color: var(--c-text-3); padding-bottom: 18px; border-bottom: 1px solid var(--c-line); }
 .rich { margin-top: 22px; font-size: 16px; line-height: 2; color: #444; overflow-wrap: anywhere; }
 .rich :deep(p) { margin-bottom: 14px; }
 .rich :deep(img) { display: block; max-width: 100%; height: auto; margin: 14px auto; }

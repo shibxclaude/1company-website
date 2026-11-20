@@ -1,5 +1,5 @@
 <script setup>
-// 原站区块标题："- 我们的<蓝>服务领域</蓝> -" + 灰色副标题
+// 区块标题：左对齐，标题 + 一句说明；右侧可放一个链接（slot="aside"）
 defineProps({
   lead: { type: String, default: '' },
   highlight: { type: String, required: true },
@@ -10,31 +10,33 @@ defineProps({
 
 <template>
   <div class="section-title">
-    <component :is="as" class="heading">
-      <span class="dash" aria-hidden="true">-</span>
-      <span>{{ lead }}</span><span class="hl">{{ highlight }}</span>
-      <span class="dash" aria-hidden="true">-</span>
-    </component>
-    <p v-if="tip" class="tip">{{ tip }}</p>
+    <div>
+      <component :is="as" class="heading">{{ lead }}{{ highlight }}</component>
+      <p v-if="tip" class="tip">{{ tip }}</p>
+    </div>
+    <div v-if="$slots.aside" class="aside"><slot name="aside" /></div>
   </div>
 </template>
 
 <style scoped>
-.section-title { text-align: center; margin-bottom: 40px; padding: 0 16px; }
-.heading {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 25px;
-  font-weight: 700;
-  color: #222;
+.section-title {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px 32px;
+  flex-wrap: wrap;
+  max-width: var(--wide-w);
+  margin: 0 auto 36px;
+  padding: 0 24px;
 }
-.hl { color: var(--c-primary); }
-.dash { font-size: 40px; line-height: 1; color: var(--c-primary); transform: scaleX(1.6); margin: 0 6px; }
-.tip { margin-top: 14px; font-size: 16px; color: var(--c-text-muted); }
+.heading { font-size: var(--fs-2xl); line-height: 1.3; font-weight: 700; }
+.tip { margin-top: 8px; max-width: 36em; font-size: var(--fs-md); color: var(--c-text-2); }
+.aside { font-size: var(--fs-sm); }
+.aside :deep(a) { color: var(--c-brand); }
+.aside :deep(a:hover) { text-decoration: underline; }
 @media (max-width: 767px) {
-  .section-title { margin-bottom: 24px; }
-  .heading { font-size: 21px; }
-  .tip { font-size: 14px; }
+  .section-title { margin-bottom: 24px; padding: 0 16px; }
+  .heading { font-size: var(--fs-xl); }
+  .tip { font-size: var(--fs-sm); }
 }
 </style>

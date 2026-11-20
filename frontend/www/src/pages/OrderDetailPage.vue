@@ -135,15 +135,15 @@ onMounted(load)
 <style scoped>
 .page { max-width: 960px; margin: 0 auto; padding: 110px 16px 0; }
 .back { margin-bottom: 12px; font-size: 14px; }
-.back a { color: #00a8ff; }
-.card { margin-bottom: 16px; padding: 20px 24px; background: #fff; border: 1px solid #ebeef5; border-radius: 8px; }
+.back a { color: var(--c-brand); }
+.card { margin-bottom: 16px; padding: 20px 24px; background: #fff; border: 1px solid var(--c-line); border-radius: 8px; }
 .card h2 { margin-bottom: 12px; font-size: 16px; }
 .head { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
 .head h1 { font-size: 22px; }
 .no { margin-top: 6px; font-size: 13px; color: #888; }
 .ops { display: flex; gap: 10px; align-items: center; }
-.pay { padding: 8px 22px; color: #fff; background: #e4393c; border-radius: 18px; }
-.cancel { padding: 8px 18px; color: #666; background: #fff; border: 1px solid #ddd; border-radius: 18px; }
+.pay { padding: 8px 22px; color: #fff; background: var(--c-brand); border-radius: var(--radius-sm); }
+.cancel { padding: 8px 18px; color: #666; background: #fff; border: 1px solid #ddd; border-radius: var(--radius-sm); }
 .steps { display: flex; margin-top: 22px; counter-reset: s; }
 .steps li { flex: 1; position: relative; padding-top: 30px; text-align: center; font-size: 13px; color: #aaa; }
 .steps li::before {
@@ -163,25 +163,25 @@ onMounted(load)
 }
 .steps li::after { content: ''; position: absolute; top: 10px; left: -50%; width: 100%; height: 2px; background: #e5e5e5; }
 .steps li:first-child::after { display: none; }
-.steps li.done { color: #00a8ff; }
-.steps li.done::before { background: #00a8ff; }
-.steps li.done::after { background: #00a8ff; }
+.steps li.done { color: var(--c-brand); }
+.steps li.done::before { background: var(--c-brand); }
+.steps li.done::after { background: var(--c-brand); }
 .cancelled { margin-top: 12px; font-size: 14px; color: #999; }
 .sol { margin-bottom: 8px; font-weight: 600; }
-.sol a { color: #00a8ff; }
+.sol a { color: var(--c-brand); }
 table { width: 100%; border-collapse: collapse; font-size: 14px; }
 th, td { padding: 9px 6px; text-align: left; border-bottom: 1px solid #f0f0f0; }
 th { font-weight: 500; color: #888; }
 td small { margin-left: 6px; font-size: 12px; color: #999; }
 .num { text-align: right; white-space: nowrap; }
 .total { margin-top: 12px; text-align: right; }
-.total strong { font-size: 20px; color: #e4393c; }
+.total strong { font-size: 20px; color: var(--c-price); }
 .paid { margin-top: 4px; text-align: right; font-size: 13px; color: #888; }
 .logs li { display: grid; grid-template-columns: 150px 100px 1fr; gap: 8px; padding: 8px 0; font-size: 14px; border-bottom: 1px dashed #eee; }
 .logs time { color: #999; }
 .two { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .two p { font-size: 14px; line-height: 1.9; color: #555; }
-.two a { color: #00a8ff; }
+.two a { color: var(--c-brand); }
 .remark { color: #888 !important; }
 @media (max-width: 991px) { .page { padding-top: 80px; } }
 @media (max-width: 599px) {

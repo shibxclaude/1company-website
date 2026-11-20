@@ -24,7 +24,7 @@ function logout() {
 .user-nav { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; }
 .hello { font-size: 18px; font-weight: 600; }
 nav { display: flex; gap: 16px; align-items: center; font-size: 14px; }
-nav a { color: #00a8ff; }
+nav a { color: var(--c-brand); }
 nav button { padding: 0; font-size: 14px; color: #999; background: none; border: 0; }
-nav button:hover { color: #e4393c; }
+nav button:hover { color: var(--c-price); }
 </style>
