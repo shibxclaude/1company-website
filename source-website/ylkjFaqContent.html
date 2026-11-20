@@ -1,0 +1,216 @@
+<!-- FAQ 折叠面板 - 居中版，带底部联系 -->
+<div class="faq-wrapper">
+    <div class="faq-list">
+        <!-- FAQ 1 -->
+        <div class="faq-item active">
+            <div class="faq-question">
+                <span>一零科技主要服务哪些领域？</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="faq-answer">
+                我们专注于政务数字化、警务信息化、智慧城市物联网、数据融合平台建设四大领域，为政府及公安机关提供从数据采集、融合到智能应用的全栈解决方案。
+            </div>
+        </div>
+
+        <!-- FAQ 2 -->
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>公安派出所多维数据融合平台能解决什么问题？</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="faq-answer">
+                整合派出所各类业务数据，打破信息孤岛，实现数据共享和智能研判，提升基层警务效能，帮助派出所实现"数据驱动决策"。
+            </div>
+        </div>
+
+        <!-- FAQ 3 -->
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>智慧城市物联网平台如何部署？</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="faq-answer">
+                提供从设备接入、数据采集到应用开发的全链路平台，支持私有云和混合云部署，可根据客户需求灵活定制，保障数据安全。
+            </div>
+        </div>
+
+        <!-- FAQ 4 -->
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>政务大数据二次开发需要多久？</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="faq-answer">
+                根据需求复杂度，一般2-4周可完成定制开发。我们提供标准化API接口，确保与现有系统无缝对接。
+            </div>
+        </div>
+
+        <!-- FAQ 5 -->
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>一零科技在警务信息化领域有成功案例吗？</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="faq-answer">
+                已为多个省市公安机关提供数据融合平台和警务数字化解决方案，包括派出所多维数据融合平台、警务数据中心建设等项目。
+            </div>
+        </div>
+
+        <!-- FAQ 6 -->
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>营商环境平台建设包括哪些内容？</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="faq-answer">
+                包括企业服务门户、政策精准推送、诉求反馈处理、数据分析决策等核心模块，助力政府优化营商环境。
+            </div>
+        </div>
+
+        <!-- FAQ 7 -->
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>你们的技术团队有政府项目经验吗？</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="faq-answer">
+                核心团队拥有10年以上政务信息化和警务大数据项目经验，具备从需求调研、系统设计到交付运维的全流程服务能力。
+            </div>
+        </div>
+
+        <!-- FAQ 8 -->
+        <div class="faq-item">
+            <div class="faq-question">
+                <span>如何联系我们咨询合作？</span>
+                <span class="arrow">▼</span>
+            </div>
+            <div class="faq-answer">
+                您可以通过电话 <a href="tel:13699285133">13699285133</a> 联系我们的销售团队，或在官网预约咨询，我们会在第一时间与您对接。
+            </div>
+        </div>
+
+        <!-- 底部联系 -->
+        <div class="faq-contact">
+            <p>还有其他问题？欢迎 <a href="tel:13699285133">电话咨询</a> 或通过官网联系我们的团队</p>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* FAQ 容器 - 整体居中 */
+    .faq-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 80vh;
+        padding: 40px 20px;
+    }
+    .faq-list {
+        max-width: 960px;
+        width: 100%;
+    }
+
+    /* FAQ 折叠面板样式 */
+    .faq-item {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        margin-bottom: 16px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    .faq-item:hover {
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+    .faq-question {
+        padding: 20px 28px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 17px;
+        font-weight: 600;
+        color: #0a1628;
+        user-select: none;
+        transition: background 0.2s;
+    }
+    .faq-question:hover {
+        background: #f8faff;
+    }
+    .faq-question .arrow {
+        font-size: 14px;
+        color: #0a84ff;
+        transition: transform 0.3s ease;
+        flex-shrink: 0;
+        margin-left: 16px;
+    }
+    .faq-item.active .faq-question .arrow {
+        transform: rotate(180deg);
+    }
+    .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.4s ease, padding 0.3s ease;
+        padding: 0 28px;
+        color: #444;
+        font-size: 15px;
+        line-height: 1.7;
+    }
+    .faq-item.active .faq-answer {
+        max-height: 300px;
+        padding: 0 28px 24px;
+    }
+
+    /* 底部联系 */
+    .faq-contact {
+        text-align: center;
+        padding: 24px 0 8px;
+        color: #666;
+        font-size: 15px;
+    }
+    .faq-contact a {
+        color: #0a84ff;
+        font-weight: 600;
+        text-decoration: none;
+    }
+    .faq-contact a:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+        .faq-wrapper {
+            min-height: auto;
+            padding: 30px 16px;
+        }
+        .faq-question {
+            font-size: 15px;
+            padding: 16px 20px;
+        }
+        .faq-answer {
+            font-size: 14px;
+        }
+        .faq-item.active .faq-answer {
+            padding: 0 20px 18px;
+        }
+        .faq-contact {
+            font-size: 14px;
+            padding: 20px 0 4px;
+        }
+    }
+</style>
+
+<script>
+    document.querySelectorAll('.faq-question').forEach(function(question) {
+        question.addEventListener('click', function() {
+            var item = this.parentElement;
+            if (item.classList.contains('active')) {
+                item.classList.remove('active');
+            } else {
+                document.querySelectorAll('.faq-item').forEach(function(el) {
+                    el.classList.remove('active');
+                });
+                item.classList.add('active');
+            }
+        });
+    });
+</script>

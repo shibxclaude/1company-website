@@ -1,0 +1,1092 @@
+@media (max-width: 1199px) {
+	/*footer*/
+	.footer{
+		padding: 20px 0 14px;
+		margin-top: 80px;
+	}
+	.footNav{
+		width: 58%;
+		margin: 0 auto 10px;
+	}
+	/*解决方案*/
+	.title{
+		margin: 80px 0;
+	}
+	/*首页成功案例板块*/
+	.scrollPic{
+        max-width:1000px;
+        width:100%;
+        height:280px;
+    }
+    .myScroll{
+        width:930px;
+        height:280px;
+    }
+    .myScroll ul li a{
+        width:310px;
+        padding: 0 15px;
+        height:280px;
+    }
+    .myScroll ul li a img{
+        width:280px;
+        height:auto;
+    }
+    .myScroll ul li a h5{
+	    width:260px;
+	    margin: 20px auto;
+	    font-size: 16px;
+	    line-height: 22px;
+	    color: #333;
+	}
+    .myBtns .left{
+        left:0;
+        top:75px;
+    }
+    .myBtns .right{
+        position: absolute;
+        right:0;
+        top:75px;
+    }
+	/* 关于我们页面 */
+	.aboutBox{
+		width: 100%;
+		height: auto;
+		margin: 30px 0 50px;
+	}
+	.aboutList{
+		width: 76%;
+		margin: -20px auto 70px;
+	}
+	.newsList{
+		width: 46%;
+		margin: -20px auto 70px;
+	}
+	.cultureBox{
+		width: 84%;
+		padding: 40px 0;
+	}
+	.honorBox >div,
+	.caseBox >div{
+		margin-bottom: 50px;
+	}
+	.listBox{
+		height: 270px;
+	}
+	/*成功案例详情页*/
+	.caseTit h3{
+		margin: 80px auto;
+	}
+
+	/*联系我们页面*/
+	.wayBox ul li >i{
+		width: 7%;
+	}
+	.wayBox ul li >span{
+		width: 91%;
+	}
+
+
+	/*一零发展历程*/
+	.timeLine ul li{
+		width: 86%;
+		position: relative;
+		margin-left: 14%;
+	}
+	.timeBox{
+		width: 14%;
+	}
+	.time{
+		top: -15px;
+		left: -11%;
+	}
+
+}
+
+
+@media (max-width: 991px) {
+
+	.logoBox{
+		width: auto;
+		height: 40px;
+		margin: 10px auto;
+		float: left;
+	}
+	.navBox{
+		display: none;
+	}
+	.mobNav{
+		display: block;
+		margin-top: 10px;
+	}
+	/*.mobMenu{
+		top: 60px;
+	}*/
+	.owl-page{
+		width: 10px;
+		height: 10px;
+		border-radius:5px;
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+	}
+	.owl-pagination .active{
+		width: 20px;
+	}
+	/*footer*/
+	.footer{
+		padding: 15px 0 10px;
+		margin-top: 60px;
+	}
+	.footNav{
+		width: 74%;
+		margin: 0 auto 8px;
+	}
+
+	/*首页成功案例板块*/
+	.scrollPic{
+        max-width:750px;
+        width:100%;
+        height:280px;
+    }
+    .myScroll{
+        width:690px;
+        height:280px;
+    }
+    .myScroll ul li a{
+        width:230px;
+        padding: 0 10px;
+        height:280px;
+    }
+    .myScroll ul li a img{
+        width:210px;
+        height:auto;
+    }
+    .myScroll ul li a h5{
+	    width:200px;
+	    margin: 14px auto;
+	    font-size: 16px;
+	    line-height: 22px;
+	    color: #333;
+	}
+    .myBtns .left{
+        top:48px;
+    }
+    .myBtns .right{
+        top:48px;
+    }
+
+	/*首页解决方案*/
+	.title{
+		margin: 60px 0;
+	}
+	.title h3{
+		font-size: 32px;
+	}
+	.title h5{
+		font-size: 16px;
+	}
+	.content{
+		margin-bottom: 20px;
+	}
+	.soluTop{
+		margin-bottom: 19px;
+	}
+	/*新闻中心*/
+	.newsList{
+		width: 48%;
+		margin: -20px auto 90px;
+	}
+	/* 关于我们页面 */
+	.aboutBox{
+		margin: 25px 0 40px;
+	}
+	.aboutList{
+		width: 82%;
+		margin: -20px auto 60px;
+	}
+	.aboutList ul li,
+	.newsList ul li{
+		width: 106px;
+		height: 34px;
+	}
+	.aboutList ul li a,
+	.newsList ul li a{
+		line-height: 34px;
+		font-size: 16px;
+	}
+	.introBox,
+	.caseIntro{
+		width: 100%;
+		margin: 0 auto;
+		padding: 30px 4%;
+	}
+	.introBox p,
+	.caseIntro p{
+		font-size: 14px;
+		line-height: 30px;
+		margin-bottom: 12px;
+	}
+	.caseIntro h4{
+		font-size: 18px;
+		line-height: 30px;
+		margin-bottom: 16px;
+	}
+	.caseIntro h5{
+		font-size: 16px;
+		line-height: 30px;
+		margin-bottom: 12px;
+	}
+	.cultureBox{
+		width: 92%;
+		padding: 40px 0;
+	}
+	.cultureImg{
+		width: 100px;
+		height: 100px;
+		margin-right: 30px;
+	}
+	.cultureContent h5{
+		font-size: 16px;
+		margin-bottom: 20px;
+	}
+
+	.cultureContent p{
+		font-size: 14px;
+		line-height: 26px;
+		color: #666;
+	}
+	.honorBox >div,
+	.caseBox >div{
+		margin-bottom: 40px;
+	}
+	.honorBox h5,
+	.caseBox a h5{
+		font-size: 16px;
+		line-height: 28px;
+		margin-top: 10px;
+	}
+	.listBox{
+		height: 220px;
+	}
+	/*成功案例详情页*/
+	.caseTit h3{
+		margin: 60px auto 40px;
+	}
+
+	/*联系我们页面*/
+	.wayBox{
+		padding: 0 3%;
+	}
+	.wayBox ul li >i{
+		width: 8%;
+	}
+	.wayBox ul li >span{
+		width: 90%;
+	}
+
+	/*招聘详情页*/
+	.process01 h3,
+	.process02 h5{
+		font-size: 24px;
+		line-height: 50px;
+	}
+	.process01 ul li,
+	.process02 ul li{
+		font-size: 16px;
+		line-height: 34px;
+	}
+	.process02:last-child,
+	.caseContent,
+	.aboutBox,
+	.contactWay,
+	.joinContent,
+	.caseList{
+		margin-bottom: 40px;
+	}
+
+	/*一零发展历程*/
+	.time{
+		font-size: 18px;
+		left: -14%;
+		top: -13px
+	}
+	.thingBox{
+		padding:0 5% 30px;
+	}
+	.thingList{
+		padding: 15px 25px;
+	}
+	.line{
+		top: 33px;
+	}
+	.thingList h3{
+		font-size: 16px;
+		line-height: 36px;
+	}
+	.thingList p{
+		font-size: 14px;
+		line-height: 30px;
+	}
+}
+
+
+
+@media (max-width: 767px) {
+	.owl-page{
+		width: 10px;
+		height: 10px;
+		border-radius:5px;
+		-webkit-border-radius: 5px;
+		-moz-border-radius: 5px;
+	}
+	.owl-pagination .active{
+		width: 20px;
+	}
+	/* top */
+	.logoBox{
+		width: 127px;
+		height: 30px;
+		margin: 5px 0 5px 3%;
+	}
+	.mobNav{
+		display: block;
+		margin-top: 0;
+	}
+	/*.mobMenu{
+		top: 40px;
+	}*/
+	/*footer*/
+	.footer{
+		padding: 6px 0;
+		margin-top: 40px;
+		position: fixed;
+		bottom:0;
+		left: 0;
+		z-index: 222;
+	}
+	.footNav{
+		display: none;
+	}
+	.footer p{
+		font-size: 10px;
+		line-height: 20px;
+	}
+	/*首页成功案例板块*/
+	.scrollPic{
+        max-width:98%;
+        width:100%;
+        height:186px;
+        margin: 0 1% 30px;
+    }
+    .myScroll{
+        width:94%;
+        height:186px;
+        margin: 0 auto;
+    }
+    .myScroll ul li a{
+        width: 190px;
+        padding: 0 6px;
+        height:186px;
+    }
+    .myScroll ul li a img{
+    	width: 174px;
+    }
+    .myScroll ul li a h5{
+    	width: 160px;
+	    margin: 12px auto;
+	    font-size: 14px;
+	    line-height: 20px;
+	}
+	.myBtns a{
+	    width:18px;
+	    height:30px;
+	}
+    .myBtns .left{
+        top:56px;
+    }
+    .myBtns .right{
+        top:56px;
+    }
+	/*解决方案*/
+	.title{
+		margin: 30px 0;
+	}
+	.title h3{
+		font-size: 22px;
+		margin-bottom: 2px;
+	}
+	.title h5{
+		font-size: 12px;
+	}
+	.content{
+		margin-bottom: 10px;
+	}
+	.soluBox >a >span{
+		height: 40px;
+		font-size: 14px;
+		text-indent: 2%;
+		line-height: 40px;
+	}
+	.contentBox{
+		width: 100%;
+		padding: 0 1%;
+	}
+	.content span{
+		bottom: 5px;
+		left: 10px;
+		font-size: 16px;
+	}
+	/*新闻中心*/
+	.newsList{
+		width: 60%;
+		margin: -10px auto 40px;
+	}
+	/* 关于我们页面 */
+	.aboutBox{
+		margin: 25px 0 40px;
+	}
+	.aboutList{
+		width: 98%;
+		margin: -10px auto 40px;
+	}
+	.aboutList ul li,
+	.newsList ul li{
+		width: 70px;
+		height: 30px;
+		margin: 0 5px;
+	}
+	.aboutList ul li a,
+	.newsList ul li a{
+		line-height: 30px;
+		font-size: 14px;
+	}
+	.introBox,
+	.caseIntro{
+		background: none;
+		padding: 20px 2%;
+	}
+	.introBox p
+	.caseIntro p{
+		font-size: 14px;
+		line-height: 24px;
+		margin-bottom: 10px;
+	}
+	.caseIntro h4{
+		font-size: 18px;
+		line-height: 24px;
+		margin-bottom: 14px;
+	}
+	.caseIntro h5{
+		font-size: 16px;
+		line-height: 24px;
+		margin-bottom: 10px;
+	}
+	.cultureBox{
+		width: 96%;
+		padding: 30px 0;
+
+	}
+	.cultureImg{
+		display: none;
+	}
+	.cultureContent h5{
+		font-size: 16px;
+		margin-bottom: 20px;
+	}
+
+	.cultureContent p{
+		font-size: 14px;
+		line-height: 22px;
+		color: #666;
+	}
+	.honorBox >div,
+	.caseBox >div{
+		margin-bottom: 30px;
+	}
+	.honorBox h5,
+	.caseBox a h5{
+		font-size: 14px;
+		line-height: 24px;
+		margin-top: 6px;
+	}
+	.caseBox a h5{
+		width: 96%;
+		margin-left: 2%;
+	}
+	.listBox{
+		width: 50%;
+		float: left;
+		height: 180px;
+		padding:0 1.5%;
+	}
+	.listBox:nth-child(3n){
+		margin-right: 0
+	}
+	/*成功案例详情页*/
+	.breadNav{
+		margin: 10px auto;
+	}
+	.breadcrumb li{
+		font-size: 12px;
+	}
+	.caseTit h3{
+		font-size: 18px;
+		margin: 30px auto;
+	}
+	.caseIntro >span{
+		padding: 15px 0;
+	}
+	.caseNav{
+		width: 100%;
+		height: auto;
+		margin: 50px auto 20px;
+	}
+	.caseNav ul li{
+		width: 100%;
+		float: none;
+		margin-bottom: 5px;
+		font-size: 14px;
+		line-height: 50px;
+		padding-left: 2%;
+	}
+	/*联系我们页面*/
+	.wayBox{
+		width: 100%;
+		padding: 10px 3%;
+		border-right: none;
+		border-bottom: 1px solid #eee;
+	}
+	.wayBox:last-child{
+		border-bottom: none;
+	}
+	.wayBox ul li{
+		padding: 10px 0;
+	}
+	.wayBox ul li >i{
+		width: 8%;
+		height: 24px;
+	}
+	.wayBox ul li >i >img{
+		width: 20px;
+		height: 20px;
+		margin-top: 2px;
+	}
+	.wayBox ul li >span{
+		width: 90%;
+		font-size: 14px;
+		line-height: 24px;
+	}
+	.wayBox h5{
+		font-size: 16px;
+		line-height: 30px;
+		margin-bottom: 10px;
+	}
+	/*招贤纳士页面*/
+
+	.pcImg{
+		display: none;
+	}
+	.mobImg{
+		display: block;
+	}
+
+	.table tbody tr td,
+	.table thead tr th{
+		line-height: 40px;
+		font-size: 14px;
+	}
+
+	.table thead tr th:nth-child(3),
+	.table thead tr th:nth-child(4),
+	.table tbody tr td:nth-child(3),
+	.table tbody tr td:nth-child(4){
+		display: none;
+	}
+	.table thead tr th:first-child,
+	.table tbody tr td:first-child{
+		width: 45%;
+		padding-left: 2%;
+	}
+	.table thead tr th:last-child{
+		width: 25%;
+	}
+	.table thead tr th:nth-child(2){
+		width: 30%;
+	}
+	.joinContent{
+		margin-bottom: 50px;
+	}
+	.positonList h5{
+		line-height: 30px;
+		font-size: 14px;
+	}
+	.positonList p{
+		line-height: 20px;
+		font-size: 12px;
+	}
+
+	.apply{
+		display: block;
+		width: 100px;
+		height: 34px;
+		text-align: center;
+		font-size: 14px;
+		line-height: 34px;
+		border-radius: 17px;
+		-webkit-border-radius: 17px;
+		-moz-border-radius: 17px;
+		margin: 10px 0;
+	}
+
+	/*招聘详情页*/
+	.processContent{
+		margin: 30px auto;
+	}
+	.breadcrumb{
+		padding: 8px 2%;
+	}
+	.process01,
+	.process02{
+		width: 96%;
+		padding: 10px 0;
+		margin: 0 auto;
+	}
+	.process01 h3,
+	.process02 h5{
+		font-size: 20px;
+		line-height: 40px;
+	}
+	.process01 ul li,
+	.process02 ul li{
+		font-size: 14px;
+		line-height: 34px;
+	}
+	.process01 ul li{
+		float: left;
+		width: 50%;
+	}
+	/*一零发展历程*/
+	.timeLine ul li{
+		width: 76%;
+		margin-left: 24%;
+	}
+	.timeBox{
+		width: 24%;
+	}
+	.time{
+		font-size: 16px;
+		left: -24%;
+		top: -12px;
+	}
+	.thingBox{
+		padding:0 5% 20px;
+	}
+	.thingList{
+		padding: 10px 10px 10px 25px;
+	}
+	.line{
+		width: 30px;
+		top: 26px;
+	}
+	.thingList h3{
+		font-size: 16px;
+		line-height: 32px;
+	}
+	.thingList p{
+		font-size: 14px;
+		line-height: 28px;
+	}
+}
+
+@media (max-width: 376px) {
+	/*footer*/
+	.footer{
+		padding: 6px 0;
+		margin-top: 20px;
+	}
+	/*首页成功案例板块*/
+	.scrollPic{
+        max-width:98%;
+        width:100%;
+        height:176px;
+        margin: 0 1% 25px;
+    }
+    .myScroll{
+        width:94%;
+        height:176px;
+        margin: 0 auto;
+    }
+    .myScroll ul li a{
+        width: 172px;
+        padding: 0 4px;
+        height:176px;
+    }
+    .myScroll ul li a img{
+    	width: 164px;
+    }
+    .myScroll ul li a h5{
+    	width: 150px;
+	    margin: 12px auto;
+	    font-size: 12px;
+	    line-height: 18px;
+	}
+	.myBtns a{
+	    width:14px;
+	    height:24px;
+	}
+    .myBtns .left{
+        top:46px;
+    }
+    .myBtns .right{
+        top:46px;
+    }
+    /*新闻中心*/
+   .newsList{
+   	  	width: 60%;
+		margin: -10px auto 30px;
+   }
+
+	/* 关于我们页面 */
+	.aboutBox{
+		margin: 25px 0 40px;
+	}
+	.aboutList{
+		width: 100%;
+		margin: -10px auto 30px;
+	}
+	.aboutList ul li,
+	.newsList ul li{
+		width: 60px;
+		height: 28px;
+		margin-right: 10px;
+	}
+	.aboutList ul li a,
+	.newsList ul li a{
+		line-height: 28px;
+		font-size: 12px;
+	}
+	.introBox,
+	.caseIntro{
+		background: none;
+		padding: 20px 2%;
+	}
+	.honorBox >div,
+	.caseBox >div{
+		margin-bottom: 20px;
+	}
+	.listBox{
+		height: 180px;
+	}
+
+	/*成功案例详情页*/
+	.breadNav{
+		margin: 5px auto;
+	}
+	.breadcrumb li{
+		font-size: 10px;
+	}
+	.caseTit h3{
+		font-size: 16px;
+		margin: 20px auto;
+	}
+	.caseIntro >span{
+		padding: 10px 0;
+	}
+	.caseIntro h4{
+		font-size: 16px;
+		line-height: 24px;
+		margin-bottom: 14px;
+	}
+	.caseIntro h5{
+		font-size: 14px;
+		line-height: 24px;
+		margin-bottom: 10px;
+	}
+	.caseNav{
+		margin: 30px auto 20px;
+	}
+	.caseNav ul li{
+		font-size: 14px;
+		line-height: 40px;
+	}
+
+	/*招聘详情页*/
+	.processContent{
+		margin: 15px auto;
+	}
+	.process01 h3,
+	.process02 h5{
+		font-size: 18px;
+		line-height: 34px;
+	}
+	.process01 ul li,
+	.process02 ul li{
+		font-size: 14px;
+		line-height: 30px;
+	}
+	.process01 ul li{
+		float: left;
+		width: 50%;
+	}
+	.process01 ul,
+	.process02 ul{
+		padding: 15px 0;
+	}
+
+	.breadNav{
+		display: none;
+	}
+
+
+}
+@media (max-width: 331px) {
+	/*footer*/
+	.footer{
+		padding: 6px 0;
+		margin-top: 10px;
+	}
+	.title{
+		margin: 20px 0;
+	}
+	.title h3{
+		font-size: 20px;
+		margin-bottom: 2px;
+	}
+	.title h5{
+		font-size: 10px;
+	}
+	.soluBox >a >span{
+		height: 30px;
+		font-size: 12px;
+		text-indent: 2%;
+		line-height: 30px;
+	}
+	/*首页成功案例板块*/
+	.scrollPic{
+        max-width:100%;
+        width:100%;
+        height:176px;
+        margin: 0 0 15px 0;
+    }
+    .myScroll{
+        width:92%;
+        height:176px;
+        margin: 0 auto;
+    }
+    .myScroll ul li a{
+        width: 146px;
+        padding: 0 2px;
+        height:176px;
+    }
+    .myScroll ul li a img{
+    	width: 142px;
+    }
+    .myScroll ul li a h5{
+    	width: 140px;
+	    margin: 12px auto;
+	    font-size: 12px;
+	    line-height: 18px;
+	}
+	.myBtns a{
+	    width:14px;
+	    height:24px;
+	}
+    .myBtns .left{
+        top:38px;
+    }
+    .myBtns .right{
+        top:38px;
+    }
+    /*新闻中心*/
+   .newsList{
+		width: 68%;
+		margin: -10px auto 30px;
+	}
+	/* 关于我们页面 */
+	.aboutBox{
+		margin: 25px 0 40px;
+	}
+	.aboutList{
+		width: 100%;
+		margin: -10px auto 30px;
+	}
+	.aboutList ul li,
+	.newsList ul li{
+		width: 60px;
+		height: 28px;
+		margin: 0 2px;
+	}
+	.aboutList ul li a,
+	.newsList ul li a{
+		line-height: 28px;
+		font-size: 12px;
+	}
+	.introBox{
+		background: none;
+		padding: 10px 2%;
+	}
+	.introBox p,
+	.caseIntro p{
+		font-size: 12px;
+		line-height: 20px;
+		margin-bottom: 10px;
+	}
+	.caseIntro h4,
+	.caseIntro h5{
+		font-size: 16px;
+		line-height: 20px;
+		margin-bottom: 14px;
+	}
+	.cultureContent h5{
+		font-size: 14px;
+		margin-bottom: 15px;
+	}
+
+	.cultureContent p{
+		font-size: 12px;
+		line-height: 18px;
+		color: #666;
+	}
+	.honorBox h5,
+	.caseBox a h5{
+		font-size: 12px;
+		line-height: 20px;
+		margin-top: 4px;
+	}
+	.honorBox >div,
+	.caseBox >div{
+		margin-bottom: 10px;
+	}
+	.listBox{
+		height: 160px;
+	}
+
+	/*成功案例详情页*/
+	.breadNav{
+		margin: 5px auto;
+	}
+	.breadcrumb li{
+		font-size: 10px;
+	}
+	.caseTit h3{
+		font-size: 16px;
+		margin: 20px auto;
+	}
+	.caseIntro >span{
+		padding: 10px 0;
+	}
+	.caseNav{
+		margin: 20px auto 20px;
+	}
+	.caseNav ul li{
+		font-size: 12px;
+		line-height: 34px;
+	}
+	/*联系我们页面*/
+	.wayBox:last-child{
+		border-bottom: none;
+	}
+	.wayBox ul li{
+		padding: 8px 0;
+	}
+	.wayBox ul li >i{
+		width: 8%;
+		height: 24px;
+	}
+	.wayBox ul li >i >img{
+		width: 20px;
+		height: 20px;
+		margin-top: 2px;
+	}
+	.wayBox ul li >span{
+		width: 90%;
+		font-size: 12px;
+		line-height: 24px;
+	}
+	.wayBox h5{
+		font-size: 14px;
+		line-height: 30px;
+		margin-bottom: 10px;
+	}
+	/*招贤纳士页面*/
+
+	.processBox{
+		width: 94%;
+	}
+	/*招聘详情页*/
+	.process01 h3,
+	.process02 h5{
+		font-size: 16px;
+		line-height: 34px;
+	}
+	.process01 ul li,
+	.process02 ul li{
+		font-size: 12px;
+		line-height: 28px;
+	}
+
+	/*一零发展历程*/
+	.timeLine ul li{
+		width: 72%;
+		margin-left: 28%;
+	}
+	.timeBox{
+		width: 28%;
+	}
+	.time{
+		font-size: 14px;
+		left: -28%;
+		top: -10px;
+	}
+	.thingBox{
+		padding:0 5% 10px;
+	}
+	.thingList{
+		padding: 5px 5px 5px 15px;
+	}
+	.line{
+		width: 20px;
+		top: 20px;
+	}
+	.thingList h3{
+		font-size: 14px;
+		line-height: 30px;
+	}
+	.thingList p{
+		font-size: 12px;
+		line-height: 24px;
+	}
+	/*Mob导航*/
+	.comIcon{
+		width: 40px;
+		height: 40px;
+	}
+	.mobMenu ul li a{
+		padding: 10px;
+		font-size: 16px;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

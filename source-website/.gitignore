@@ -1,0 +1,28 @@
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# 操作系统文件
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 日志与缓存
+*.log
+*.cache
+
+# 临时文件
+*.tmp
+*.temp
+
+# Node.js (如有需要)
+node_modules/
+dist/
+build/
+
+# 压缩包
+*.zip
+*.tar.gz
+*.rar
