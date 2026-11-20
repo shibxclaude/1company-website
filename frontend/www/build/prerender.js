@@ -16,8 +16,18 @@ export function prerenderPaths(paths, { solutions = [], news = [], exclude = [] 
 export async function fetchDynamicData(apiBase, fetchImpl = fetch) {
   if (!apiBase) return { solutions: [], news: [] }
   const get = async (path) => {
-    const resp = await fetchImpl(apiBase.replace(/\/$/, '') + path)
-    const json = await resp.json()
+    const url = apiBase.replace(/\/$/, '') + path
+    const resp = await fetchImpl(url)
+    const text = await resp.text()
+    let json
+    try {
+      json = JSON.parse(text)
+    } catch {
+      throw new Error(
+        `预渲染取数失败 ${url}：HTTP ${resp.status}，返回的不是 JSON（后端未上线或地址不对？）。` +
+          '请把 SSG_API_BASE 设为可用的后端地址，或设为空（SSG_API_BASE= ）让动态内容改由浏览器加载',
+      )
+    }
     if (json.code !== 0) throw new Error(`预渲染取数失败 ${path}：${json.msg}`)
     return json.data
   }

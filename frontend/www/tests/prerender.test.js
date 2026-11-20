@@ -18,12 +18,17 @@ describe('fetchDynamicData', () => {
   })
   it('从接口取方案与新闻；接口报错时构建失败', async () => {
     const fake = async (url) => ({
-      json: async () =>
-        url.includes('/solutions') ? { code: 0, data: [{ slug: 'x' }] } : { code: 0, data: { list: [{ id: 1 }], total: 1 } },
+      status: 200,
+      text: async () =>
+        JSON.stringify(url.includes('/solutions') ? { code: 0, data: [{ slug: 'x' }] } : { code: 0, data: { list: [{ id: 1 }], total: 1 } }),
     })
     expect(await fetchDynamicData('http://api/', fake)).toEqual({ solutions: [{ slug: 'x' }], news: [{ id: 1 }] })
-    const bad = async () => ({ json: async () => ({ code: 500, msg: 'down' }) })
+    const bad = async () => ({ status: 200, text: async () => JSON.stringify({ code: 500, msg: 'down' }) })
     await expect(fetchDynamicData('http://api', bad)).rejects.toThrow('down')
+  })
+  it('后端返回 HTML（如 nginx 404）时给出可读的报错', async () => {
+    const html = async () => ({ status: 404, text: async () => '<html><h1>404 Not Found</h1></html>' })
+    await expect(fetchDynamicData('http://api', html)).rejects.toThrow(/HTTP 404.*SSG_API_BASE/)
   })
 })
 
