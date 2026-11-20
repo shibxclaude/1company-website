@@ -65,7 +65,9 @@ public class OrderRefundService {
     // ---------- 发起 ----------
 
     /** 退订单货款（可部分退款） */
-    public void refundOrder(String orderNo, BigDecimal amount, String reason, String operator) {
+    public void refundOrder(String orderNo, BigDecimal requested, String reason, String operator) {
+        // 统一为两位小数（接口已限制最多两位小数），进度记录里显示为 ¥100.00 而不是 ¥100
+        BigDecimal amount = requested.setScale(2, RoundingMode.UNNECESSARY);
         OrderRefund r = tx.execute(s -> {
             Order o = lockOrder(orderNo);
             if (!o.statusEnum().refundable())

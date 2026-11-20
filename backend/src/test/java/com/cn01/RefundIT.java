@@ -79,8 +79,9 @@ class RefundIT extends IntegrationTestBase {
     void 部分退款_状态不变_累计不能超过实付() throws Exception {
         String admin = adminToken();
         Paid p = paidOrder("13400000002");
-        JsonNode d = refund(admin, p.orderNo(), "100.00", 200).get("data");
+        JsonNode d = refund(admin, p.orderNo(), "100", 200).get("data");   // 后台输入框提交的是不带小数的字符串
         assertThat(d.get("order").get("status").asText()).isEqualTo("PAID");
+        assertThat(d.get("order").get("logs").findValuesAsText("note")).contains("发起退款 ¥100.00，原因：客户申请");
         assertThat(new BigDecimal(d.get("refundableAmount").asText())).isEqualByComparingTo(p.total().subtract(new BigDecimal("100")));
 
         BigDecimal rest = p.total().subtract(new BigDecimal("100"));
