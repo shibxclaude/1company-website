@@ -33,29 +33,27 @@ public class AuthInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) throws Exception {
         if ("OPTIONS".equalsIgnoreCase(req.getMethod())) return true;
-        Optional<AuthPrincipal> principal = jwtService.parse(bearer(req));
+        // 带了 token 就逐次核对账号：已停用、或改过密码（版本号变了）的 token 一律当作没登录。
+        // 前台接口（/api/portal/**）也核对，避免停用账号继续以本人身份下单、查单。
+        Optional<AuthPrincipal> principal = jwtService.parse(bearer(req)).filter(this::stillValid);
         principal.ifPresent(p -> req.setAttribute(AuthContext.ATTR, p));
 
         String path = req.getRequestURI();
         if (path.startsWith("/api/admin/") && !path.equals("/api/admin/auth/login")) {
-            // 管理员请求量小，每次核对账号仍然有效（被停用后立即失效，不必等 token 过期）
-            var admin = principal.filter(p -> p.type() == AuthPrincipal.Type.ADMIN);
-            if (admin.isEmpty() || !activeAdmin(admin.get().id())) return deny(resp);
+            if (principal.filter(p -> p.type() == AuthPrincipal.Type.ADMIN).isEmpty()) return deny(resp);
         } else if (path.startsWith("/api/user/")) {
-            var user = principal.filter(p -> p.type() == AuthPrincipal.Type.USER);
-            if (user.isEmpty() || !activeUser(user.get().id())) return deny(resp);
+            if (principal.filter(p -> p.type() == AuthPrincipal.Type.USER).isEmpty()) return deny(resp);
         }
         return true;
     }
 
-    private boolean activeAdmin(long id) {
-        var u = adminUserMapper.selectById(id);
-        return u != null && u.getStatus() == Status.ON;
-    }
-
-    private boolean activeUser(long id) {
-        var u = appUserMapper.selectById(id);
-        return u != null && u.getStatus() == Status.ON;
+    private boolean stillValid(AuthPrincipal p) {
+        if (p.type() == AuthPrincipal.Type.ADMIN) {
+            var u = adminUserMapper.selectById(p.id());
+            return u != null && u.getStatus() == Status.ON && AuthPrincipal.ver(u.getTokenVersion()) == p.ver();
+        }
+        var u = appUserMapper.selectById(p.id());
+        return u != null && u.getStatus() == Status.ON && AuthPrincipal.ver(u.getTokenVersion()) == p.ver();
     }
 
     private static String bearer(HttpServletRequest req) {

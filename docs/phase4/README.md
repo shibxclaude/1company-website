@@ -124,7 +124,7 @@
 ## 8. nginx 配置变更
 
 - `location ~ ^/(user|order|pay)(/|$)` 返回 `spa.html` 空壳（这些页面不做预渲染）。
-- `/api/pay/notify/wechat` 通过 `/api/` 反代到后端。**微信要求回调地址是 HTTPS**，上线时需启用 443 server 块（配置模板已附在文件末尾）。
+- `/api/pay/notify/wechat` 通过 `/api/` 反代到后端。**微信要求回调地址是 HTTPS**。nginx 配置拆为：`cn01-base.inc`（gzip、缓存策略）+ `cn01-site.inc`（站点规则，两阶段共用）+ 入口文件二选一：`cn01.conf`（HTTP 阶段）/ `cn01-https.conf`（HTTPS 阶段：80 跳 443、HSTS、保留 ACME 路径），切换步骤见 `cn01-https.conf` 文件头。
 - `robots.txt` 已屏蔽 `/user/`、`/order/`、`/pay/`、`/admin/`、`/api/`。
 
 ## 9. 部署
@@ -163,7 +163,7 @@ DEPLOY_HOST=服务器IP ./deploy/rollback.sh --list
 |---|---|---|
 | 1 | **在后台替换示例价格** | 种子数据中的版本价格和增值服务价格都是示例 |
 | 2 | **微信支付商户配置** | 商户号、AppID、商户 API 证书私钥、证书序列号、APIv3 密钥，填入 `/etc/cn01/backend.env`，并设置 `PAY_MODE=wechat`。商户平台需开通 Native 支付 |
-| 3 | **HTTPS** | 微信回调要求 HTTPS；启用 nginx 443 配置 |
+| 3 | **HTTPS** | 微信回调要求 HTTPS；证书就绪后用 `deploy/nginx/cn01-https.conf` 替换 `cn01.conf`（步骤见文件头） |
 | 4 | **短信服务** | 对接云短信（实现 `SmsSender`），并设置 `SMS_MOCK=false`。没接入时启动日志会报错提醒 |
 | 5 | 邮件 | 配置企业邮箱 SMTP（`MAIL_*`、`MAIL_FROM`、`NOTIFY_ADMIN_EMAIL`） |
 | 6 | **法务审核协议** | 《产品购买服务协议》《隐私政策》是按 Task1 要求起草的模板（退款规则、管辖法院、个人信息保存期限等），需法务确认。修改后同时更新前端 `src/data/agreement.js` 和后端 `app.order.agreement-version` 中的版本号 |

@@ -44,8 +44,7 @@ public class AdminAuthService {
         if (u.getStatus() != Status.ON) throw new BizException(ErrorCode.FORBIDDEN, "账号已停用");
         loginGuard.succeeded("admin", username, ip);
         mapper.update(new LambdaUpdateWrapper<AdminUser>().eq(AdminUser::getId, u.getId()).set(AdminUser::getLastLoginAt, LocalDateTime.now()));
-        String token = jwt.issue(new AuthPrincipal(u.getId(), AuthPrincipal.Type.ADMIN, u.getUsername()));
-        return new LoginResult(token, u.getUsername(), u.getRealName());
+        return issue(u);
     }
 
     public AdminUser require(long id) {
@@ -54,10 +53,19 @@ public class AdminAuthService {
         return u;
     }
 
-    public void changePassword(long id, String oldPassword, String newPassword) {
+    /** 修改密码；之前签发的所有 token 失效，返回给当前会话一个新 token */
+    public LoginResult changePassword(long id, String oldPassword, String newPassword) {
         AdminUser u = require(id);
         if (!ENCODER.matches(oldPassword, u.getPasswordHash())) throw BizException.badRequest("原密码不正确");
-        mapper.update(new LambdaUpdateWrapper<AdminUser>().eq(AdminUser::getId, id).set(AdminUser::getPasswordHash, ENCODER.encode(newPassword)));
+        mapper.update(new LambdaUpdateWrapper<AdminUser>().eq(AdminUser::getId, id)
+                .set(AdminUser::getPasswordHash, ENCODER.encode(newPassword))
+                .setSql("token_version = token_version + 1"));
+        return issue(mapper.selectById(id));
+    }
+
+    private LoginResult issue(AdminUser u) {
+        String token = jwt.issue(new AuthPrincipal(u.getId(), AuthPrincipal.Type.ADMIN, u.getUsername(), AuthPrincipal.ver(u.getTokenVersion())));
+        return new LoginResult(token, u.getUsername(), u.getRealName());
     }
 
     /** 首次启动、库里没有管理员时创建 admin。密码取 ADMIN_INIT_PASSWORD，未配置则随机生成并打印一次。 */

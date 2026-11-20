@@ -1,7 +1,7 @@
 <script setup>
 import { reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
-import { api } from '../api.js'
+import { api, auth } from '../api.js'
 
 const formRef = ref()
 const form = reactive({ oldPassword: '', newPassword: '', confirm: '' })
@@ -15,8 +15,10 @@ const rules = {
 }
 async function save() {
   await formRef.value.validate()
-  await api.changePassword({ oldPassword: form.oldPassword, newPassword: form.newPassword })
-  ElMessage.success('密码已修改')
+  // 改密码后之前签发的登录凭证全部失效（其他设备需重新登录），当前页面换用新凭证
+  const r = await api.changePassword({ oldPassword: form.oldPassword, newPassword: form.newPassword })
+  auth.set(r.token)
+  ElMessage.success('密码已修改，其他设备上的登录已失效')
   Object.assign(form, { oldPassword: '', newPassword: '', confirm: '' })
 }
 </script>

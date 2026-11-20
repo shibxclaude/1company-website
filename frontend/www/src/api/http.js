@@ -44,7 +44,7 @@ export function setUnauthorizedHandler(fn) {
   onUnauthorized = fn
 }
 
-export async function request(path, { method = 'GET', query, body, auth = true } = {}) {
+export async function request(path, { method = 'GET', query, body, auth = true, headers: extraHeaders } = {}) {
   let url = base() + path
   if (query) {
     const qs = new URLSearchParams()
@@ -54,7 +54,7 @@ export async function request(path, { method = 'GET', query, body, auth = true }
     const s = qs.toString()
     if (s) url += (url.includes('?') ? '&' : '?') + s
   }
-  const headers = { Accept: 'application/json' }
+  const headers = { Accept: 'application/json', ...extraHeaders }
   if (body !== undefined) headers['Content-Type'] = 'application/json'
   const token = auth ? getToken() : null
   if (token) headers.Authorization = `Bearer ${token}`
@@ -78,6 +78,8 @@ export async function request(path, { method = 'GET', query, body, auth = true }
   return json.data
 }
 
+const orderHeader = (token) => (token ? { 'X-Order-Token': token } : {})
+
 export const api = {
   categories: () => request('/api/portal/categories', { auth: false }),
   solutions: (query) => request('/api/portal/solutions', { query, auth: false }),
@@ -94,10 +96,11 @@ export const api = {
   setPassword: (body) => request('/api/user/password', { method: 'PUT', body }),
 
   createOrder: (body) => request('/api/portal/orders', { method: 'POST', body }),
-  order: (orderNo, token) => request(`/api/portal/orders/${orderNo}`, { query: { token } }),
-  orderStatus: (orderNo, token) => request(`/api/portal/orders/${orderNo}/status`, { query: { token } }),
-  pay: (orderNo, token) => request(`/api/portal/orders/${orderNo}/pay`, { method: 'POST', query: { token } }),
-  cancelOrder: (orderNo, token) => request(`/api/portal/orders/${orderNo}/cancel`, { method: 'POST', query: { token } }),
-  mockPay: (orderNo, token) => request(`/api/pay/mock/${orderNo}/succeed`, { method: 'POST', query: { token } }),
+  // 游客订单凭证走请求头，不放进 URL（URL 会进 nginx 访问日志）
+  order: (orderNo, token) => request(`/api/portal/orders/${orderNo}`, { headers: orderHeader(token) }),
+  orderStatus: (orderNo, token) => request(`/api/portal/orders/${orderNo}/status`, { headers: orderHeader(token) }),
+  pay: (orderNo, token) => request(`/api/portal/orders/${orderNo}/pay`, { method: 'POST', headers: orderHeader(token) }),
+  cancelOrder: (orderNo, token) => request(`/api/portal/orders/${orderNo}/cancel`, { method: 'POST', headers: orderHeader(token) }),
+  mockPay: (orderNo, token) => request(`/api/pay/mock/${orderNo}/succeed`, { method: 'POST', headers: orderHeader(token) }),
   myOrders: (query) => request('/api/user/orders', { query }),
 }

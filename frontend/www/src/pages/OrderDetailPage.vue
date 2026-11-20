@@ -6,14 +6,13 @@ import { useHead } from '@unhead/vue'
 import StateBlock from '../components/StateBlock.vue'
 import { api } from '../api/http.js'
 import { money } from '../utils/money.js'
-import { getOrderToken, saveOrderToken } from '../utils/orderTokens.js'
+import { resolveOrderToken, orderLink } from '../utils/orderTokens.js'
 
 useHead({ title: '订单详情 - 北京一零科技有限公司', meta: [{ name: 'robots', content: 'noindex' }] })
 
 const route = useRoute()
 const orderNo = String(route.params.orderNo)
-const token = (typeof route.query.t === 'string' && route.query.t) || getOrderToken(orderNo) || undefined
-if (typeof route.query.t === 'string') saveOrderToken(orderNo, route.query.t)
+const token = resolveOrderToken(route, orderNo)
 
 const order = ref(null)
 const loading = ref(true)
@@ -27,7 +26,7 @@ const STEPS = [
   ['COMPLETED', '已完成'],
 ]
 const stepIndex = computed(() => STEPS.findIndex(([s]) => s === order.value?.status))
-const payLink = computed(() => ({ path: `/pay/${orderNo}`, query: token ? { t: token } : {} }))
+const payLink = computed(() => orderLink(`/pay/${orderNo}`, token))
 
 async function load() {
   loading.value = true

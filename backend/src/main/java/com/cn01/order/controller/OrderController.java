@@ -25,7 +25,7 @@ public class OrderController {
     private final OrderService orderService;
     private final OrderAdminService adminService;
 
-    // ---------- 前台：游客可下单，凭 token 查看/支付 ----------
+    // ---------- 前台：游客可下单，凭 token 查看/支付（token 优先放请求头 X-Order-Token；?token= 仅为兼容旧前端保留，会进访问日志） ----------
 
     @PostMapping("/api/portal/orders")
     public Result<Created> create(@Valid @RequestBody CreateReq req, HttpServletRequest http) {
@@ -33,18 +33,18 @@ public class OrderController {
     }
 
     @GetMapping("/api/portal/orders/{orderNo}")
-    public Result<OrderView> view(@PathVariable String orderNo, @RequestParam(required = false) String token) {
-        return Result.ok(orderService.view(orderNo, token));
+    public Result<OrderView> view(@PathVariable String orderNo, @RequestHeader(value = "X-Order-Token", required = false) String headerToken, @RequestParam(required = false) String token) {
+        return Result.ok(orderService.view(orderNo, OrderService.pickToken(headerToken, token)));
     }
 
     @GetMapping("/api/portal/orders/{orderNo}/status")
-    public Result<StatusView> status(@PathVariable String orderNo, @RequestParam(required = false) String token) {
-        return Result.ok(orderService.status(orderNo, token));
+    public Result<StatusView> status(@PathVariable String orderNo, @RequestHeader(value = "X-Order-Token", required = false) String headerToken, @RequestParam(required = false) String token) {
+        return Result.ok(orderService.status(orderNo, OrderService.pickToken(headerToken, token)));
     }
 
     @PostMapping("/api/portal/orders/{orderNo}/cancel")
-    public Result<Void> cancel(@PathVariable String orderNo, @RequestParam(required = false) String token) {
-        orderService.cancelByUser(orderNo, token);
+    public Result<Void> cancel(@PathVariable String orderNo, @RequestHeader(value = "X-Order-Token", required = false) String headerToken, @RequestParam(required = false) String token) {
+        orderService.cancelByUser(orderNo, OrderService.pickToken(headerToken, token));
         return Result.ok();
     }
 

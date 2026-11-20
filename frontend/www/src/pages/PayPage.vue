@@ -7,14 +7,13 @@ import { useHead } from '@unhead/vue'
 import StateBlock from '../components/StateBlock.vue'
 import { api } from '../api/http.js'
 import { money } from '../utils/money.js'
-import { getOrderToken, saveOrderToken } from '../utils/orderTokens.js'
+import { resolveOrderToken, orderLink } from '../utils/orderTokens.js'
 
 useHead({ title: '订单支付 - 北京一零科技有限公司', meta: [{ name: 'robots', content: 'noindex' }] })
 
 const route = useRoute()
 const orderNo = String(route.params.orderNo)
-const token = (typeof route.query.t === 'string' && route.query.t) || getOrderToken(orderNo) || undefined
-if (typeof route.query.t === 'string') saveOrderToken(orderNo, route.query.t)
+const token = resolveOrderToken(route, orderNo)
 
 const order = ref(null)
 const pay = ref(null)
@@ -30,7 +29,7 @@ let poll = null
 
 const parseTime = (s) => new Date(s.replace(' ', 'T') + '+08:00').getTime()
 const mmss = computed(() => `${String(Math.floor(remain.value / 60)).padStart(2, '0')}:${String(remain.value % 60).padStart(2, '0')}`)
-const detailLink = computed(() => ({ path: `/user/orders/${orderNo}`, query: token ? { t: token } : {} }))
+const detailLink = computed(() => orderLink(`/user/orders/${orderNo}`, token))
 
 function startCountdown(expireAt, serverTime) {
   skew = parseTime(serverTime) - Date.now()

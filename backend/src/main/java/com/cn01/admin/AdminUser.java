@@ -15,6 +15,9 @@ public class AdminUser {
     private String realName;
     private Integer status;
     private LocalDateTime lastLoginAt;
+    /** 只通过 UpdateWrapper 的 setSql 递增，实体插入/更新时不写 */
+    @TableField(insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
+    private Integer tokenVersion;
     @TableField(insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
     private LocalDateTime createdAt;
     @TableField(insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)

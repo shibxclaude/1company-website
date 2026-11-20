@@ -67,8 +67,7 @@ public class UserAuthController {
     }
 
     @PutMapping("/api/user/password")
-    public Result<Void> setPassword(@Valid @RequestBody SetPasswordReq req) {
-        service.setPassword(AuthContext.requireUser().id(), req.oldPassword(), req.newPassword());
-        return Result.ok();
+    public Result<UserAuthService.LoginResult> setPassword(@Valid @RequestBody SetPasswordReq req) {
+        return Result.ok(service.setPassword(AuthContext.requireUser().id(), req.oldPassword(), req.newPassword()));
     }
 }

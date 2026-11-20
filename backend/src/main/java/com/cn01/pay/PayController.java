@@ -31,8 +31,8 @@ public class PayController {
 
     /** 获取支付二维码（游客带 token，登录用户带 Authorization） */
     @PostMapping("/api/portal/orders/{orderNo}/pay")
-    public Result<PayInfo> pay(@PathVariable String orderNo, @RequestParam(required = false) String token) {
-        return Result.ok(payService.prepare(orderNo, token));
+    public Result<PayInfo> pay(@PathVariable String orderNo, @RequestHeader(value = "X-Order-Token", required = false) String headerToken, @RequestParam(required = false) String token) {
+        return Result.ok(payService.prepare(orderNo, OrderService.pickToken(headerToken, token)));
     }
 
     /** 微信支付结果通知（APIv3）：验签、解密、幂等入账。成功返回 200，失败返回非 2xx 让微信重试。 */
@@ -62,9 +62,9 @@ public class PayController {
 
     /** 模拟支付成功（仅 app.pay.mode=mock 时可用），与真实回调走同一个入账逻辑 */
     @PostMapping("/api/pay/mock/{orderNo}/succeed")
-    public Result<String> mockSucceed(@PathVariable String orderNo, @RequestParam(required = false) String token) {
+    public Result<String> mockSucceed(@PathVariable String orderNo, @RequestHeader(value = "X-Order-Token", required = false) String headerToken, @RequestParam(required = false) String token) {
         if (!props.getPay().isMock()) throw BizException.notFound("接口不存在");
-        Order o = orderService.requireAccessible(orderNo, token);
+        Order o = orderService.requireAccessible(orderNo, OrderService.pickToken(headerToken, token));
         if (o.statusEnum() != OrderStatus.PENDING_PAY) throw BizException.conflict("订单不是待支付状态");
         if (o.getCodeUrl() == null) throw BizException.conflict("请先获取支付二维码");
         String tx = "MOCK" + UUID.randomUUID().toString().replace("-", "").substring(0, 24);

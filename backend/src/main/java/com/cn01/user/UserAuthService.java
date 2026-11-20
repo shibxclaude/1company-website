@@ -87,11 +87,15 @@ public class UserAuthService {
         return UserView.of(requireActive(id));
     }
 
-    public void setPassword(long id, String oldPassword, String newPassword) {
+    /** 设置/修改密码；之前签发的所有 token 失效，返回给当前会话一个新 token */
+    public LoginResult setPassword(long id, String oldPassword, String newPassword) {
         AppUser u = requireActive(id);
         if (u.getPasswordHash() != null && (oldPassword == null || !AdminAuthService.ENCODER.matches(oldPassword, u.getPasswordHash())))
             throw BizException.badRequest("原密码不正确");
-        mapper.update(new LambdaUpdateWrapper<AppUser>().eq(AppUser::getId, id).set(AppUser::getPasswordHash, AdminAuthService.ENCODER.encode(newPassword)));
+        mapper.update(new LambdaUpdateWrapper<AppUser>().eq(AppUser::getId, id)
+                .set(AppUser::getPasswordHash, AdminAuthService.ENCODER.encode(newPassword))
+                .setSql("token_version = token_version + 1"));
+        return issue(mapper.selectById(id));
     }
 
     public AppUser requireActive(long id) {
@@ -107,7 +111,7 @@ public class UserAuthService {
     }
 
     private LoginResult issue(AppUser u) {
-        return new LoginResult(jwt.issue(new AuthPrincipal(u.getId(), AuthPrincipal.Type.USER, u.getPhone())), UserView.of(u));
+        return new LoginResult(jwt.issue(new AuthPrincipal(u.getId(), AuthPrincipal.Type.USER, u.getPhone(), AuthPrincipal.ver(u.getTokenVersion()))), UserView.of(u));
     }
 
     private boolean exists(com.baomidou.mybatisplus.core.toolkit.support.SFunction<AppUser, ?> col, String v) {

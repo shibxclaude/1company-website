@@ -42,6 +42,7 @@ public class JwtService {
                 .subject(String.valueOf(p.id()))
                 .claim("typ", p.type().name())
                 .claim("name", p.name())
+                .claim("ver", p.ver())
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(now.plus(Duration.ofHours(hours))))
                 .signWith(key)
@@ -52,8 +53,9 @@ public class JwtService {
         if (token == null || token.isBlank()) return Optional.empty();
         try {
             Claims c = Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload();
+            Integer ver = c.get("ver", Integer.class);
             return Optional.of(new AuthPrincipal(Long.parseLong(c.getSubject()),
-                    AuthPrincipal.Type.valueOf(c.get("typ", String.class)), c.get("name", String.class)));
+                    AuthPrincipal.Type.valueOf(c.get("typ", String.class)), c.get("name", String.class), ver == null ? 0 : ver));
         } catch (JwtException | IllegalArgumentException e) {
             return Optional.empty();
         }

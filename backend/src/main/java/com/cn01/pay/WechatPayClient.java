@@ -22,7 +22,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 /**
  * 微信支付 Native（APIv3，官方 SDK wechatpay-java）。
@@ -92,21 +91,30 @@ public class WechatPayClient implements PayClient {
     }
 
     @Override
-    public Optional<PaidResult> query(String orderNo) {
+    public QueryResult query(String orderNo) {
         try {
             QueryOrderByOutTradeNoRequest req = new QueryOrderByOutTradeNoRequest();
             req.setMchid(cfg.getMchId());
             req.setOutTradeNo(orderNo);
             Transaction t = service.queryOrderByOutTradeNo(req);
-            if (t.getTradeState() == Transaction.TradeStateEnum.SUCCESS) {
-                return Optional.of(new PaidResult(t.getTransactionId(), t.getAmount().getTotal(), t.toString()));
+            var state = t.getTradeState();
+            if (state == Transaction.TradeStateEnum.SUCCESS) {
+                return QueryResult.paid(new PaidResult(t.getTransactionId(), t.getAmount().getTotal(), t.toString()));
             }
+            if (state == Transaction.TradeStateEnum.NOTPAY || state == Transaction.TradeStateEnum.CLOSED
+                    || state == Transaction.TradeStateEnum.REVOKED || state == Transaction.TradeStateEnum.PAYERROR) {
+                return QueryResult.notPaid();
+            }
+            // USERPAYING（用户正在输密码）、REFUND 等：不能当作未支付处理
+            log.warn("微信查单状态需观察 orderNo={} state={}", orderNo, state);
+            return QueryResult.unknown();
         } catch (ServiceException e) {
-            if (!"ORDER_NOT_EXIST".equals(e.getErrorCode())) log.warn("微信查单失败 orderNo={}：{}", orderNo, e.getMessage());
+            if ("ORDER_NOT_EXIST".equals(e.getErrorCode())) return QueryResult.notPaid();
+            log.warn("微信查单失败 orderNo={}：{}", orderNo, e.getMessage());
         } catch (WechatPayException e) {
             log.warn("微信查单失败 orderNo={}：{}", orderNo, e.getMessage());
         }
-        return Optional.empty();
+        return QueryResult.unknown();
     }
 
     /** 验签 + 解密回调；验签失败抛 ValidationException */

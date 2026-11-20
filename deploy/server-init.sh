@@ -19,6 +19,9 @@ cp "$HERE/systemd/cn01-backend.service" /etc/systemd/system/
 systemctl daemon-reload
 systemctl enable cn01-backend
 
+mkdir -p /etc/nginx/snippets
+cp "$HERE/nginx/cn01-base.inc" "$HERE/nginx/cn01-site.inc" /etc/nginx/snippets/
+# 先装 HTTP 版；证书就绪后按 deploy/nginx/cn01-https.conf 文件头的步骤切换
 cp "$HERE/nginx/cn01.conf" /etc/nginx/conf.d/cn01.conf
 nginx -t && systemctl reload nginx
 echo "初始化完成。下一步：在本地执行 deploy/deploy.sh 发布。"

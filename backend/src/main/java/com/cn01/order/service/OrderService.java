@@ -192,6 +192,11 @@ public class OrderService {
         return HexFormat.of().formatHex(b);
     }
 
+    /** 订单凭证：请求头优先，其次查询参数 */
+    public static String pickToken(String headerToken, String queryToken) {
+        return StringUtils.hasText(headerToken) ? headerToken : queryToken;
+    }
+
     private static String blankToNull(String s) {
         return StringUtils.hasText(s) ? s.trim() : null;
     }

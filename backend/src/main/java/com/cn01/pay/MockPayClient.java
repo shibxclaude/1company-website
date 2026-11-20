@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 /**
  * 模拟支付（开发 / 演示）。二维码内容是一个模拟链接；支付页上的"模拟支付成功"按钮调用
@@ -34,7 +33,7 @@ public class MockPayClient implements PayClient {
     }
 
     @Override
-    public Optional<PaidResult> query(String orderNo) {
-        return Optional.empty();
+    public QueryResult query(String orderNo) {
+        return QueryResult.notPaid();
     }
 }

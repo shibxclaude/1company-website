@@ -39,8 +39,7 @@ public class AdminAuthController {
     }
 
     @PutMapping("/password")
-    public Result<Void> password(@Valid @RequestBody PasswordReq req) {
-        service.changePassword(AuthContext.requireAdmin().id(), req.oldPassword(), req.newPassword());
-        return Result.ok();
+    public Result<AdminAuthService.LoginResult> password(@Valid @RequestBody PasswordReq req) {
+        return Result.ok(service.changePassword(AuthContext.requireAdmin().id(), req.oldPassword(), req.newPassword()));
     }
 }

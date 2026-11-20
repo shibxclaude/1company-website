@@ -9,7 +9,7 @@ import { useCatalogStore } from '../stores/catalog.js'
 import { useUserStore } from '../stores/user.js'
 import { api } from '../api/http.js'
 import { estimateTotal, formatCents, money } from '../utils/money.js'
-import { saveOrderToken } from '../utils/orderTokens.js'
+import { saveOrderToken, orderLink } from '../utils/orderTokens.js'
 
 useHead({ title: '确认订单 - 北京一零科技有限公司', meta: [{ name: 'robots', content: 'noindex' }] })
 
@@ -105,7 +105,7 @@ async function submit() {
       const { contactName, contactPhone, contactEmail, companyName } = body
       localStorage.setItem(CONTACT_KEY, JSON.stringify({ contactName, contactPhone, contactEmail, companyName: companyName || '' }))
     } catch { /* ignore */ }
-    router.replace({ path: `/pay/${created.orderNo}`, query: { t: created.accessToken } })
+    router.replace(orderLink(`/pay/${created.orderNo}`, created.accessToken))
   } catch (e) {
     submitError.value = e.message
   } finally {
