@@ -1,0 +1,170 @@
+{
+  "_说明": "第一阶段整理的产品初始数据，第三阶段导入 product_category / product / product_version。文字均从原站图片人工转录。price/originalPrice 为 null 的须由业务方填写后才能导入；serviceInfo 中标注 TODO 的字段同样待确认。图片路径为原站 /images 下的现有文件。",
+  "categories": [
+    { "code": "police", "name": "公安警务", "sort": 1, "status": 1 },
+    { "code": "gov", "name": "政务服务", "sort": 2, "status": 1 },
+    { "code": "platform", "name": "开发平台", "sort": 3, "status": 1 }
+  ],
+  "products": [
+    {
+      "slug": "data-fusion",
+      "legacyUrl": "/solutions01.html",
+      "categoryCode": "police",
+      "name": "多维数据融合应用平台",
+      "subtitle": "一零智搜、档案中心、一人一档、一车一档、布控中心、卡口围栏",
+      "summary": "融合政务、公安、物联网和社会资源多维数据，一键智能查询人员全量数据，形成“区域一张网”。",
+      "mainImage": "/images/jiejueone.jpg",
+      "gallery": ["/images/jiejueone.jpg", "/images/duoweironghe.png"],
+      "detailParagraphs": [
+        "为实现“让数据多跑路、让民警少跑路”的目标，针对县区内政务、公安、物联网和社会资源等应用系统积累海量数据，但各系统数据相对独立，未能产生关联，数据利用率不高的现状，北京一零科技有限公司将多维度的数据进行融合，打通各系统之间通道，结合人、地、事、物、组织、时空等管理要素，一键智能查询相关人员全量数据，并将业务数据的时空属性结合GIS系统形成“区域一张网”，进行全面可视化展示，为情报研判、指挥调度、领导决策等实战应用提供支撑。"
+      ],
+      "features": [
+        { "group": "整合数据", "items": ["公安", "政务", "物联网", "社会资源数据", "智能终端"] },
+        { "group": "卡口围栏", "items": ["伴随分析", "人像布控", "车辆布控"] },
+        { "group": "数据应用", "items": ["一人一档", "一车一档", "智能搜索"] },
+        { "group": "可视化", "items": ["电动车轨迹", "机动车轨迹", "可视化指挥"] }
+      ],
+      "serviceInfo": { "deliveryMode": "TODO(远程部署?)", "afterSales": "TODO", "servicePeriod": "TODO" },
+      "sort": 1,
+      "status": 1,
+      "versions": [
+        { "name": "TODO", "price": null, "originalPrice": null, "billingType": "TODO(ONE_TIME|YEARLY)", "diff": "TODO" }
+      ]
+    },
+    {
+      "slug": "police-station",
+      "legacyUrl": "/solutions03.html",
+      "categoryCode": "police",
+      "name": "新时代公安派出所多维数据融合平台",
+      "subtitle": "全面推进新时代公安派出所“两队一室”标准化建设",
+      "summary": "面向派出所“两队一室”改革，提供人像车辆无感采集、布控与多渠道实时预警，实现警力资源部署一张图。",
+      "mainImage": "/images/jiejuefour.jpg",
+      "gallery": ["/images/jiejuefour.jpg", "/images/newgongan.png"],
+      "detailParagraphs": [
+        "当前公安派出所面临着数据种类繁多，如何将数据应用到实战等诸多难题；同时在警务繁多、警力资源紧张的情况下如何合理调配警力资源问题亟待解决；事前精准预测、事中快速反应和事后全程跟踪等工作急需科技手段支撑。",
+        "2023年3月，公安部印发《加强新时代公安派出所工作三年行动计划（2023-2025年）》，文件提出要加强全面深化“两队一室”改革，进一步增强派出所实力、激发活力、提升战斗力。同时，践行“警网融合”理念：通过整合公安力量和社会资源，提高社会治理的效率和效果。为响应文件思想并结合当前公安派出所面临困境，建设新时代公安派出所多维数据融合平台。"
+      ],
+      "features": [
+        { "group": "感知终端", "items": ["AI智能执法记录仪", "警用智能终端"] },
+        { "group": "建设内容", "items": ["人像车辆实时无感采集", "人像车辆布控", "预警信息可视化", "多渠道实时预警"] },
+        { "group": "建设目标", "items": ["警力资源部署一张图", "警力资源优化", "重点人员车辆管理", "可视化指挥"] }
+      ],
+      "serviceInfo": { "deliveryMode": "TODO(远程部署?)", "afterSales": "TODO", "servicePeriod": "TODO" },
+      "sort": 2,
+      "status": 1,
+      "versions": [
+        { "name": "TODO", "price": null, "originalPrice": null, "billingType": "TODO(ONE_TIME|YEARLY)", "diff": "TODO" }
+      ]
+    },
+    {
+      "slug": "security-assistant",
+      "legacyUrl": "/solutions05.html",
+      "categoryCode": "police",
+      "name": "治安小助手",
+      "subtitle": "两队一室建设、民警应用的基础软件",
+      "summary": "对接公安部移动安全边界的移动警务APP，民警通过警务通录入数据，实现与公安网安全交互。",
+      "mainImage": "/images/jiejuethree.png",
+      "gallery": ["/images/jiejuethree.png", "/images/xiaohand.png"],
+      "detailParagraphs": [
+        "对接公安部移动安全边界，民警通过警务通“应用中心”下载移动警务APP，通过移动警务APP将数据录入公安网，实现与公安网数据交互，同时保证数据安全。移动警务APP的使用，使警务工作由“传统粗放型”向“集约高效型”转变，避免“人海战术”，进一步解放警力；同时推动县区信息化建设，为公安、智慧城市等平台建设提供坚实的数据支撑。"
+      ],
+      "features": [
+        { "group": "数据安全", "items": ["对接移动安全边界，民警通过警务通手机实现与公安网络数据交互"] },
+        { "group": "解放警力资源", "items": ["避免人海战术、提高工作效率、解放警力资源"] },
+        { "group": "监管考核", "items": ["结合时空信息实现民警日常工作监管、考核，通过动态积分方式实现“以考导防”"] },
+        { "group": "推动信息化建设", "items": ["建设县域特有数据资源池，推动县域信息化建设"] }
+      ],
+      "serviceInfo": { "deliveryMode": "TODO(下载授权?)", "afterSales": "TODO", "servicePeriod": "TODO" },
+      "sort": 3,
+      "status": 1,
+      "versions": [
+        { "name": "TODO", "price": null, "originalPrice": null, "billingType": "TODO(ONE_TIME|YEARLY)", "diff": "TODO" }
+      ]
+    },
+    {
+      "slug": "business-env",
+      "legacyUrl": "/solutions04.html",
+      "categoryCode": "gov",
+      "name": "营商环境门户平台",
+      "subtitle": "建设三级联网全覆盖的一体化网上服务体系",
+      "summary": "标准化办事要件和办事指南，整合数据资源，实现“一网通办”，助力政府优化营商环境。",
+      "mainImage": "/images/jiejuetwo.jpg",
+      "gallery": ["/images/jiejuetwo.jpg", "/images/huanjing.png"],
+      "detailParagraphs": [
+        "基于国务院《优化营商环境条例》《河南省优化营商环境条例》和《国务院办公厅关于规范营商环境评价工作的通知》中关于开展营商环境评价的工作要求建设三级联网全覆盖的一体化网上服务体系。通过标准化办事要件和办事指南，规范服务事项，让企业和群众办事更加高效、便捷。明确各环节协同事项，整合数据资源，提高内部业务流转效率，实现“一网通办”。",
+        "有效地助力政府部门开展银企对接服务，通过系统及时展示最新优惠政策，做到信息公开化，为企业提供强支持。最终通过营商环境门户系统建设强化整顿和规范市场经济秩序，为企业发展营造公平竞争、规范有序的市场环境。"
+      ],
+      "features": [
+        { "group": "新闻宣传", "items": ["免申即享、免证可办等业务相关新闻及政策及时发布"] },
+        { "group": "成果展示", "items": ["住建、金融等线下成果线上展示"] },
+        { "group": "数据共享", "items": ["内部数据资源共享"] },
+        { "group": "应用对接", "items": ["跨省通办、全豫通办、信用查询等应用对接"] }
+      ],
+      "serviceInfo": { "deliveryMode": "TODO(在线开通/远程部署?)", "afterSales": "TODO", "servicePeriod": "TODO" },
+      "sort": 4,
+      "status": 1,
+      "versions": [
+        { "name": "TODO", "price": null, "originalPrice": null, "billingType": "TODO(ONE_TIME|YEARLY)", "diff": "TODO" }
+      ]
+    },
+    {
+      "slug": "bigdata-dev",
+      "legacyUrl": "/solutions.html",
+      "categoryCode": "platform",
+      "name": "大数据二次开发平台",
+      "subtitle": "助推研发效能提升，加速信息化建设进程，推进企业数字化转型",
+      "summary": "可视化开发工具与预设组件库，拖拽配置即可快速搭建应用，代码标准化、易于维护升级。",
+      "mainImage": "/images/jiejuefive.jpg",
+      "gallery": ["/images/jiejuefive.jpg", "/images/dashuju.png"],
+      "detailParagraphs": [
+        "随着数字经济的蓬勃发展，各行各业都在加速数字化转型，对快速响应市场变化、灵活调整业务流程的需求日益迫切。大数据二次开发平台提供了一种高效、灵活的方式，能够帮助企业快速构建和迭代应用，支撑其数字化转型战略。"
+      ],
+      "features": [
+        { "group": "快速开发", "items": ["提供可视化开发工具和预设组件库，缩短开发周期"] },
+        { "group": "简单易用", "items": ["通过拖拽配置等简单操作即可完成快速搭建，无需深入编码"] },
+        { "group": "易维护", "items": ["项目代码标准化、易于维护和升级"] }
+      ],
+      "serviceInfo": { "deliveryMode": "TODO(在线开通/下载授权?)", "afterSales": "TODO", "servicePeriod": "TODO" },
+      "sort": 5,
+      "status": 1,
+      "versions": [
+        { "name": "TODO", "price": null, "originalPrice": null, "billingType": "TODO(ONE_TIME|YEARLY)", "diff": "TODO" }
+      ]
+    },
+    {
+      "slug": "iot",
+      "legacyUrl": "/solutions02.html",
+      "categoryCode": "platform",
+      "name": "物联网开发平台",
+      "subtitle": "助力城市治理方式数智化转型，推动城市智慧化进程",
+      "summary": "“云、管、端”开放架构的一零物联网平台，以信息采集为基础、业务中台对外提供服务支撑。",
+      "mainImage": "/images/jiejuesix.jpg",
+      "gallery": ["/images/jiejuesix.jpg", "/images/wulianwang.png"],
+      "detailParagraphs": [
+        "随着智能终端的普及和互联网的快速发展，物联网产业已由信息网络向全面感知和智能应用两个方向扩展、延伸以及突破，形成“云、管、端”的开放网络架构。",
+        "结合目前人民群众对软件应用系统要求易获取、易操作、高流畅等特点，北京一零科技有限公司根据多年技术积累和业务沉淀，以信息采集工作为基础，通过业务中台对外提供服务支撑，建立一零物联网平台。一零物联网开发平台致力于提升公共安全和政务服务水平，提高民众满意度和信任度，助力城市治理方式数智化转型，推动城市智慧化进程。"
+      ],
+      "features": [
+        { "group": "数据中台", "items": ["数据比对", "数据整合", "数据清洗", "数据分析", "数据碰撞"] },
+        { "group": "应用场景", "items": ["城市交通", "智慧社区", "智慧教育", "治安管理", "公共卫生"] },
+        { "group": "物联网感知终端", "items": ["视频监控", "微热点", "射频识别设备", "警用智能终端", "门禁", "云音箱", "无人机", "AI智能执法记录仪", "道闸"] }
+      ],
+      "serviceInfo": { "deliveryMode": "TODO(在线开通?)", "afterSales": "TODO", "servicePeriod": "TODO" },
+      "sort": 6,
+      "status": 1,
+      "versions": [
+        { "name": "TODO", "price": null, "originalPrice": null, "billingType": "TODO(ONE_TIME|YEARLY)", "diff": "TODO" }
+      ]
+    }
+  ],
+  "valueAddedServices_TODO": [
+    { "name": "额外部署（每套/每次）", "price": null, "unit": "TODO" },
+    { "name": "现场/远程培训", "price": null, "unit": "TODO(人天?)" },
+    { "name": "延长维护服务", "price": null, "unit": "TODO(年?)" }
+  ],
+  "candidateProducts_fromEcosystemTree": {
+    "_说明": "产品生态图（/product01.html）中出现但原站无任何详情的产品名，仅作候选，是否上架由业务方决定。",
+    "智能应用层": ["火眼系统", "数字化警务室", "低代码二次开发平台", "车辆管理系统", "移动警务信息采集", "AI智能分析", "资产管理", "智能布控", "寄递物流", "六智系统", "疫情防控码系统", "营商环境门户平台"],
+    "业务应用层": ["一零物联网开发平台", "社会资源采集", "云界系统", "综治云管理", "人物画像", "智能预警", "矛盾排查调处", "油气站管理", "县村（居、社区）法律服务系统", "公安知识库", "新时代公安派出所多维数据融合平台", "县域多维数据融合平台", "扁平化指挥"]
+  }
+}

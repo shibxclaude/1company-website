@@ -1,0 +1,95 @@
+server:
+  port: ${SERVER_PORT:8080}
+  # 只监听本机，由 nginx 反代对外；不要让 8080 直接暴露到公网
+  address: ${SERVER_ADDRESS:127.0.0.1}
+  forward-headers-strategy: native   # 信任 nginx 传来的 X-Forwarded-*，取真实 IP
+  shutdown: graceful
+
+spring:
+  application:
+    name: cn01-backend
+  datasource:
+    url: jdbc:mysql://${DB_HOST:127.0.0.1}:${DB_PORT:3306}/${DB_NAME:cn01}?useUnicode=true&characterEncoding=utf8&connectionTimeZone=Asia/Shanghai&forceConnectionTimeZoneToSession=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${DB_USER:cn01}
+    password: ${DB_PASSWORD:}
+    hikari:
+      maximum-pool-size: 20
+  data:
+    redis:
+      host: ${REDIS_HOST:127.0.0.1}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: ${REDIS_DB:0}
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  jackson:
+    time-zone: Asia/Shanghai
+    date-format: yyyy-MM-dd HH:mm:ss
+    default-property-inclusion: non_null
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 20MB
+  mail:
+    host: ${MAIL_HOST:}
+    port: ${MAIL_PORT:465}
+    username: ${MAIL_USER:}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail.smtp.ssl.enable: true
+  task:
+    scheduling:
+      pool:
+        size: 2
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    banner: false
+    db-config:
+      id-type: auto
+      # 更新时 null 也写入（便于后台清空可选字段）。部分字段更新一律用 UpdateWrapper，不要用残缺实体调 updateById。
+      update-strategy: always
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+app:
+  site-url: ${SITE_URL:https://www.cn01.com.cn}
+  jwt:
+    # 生产环境必须通过环境变量设置为至少 32 字节的随机串
+    secret: ${JWT_SECRET:}
+    admin-ttl-hours: 12
+    user-ttl-hours: 168
+  admin:
+    # 首次启动且没有任何管理员时创建 admin 账号；留空则随机生成并打印到日志
+    init-password: ${ADMIN_INIT_PASSWORD:}
+  upload:
+    dir: ${UPLOAD_DIR:/var/www/cn01/uploads}
+    url-prefix: /uploads
+  order:
+    expire-minutes: 30
+    agreement-version: v1.0
+    create-limit-per-hour: 20     # 同一 IP 每小时最多下单次数
+  sms:
+    # mock=true：验证码只打印到日志并在接口里返回，便于开发演示；上线前必须改为 false 并接入短信服务
+    mock: ${SMS_MOCK:true}
+  pay:
+    # mock：模拟支付（开发/演示）；wechat：微信支付 Native
+    mode: ${PAY_MODE:mock}
+    notify-url: ${PAY_NOTIFY_URL:https://www.cn01.com.cn/api/pay/notify/wechat}
+    wechat:
+      app-id: ${WXPAY_APP_ID:}
+      mch-id: ${WXPAY_MCH_ID:}
+      merchant-serial-number: ${WXPAY_SERIAL_NO:}
+      private-key-path: ${WXPAY_PRIVATE_KEY_PATH:}
+      api-v3-key: ${WXPAY_API_V3_KEY:}
+  notify:
+    mail-from: ${MAIL_FROM:}
+    admin-email: ${NOTIFY_ADMIN_EMAIL:}
+
+logging:
+  level:
+    com.cn01: info

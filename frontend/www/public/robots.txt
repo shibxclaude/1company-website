@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /user/
+Disallow: /order/
+Disallow: /pay/
+
+Sitemap: https://www.cn01.com.cn/sitemap.xml

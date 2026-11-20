@@ -1,0 +1,26 @@
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: var(--font-base);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--c-text);
+  background: #fff;
+  -webkit-tap-highlight-color: transparent;
+}
+h1, h2, h3, h4, h5, h6, p, ul, ol, li, figure { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; height: auto; border: 0; vertical-align: middle; }
+button { font: inherit; cursor: pointer; }
+.container { width: 100%; max-width: var(--wide-w); margin: 0 auto; padding: 0 16px; }
+.section { padding: 60px 0; background: var(--c-section); }
+.section--alt { background: var(--c-section-alt); }
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+@media (max-width: 767px) {
+  .section { padding: 40px 0; }
+}

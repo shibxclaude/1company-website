@@ -1,0 +1,20 @@
+[Unit]
+Description=cn01 官网后端（Spring Boot）
+After=network.target mysql.service redis-server.service
+
+[Service]
+User=cn01
+Group=cn01
+EnvironmentFile=/etc/cn01/backend.env
+WorkingDirectory=/var/www/cn01/current/backend
+ExecStart=/usr/bin/java -Xms256m -Xmx768m -Duser.timezone=Asia/Shanghai -jar /var/www/cn01/current/backend/cn01-backend.jar
+SuccessExitStatus=143
+Restart=on-failure
+RestartSec=5
+# 安全加固
+NoNewPrivileges=true
+ProtectSystem=full
+ReadWritePaths=/var/www/cn01/uploads
+
+[Install]
+WantedBy=multi-user.target

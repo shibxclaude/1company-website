@@ -1,0 +1,27 @@
+/* 视觉规范，取值见 docs/phase1/README.md 第 2 节 */
+:root {
+  --c-primary: #409eff;
+  --c-heading-blue: #2a9be0;
+  --c-nav-bg: #004081;
+  --c-nav-text: #fff;
+  --c-nav-active: #d71618;
+  --c-nav-scrolled: rgba(128, 128, 128, 0.5);
+  --c-nav-hover-bg: #d2d2d2;
+  --c-dropdown-bg: rgba(255, 255, 255, 0.92);
+  --c-section-alt: #f7f7f7;
+  --c-section: #fff;
+  --c-text: #333;
+  --c-text-body: #666;
+  --c-text-muted: #a0a0a0;
+  --c-footer-bg: #3c4957;
+  --c-footer-line: #696969;
+  --c-faq-accent: #0a84ff;
+  --c-faq-title: #0a1628;
+  --c-mobile-menu-bg: rgba(44, 57, 71, 0.98);
+  --c-mobile-active: #00a8ff;
+
+  --font-base: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', 'Heiti SC', Tahoma, Arial, 'Helvetica Neue', sans-serif;
+  --header-h: 90px;
+  --content-w: 1000px;
+  --wide-w: 1200px;
+}

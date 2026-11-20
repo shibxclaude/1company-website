@@ -1,0 +1,8 @@
+html, body, #app { height: 100%; margin: 0; }
+body { font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif; background: #f0f2f5; color: #303133; }
+.page-card { background: #fff; border-radius: 6px; padding: 20px; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 16px; }
+.toolbar .spacer { flex: 1; }
+.pager { display: flex; justify-content: flex-end; margin-top: 16px; }
+.money { color: #e4393c; font-weight: 600; }
+.muted { color: #909399; font-size: 12px; }

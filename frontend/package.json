@@ -1,0 +1,11 @@
+{
+  "name": "cn01-frontend",
+  "private": true,
+  "workspaces": ["www", "admin"],
+  "scripts": {
+    "dev:www": "npm -w www run dev",
+    "dev:admin": "npm -w admin run dev",
+    "build": "npm -w www run build && npm -w admin run build",
+    "test": "npm -w www run test"
+  }
+}
