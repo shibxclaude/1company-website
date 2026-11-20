@@ -1,0 +1,71 @@
+# 一零科技官网：MySQL + Redis + 后端（Docker Compose）。nginx 用宿主机系统自带的，配置见 deploy/nginx/cn01-docker.conf。
+#
+#   cp deploy/compose.env.example .env      # 填写密码与密钥（.env 不提交）
+#   ./deploy/compose-deploy.sh               # 构建前端、启动容器、安装 nginx 配置
+#
+# 只有后端端口发布到宿主机，并且只绑定 127.0.0.1（由宿主机 nginx 反代）；MySQL 与 Redis 不对宿主机开放。
+name: cn01
+
+services:
+  mysql:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Shanghai
+      MYSQL_DATABASE: ${DB_NAME:-cn01}
+      MYSQL_USER: ${DB_USER:-cn01}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?请在 .env 中设置 DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:?请在 .env 中设置 DB_ROOT_PASSWORD}
+    command: ["--character-set-server=utf8mb4", "--collation-server=utf8mb4_0900_ai_ci"]
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u$$MYSQL_USER -p$$MYSQL_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 20s
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD:?请在 .env 中设置 REDIS_PASSWORD}"]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a \"$$REDIS_PASSWORD\" --no-auth-warning ping | grep -q PONG"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+
+  backend:
+    build: ./backend
+    image: cn01-backend:latest
+    restart: unless-stopped
+    depends_on:
+      mysql: { condition: service_healthy }
+      redis: { condition: service_healthy }
+    env_file: .env
+    environment:
+      # 容器内要监听所有网卡，否则宿主机的端口映射连不进来（默认 127.0.0.1 是给 systemd 部署用的）；
+      # 对外仍只发布到宿主机 127.0.0.1（见 ports）
+      SERVER_ADDRESS: 0.0.0.0
+      # 容器内地址固定，覆盖 .env 里可能残留的 127.0.0.1
+      DB_HOST: mysql
+      DB_PORT: "3306"
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      UPLOAD_DIR: /data/uploads
+    volumes:
+      # 上传目录放在宿主机，由宿主机 nginx 直接托管 /uploads/
+      - ${UPLOAD_HOST_DIR:-/var/www/cn01/uploads}:/data/uploads
+      # 微信支付商户私钥（开放购买并使用微信支付时需要）
+      - ${WXPAY_HOST_DIR:-./deploy/wxpay}:/etc/cn01/wxpay:ro
+    ports:
+      - "127.0.0.1:${BACKEND_PORT:-18080}:8080"
+
+volumes:
+  mysql-data:
+  redis-data:

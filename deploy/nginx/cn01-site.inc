@@ -1,14 +1,11 @@
 # 站点主体（静态文件、预渲染页、SPA 空壳、/api 反代、上传目录、管理后台）。
-# HTTP 阶段（cn01.conf）与 HTTPS 阶段（cn01-https.conf）共用，改规则只改这一个文件。
+# HTTP 阶段（cn01.conf）、HTTPS 阶段（cn01-https.conf）、Docker Compose 部署（cn01-docker.conf）共用，改规则只改这一个文件。
+# 引用方需要定义 upstream cn01_backend（后端地址）；跳转主域名的规则也写在引用方的 server 里。
 # 安装位置：/etc/nginx/snippets/cn01-site.inc
-
-    # 主域名 www.yilinga.com：yilinga.com 与旧域名 cn01.com.cn / www.cn01.com.cn 一律 301 过来
-    if ($host != www.yilinga.com) {
-        return 301 $scheme://www.yilinga.com$request_uri;
-    }
 
     root /var/www/cn01/current/www;
     charset utf-8;
+    gzip on;
     server_tokens off;
 
     add_header Cache-Control $cn01_cache_control always;
@@ -42,7 +39,7 @@
 
     # 后端接口
     location ^~ /api/ {
-        proxy_pass http://127.0.0.1:8080;
+        proxy_pass http://cn01_backend;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

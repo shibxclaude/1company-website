@@ -1,7 +1,7 @@
 # http 级公共配置（gzip、按路径的缓存策略）。cn01.conf / cn01-https.conf 都会 include 本文件。
 # 安装位置：/etc/nginx/snippets/cn01-base.inc
 
-gzip on;
+# gzip on 写在 cn01-site.inc 的 server 里：Ubuntu/Debian 自带的 nginx.conf 在 http 级已有 gzip on，这里再写会报重复指令
 gzip_comp_level 5;
 gzip_min_length 1024;
 gzip_vary on;

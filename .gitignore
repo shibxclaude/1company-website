@@ -12,6 +12,7 @@ backend/uploads/
 .env
 *.env
 !deploy/backend.env.example
+!deploy/compose.env.example
 *.pem
 
 # IDE / 系统

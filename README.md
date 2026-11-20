@@ -43,3 +43,17 @@ cd frontend && npm test       # 43 个用例
 
 见 `docs/phase4/README.md` 第 9 节：`deploy/server-init.sh` 用于服务器一次性初始化，`deploy/deploy.sh` 发布，`deploy/rollback.sh` 回滚。
 **上线前置清单**见同一文档第 10 节，包括替换示例价格、微信商户配置、HTTPS、短信服务、协议法务审核等。
+
+### Docker Compose 部署（nginx 用宿主机自带的）
+
+MySQL、Redis、后端跑在容器里（`docker-compose.yml`、`backend/Dockerfile`），前端构建成静态文件由宿主机 nginx 托管并反代 `/api/`。
+
+```bash
+cp deploy/compose.env.example .env && chmod 600 .env   # 填写密码与密钥（.env 不提交）
+./deploy/compose-deploy.sh                              # 启动容器 → 构建前端并发布 → 安装 nginx 配置
+```
+
+- 后端只绑定 `127.0.0.1:18080`（`.env` 的 `BACKEND_PORT`），MySQL、Redis 不对宿主机开放；数据在 Docker 卷 `cn01_mysql-data`、`cn01_redis-data`，上传图片在宿主机 `/var/www/cn01/uploads`。
+- nginx 配置为 `deploy/nginx/cn01-docker.conf`：监听 8088（`NGINX_PORT`），用 IP 访问、不做主域名跳转，适合域名解析切过来之前。切换到 www.yilinga.com 时改用 `cn01.conf` / `cn01-https.conf`，并把其中 `upstream cn01_backend` 的端口改成 `BACKEND_PORT`。
+- 后端与 systemd 部署一样以 `-Dapp.env=prod` 启动：`SHOP_ENABLED=true` 时必须配置真实支付与短信，否则拒绝启动。
+- 常用命令：`sudo docker compose ps`、`sudo docker compose logs -f backend`、`sudo docker compose restart backend`。
