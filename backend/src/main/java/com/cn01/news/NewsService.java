@@ -12,7 +12,9 @@ import com.cn01.news.NewsDtos.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import java.time.Duration;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class NewsService {
     private final NewsMapper mapper;
+    private final StringRedisTemplate redis;
 
     // ---------- 前台 ----------
 
@@ -45,6 +48,15 @@ public class NewsService {
         if (n == null || n.getStatus() != Status.ON || n.getPublishedAt().isAfter(LocalDateTime.now()))
             throw BizException.notFound("新闻不存在");
         return NewsDtos.detail(n);
+    }
+
+    /** 阅读数 +1：同一 IP 一小时内同一篇只计一次。不清缓存，前台显示的阅读数允许滞后。 */
+    public void recordView(long id, String ip) {
+        Boolean first = redis.opsForValue().setIfAbsent("cn01:news-view:" + id + ":" + ip, "1", Duration.ofHours(1));
+        if (!Boolean.TRUE.equals(first)) return;
+        // updated_at = updated_at：阅读数变化不算"内容更新"
+        mapper.update(null, new LambdaUpdateWrapper<News>().eq(News::getId, id).eq(News::getStatus, Status.ON)
+                .setSql("views = views + 1, updated_at = updated_at"));
     }
 
     // ---------- 后台 ----------

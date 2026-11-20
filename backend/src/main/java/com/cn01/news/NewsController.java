@@ -1,5 +1,7 @@
 package com.cn01.news;
 
+import com.cn01.common.RequestUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import com.cn01.common.PageResult;
 import com.cn01.common.Result;
 import com.cn01.news.NewsDtos.*;
@@ -23,8 +25,10 @@ public class NewsController {
     }
 
     @GetMapping("/api/portal/news/{id}")
-    public Result<NewsDetail> portalDetail(@PathVariable long id) {
-        return Result.ok(service.portalDetail(id));
+    public Result<NewsDetail> portalDetail(@PathVariable long id, HttpServletRequest http) {
+        NewsDetail d = service.portalDetail(id);   // 不存在/未发布时这里就抛 404，不计阅读数
+        service.recordView(id, RequestUtils.clientIp(http));
+        return Result.ok(d);
     }
 
     @GetMapping("/api/admin/news")

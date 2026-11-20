@@ -40,4 +40,12 @@ class UnitTests {
         String out = RichText.clean("<h3 style=\"color:red\">标题</h3><a href=\"javascript:alert(1)\">x</a><iframe src=\"//evil\"></iframe><img src=\"x\" onerror=\"alert(1)\">");
         assertThat(out).contains("<h3 style=\"color:red\">标题</h3>").doesNotContain("javascript").doesNotContain("iframe").doesNotContain("onerror");
     }
+
+    @Test
+    void 富文本样式只保留排版相关属性_去掉定位和外链背景() {
+        String out = RichText.clean("<p style=\"position:fixed; top:0; z-index:9999; color:#333; text-align:center; background:url(https://evil/x.png)\">x</p>"
+                + "<div style=\"width:expression(alert(1))\">y</div>");
+        assertThat(out).contains("<p style=\"color:#333; text-align:center\">x</p>")
+                .doesNotContain("position").doesNotContain("z-index").doesNotContain("url(").doesNotContain("expression");
+    }
 }
