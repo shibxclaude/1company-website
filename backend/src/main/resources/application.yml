@@ -57,6 +57,9 @@ mybatis-plus:
       logic-not-delete-value: 0
 
 app:
+  # 运行环境：prod 时启动前校验 SMS_MOCK / PAY_MODE / JWT_SECRET，不安全直接拒绝启动（见 ProductionGuard）。
+  # systemd 单元用 -Dapp.env=prod 固定设置，env 文件改不掉。
+  env: ${APP_ENV:dev}
   site-url: ${SITE_URL:https://www.cn01.com.cn}
   jwt:
     # 生产环境必须通过环境变量设置为至少 32 字节的随机串

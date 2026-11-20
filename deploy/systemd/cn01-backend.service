@@ -7,7 +7,7 @@ User=cn01
 Group=cn01
 EnvironmentFile=/etc/cn01/backend.env
 WorkingDirectory=/var/www/cn01/current/backend
-ExecStart=/usr/bin/java -Xms256m -Xmx768m -Duser.timezone=Asia/Shanghai -jar /var/www/cn01/current/backend/cn01-backend.jar
+ExecStart=/usr/bin/java -Xms256m -Xmx768m -Duser.timezone=Asia/Shanghai -Dapp.env=prod -jar /var/www/cn01/current/backend/cn01-backend.jar
 SuccessExitStatus=143
 Restart=on-failure
 RestartSec=5

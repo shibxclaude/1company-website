@@ -171,3 +171,4 @@ DEPLOY_HOST=服务器IP ./deploy/rollback.sh --list
 | 8 | 服务器端口 | MySQL、Redis、8080 只监听 127.0.0.1（后端已默认如此），Redis 必须设置密码 |
 | 9 | 销售模式确认 | 部分方案面向公安机关，通常走政府采购流程。在线下单的交付和退款说法请与 ICP 审核口径保持一致 |
 | 10 | JWT 密钥 | `JWT_SECRET` 设置为至少 32 字节的随机串。未设置时每次重启都会让所有登录失效 |
+| 11 | 启动安全校验（自动） | systemd 以 `-Dapp.env=prod` 启动；`SMS_MOCK=true`、`PAY_MODE=mock` 或 `JWT_SECRET` 不合格（不足 32 字节/仍是示例占位符）时后端直接拒绝启动，日志列出具体原因（`ProductionGuard`） |

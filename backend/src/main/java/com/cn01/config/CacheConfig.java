@@ -12,6 +12,7 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
+import org.springframework.data.redis.serializer.RedisSerializer;
 
 import java.time.Duration;
 
@@ -29,18 +30,29 @@ public class CacheConfig {
 
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory factory) {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        mapper.activateDefaultTyping(
-                BasicPolymorphicTypeValidator.builder().allowIfBaseType(Object.class).build(),
-                ObjectMapper.DefaultTyping.EVERYTHING, JsonTypeInfo.As.PROPERTY);
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
                 .entryTtl(Duration.ofMinutes(30))
                 .disableCachingNullValues()
                 .prefixCacheNameWith("cn01:")
                 .serializeValuesWith(RedisSerializationContext.SerializationPair
-                        .fromSerializer(new GenericJackson2JsonRedisSerializer(mapper)));
+                        .fromSerializer(valueSerializer()));
         // transactionAware：清缓存推迟到事务提交之后，避免并发读在提交前把旧数据重新写回缓存
         return RedisCacheManager.builder(factory).cacheDefaults(config).transactionAware().build();
+    }
+
+    public static RedisSerializer<Object> valueSerializer() {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+        mapper.activateDefaultTyping(
+                // 只允许反序列化本项目类型与 JDK 基础类型；放开 Object 会让写得进 Redis 的人借反序列化链执行代码
+                BasicPolymorphicTypeValidator.builder()
+                        .allowIfSubType("com.cn01.")
+                        .allowIfSubType("java.util.")
+                        .allowIfSubType("java.time.")
+                        .allowIfSubType("java.math.")
+                        .allowIfSubType("java.lang.")
+                        .build(),
+                ObjectMapper.DefaultTyping.EVERYTHING, JsonTypeInfo.As.PROPERTY);
+        return new GenericJackson2JsonRedisSerializer(mapper);
     }
 }

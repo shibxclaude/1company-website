@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.cn01.admin.AdminAuthService;
 import com.cn01.auth.AuthPrincipal;
 import com.cn01.auth.JwtService;
-import com.cn01.auth.RateLimiter;
+import com.cn01.auth.LoginAttemptGuard;
 import com.cn01.common.BizException;
 import com.cn01.common.ErrorCode;
 import com.cn01.common.Status;
@@ -15,7 +15,6 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Service
@@ -24,7 +23,7 @@ public class UserAuthService {
     private final AppUserMapper mapper;
     private final SmsCodeService sms;
     private final JwtService jwt;
-    private final RateLimiter rateLimiter;
+    private final LoginAttemptGuard loginGuard;
 
     public record LoginResult(String token, UserView user) {}
 
@@ -72,16 +71,15 @@ public class UserAuthService {
     }
 
     /** 账号密码登录：account 可以是手机号或账号 */
-    public LoginResult loginByPassword(String account, String password) {
-        String key = "user-login-fail:" + account;
-        rateLimiter.check(key, 5, "密码错误次数过多，请 15 分钟后再试，或使用验证码登录");
+    public LoginResult loginByPassword(String account, String password, String ip) {
+        loginGuard.check("user", account, ip);
         AppUser u = mapper.selectOne(new LambdaQueryWrapper<AppUser>()
                 .eq(AppUser::getPhone, account).or().eq(AppUser::getUsername, account).last("LIMIT 1"));
         if (u == null || u.getPasswordHash() == null || !AdminAuthService.ENCODER.matches(password, u.getPasswordHash())) {
-            rateLimiter.incr(key, Duration.ofMinutes(15));
+            loginGuard.failed("user", account, ip);
             throw BizException.badRequest("账号或密码错误");
         }
-        rateLimiter.reset(key);
+        loginGuard.succeeded("user", account, ip);
         return afterLogin(u);
     }
 

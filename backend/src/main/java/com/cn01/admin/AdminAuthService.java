@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.cn01.auth.AuthPrincipal;
 import com.cn01.auth.JwtService;
-import com.cn01.auth.RateLimiter;
+import com.cn01.auth.LoginAttemptGuard;
 import com.cn01.common.BizException;
 import com.cn01.common.ErrorCode;
 import com.cn01.common.Status;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.security.SecureRandom;
-import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Slf4j
@@ -26,26 +25,24 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class AdminAuthService {
     public static final BCryptPasswordEncoder ENCODER = new BCryptPasswordEncoder();
-    private static final int MAX_FAILS = 5;
 
     private final AdminUserMapper mapper;
     private final JwtService jwt;
-    private final RateLimiter rateLimiter;
+    private final LoginAttemptGuard loginGuard;
     private final AppProperties props;
 
     public record LoginResult(String token, String username, String realName) {}
 
     public LoginResult login(String username, String password, String ip) {
-        String key = "admin-login-fail:" + username;
-        rateLimiter.check(key, MAX_FAILS, "密码错误次数过多，请 15 分钟后再试");
+        loginGuard.check("admin", username, ip);
         AdminUser u = mapper.selectOne(new LambdaQueryWrapper<AdminUser>().eq(AdminUser::getUsername, username));
         if (u == null || !ENCODER.matches(password, u.getPasswordHash())) {
-            rateLimiter.incr(key, Duration.ofMinutes(15));
+            loginGuard.failed("admin", username, ip);
             log.warn("后台登录失败 username={} ip={}", username, ip);
             throw new BizException(ErrorCode.BAD_REQUEST, "账号或密码错误");
         }
         if (u.getStatus() != Status.ON) throw new BizException(ErrorCode.FORBIDDEN, "账号已停用");
-        rateLimiter.reset(key);
+        loginGuard.succeeded("admin", username, ip);
         mapper.update(new LambdaUpdateWrapper<AdminUser>().eq(AdminUser::getId, u.getId()).set(AdminUser::getLastLoginAt, LocalDateTime.now()));
         String token = jwt.issue(new AuthPrincipal(u.getId(), AuthPrincipal.Type.ADMIN, u.getUsername()));
         return new LoginResult(token, u.getUsername(), u.getRealName());

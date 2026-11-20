@@ -57,8 +57,8 @@ public class UserAuthController {
     }
 
     @PostMapping("/api/portal/auth/login/password")
-    public Result<UserAuthService.LoginResult> loginPassword(@Valid @RequestBody PasswordLoginReq req) {
-        return Result.ok(service.loginByPassword(req.account().trim(), req.password()));
+    public Result<UserAuthService.LoginResult> loginPassword(@Valid @RequestBody PasswordLoginReq req, HttpServletRequest http) {
+        return Result.ok(service.loginByPassword(req.account().trim(), req.password(), RequestUtils.clientIp(http)));
     }
 
     @GetMapping("/api/user/me")
