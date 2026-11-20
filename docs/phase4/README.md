@@ -54,7 +54,7 @@
 | POST | `/api/portal/auth/login/password` | 无 | 密码登录（连续失败 5 次锁定 15 分钟） |
 | GET | `/api/user/me` | 用户 | 当前用户 |
 | PUT | `/api/user/password` | 用户 | 设置或修改密码 |
-| POST | `/api/portal/orders` | 可选 | 下单。**金额由服务端按数据库价格计算，前端传来的金额一律忽略**；同一 IP 每小时最多 20 单 |
+| POST | `/api/portal/orders` | 可选 | 下单。**金额由服务端按数据库价格计算**；可选的 `expectedTotal` 是页面显示给用户的应付金额，只用于比对：与服务端金额不一致时返回 409「价格已更新」，前端随即刷新价格让用户确认（防止按用户没看到的新价下单）；同一 IP 每小时最多 20 单 |
 | GET | `/api/portal/orders/{orderNo}?token=` | 凭证或用户 | 订单详情 |
 | GET | `/api/portal/orders/{orderNo}/status?token=` | 凭证或用户 | 支付状态（供轮询，带服务端时间用于校准倒计时） |
 | POST | `/api/portal/orders/{orderNo}/pay?token=` | 凭证或用户 | 获取支付二维码 code_url（有效期内复用） |

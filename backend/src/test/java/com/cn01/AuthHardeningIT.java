@@ -1,6 +1,7 @@
 package com.cn01;
 
 import com.cn01.auth.RateLimiter;
+import com.cn01.sms.SmsCodeService;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 /** 改密后旧 token 失效、停用账号的 token 在前台也不再生效、订单凭证走请求头、限流计数一定带过期时间。 */
 class AuthHardeningIT extends IntegrationTestBase {
     @Autowired RateLimiter rateLimiter;
+    @Autowired SmsCodeService smsCodeService;
 
     private String smsLogin(String phone) throws Exception {
         String code = ok(json(post("/api/portal/sms/code"), Map.of("phone", phone, "scene", "LOGIN"))).get("mockCode").asText();
@@ -76,5 +78,29 @@ class AuthHardeningIT extends IntegrationTestBase {
         assertThat(redis.getExpire("cn01:rl:stuck-key")).isPositive();
         rateLimiter.incr("stuck-key2", Duration.ofMinutes(5));
         assertThat(redis.getExpire("cn01:rl:stuck-key2")).isPositive();
+    }
+
+    @Test
+    void 同一个验证码并发提交_只有一次能通过() throws Exception {
+        String phone = "13600000010";
+        String code = ok(json(post("/api/portal/sms/code"), Map.of("phone", phone, "scene", "LOGIN"))).get("mockCode").asText();
+        int threads = 16;
+        var start = new java.util.concurrent.CountDownLatch(1);
+        var passed = new java.util.concurrent.atomic.AtomicInteger();
+        var pool = java.util.concurrent.Executors.newFixedThreadPool(threads);
+        for (int i = 0; i < threads; i++) {
+            pool.submit(() -> {
+                try {
+                    start.await();
+                    smsCodeService.verify(phone, SmsCodeService.Scene.LOGIN, code);
+                    passed.incrementAndGet();
+                } catch (Exception ignored) {
+                }
+            });
+        }
+        start.countDown();
+        pool.shutdown();
+        assertThat(pool.awaitTermination(10, java.util.concurrent.TimeUnit.SECONDS)).isTrue();
+        assertThat(passed.get()).isEqualTo(1);
     }
 }

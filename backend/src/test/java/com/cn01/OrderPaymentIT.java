@@ -165,4 +165,19 @@ class OrderPaymentIT extends IntegrationTestBase {
         assertThat(ok(get("/api/portal/orders/" + no).param("token", token)).get("status").asText()).isEqualTo("CANCELLED");
         call(post("/api/portal/orders/" + no + "/cancel").param("token", token), 409);
     }
+
+    @Test
+    void 带预期金额下单_与服务端价格不一致时拒绝() throws Exception {
+        Map<String, Object> req = orderReq("13900000007");
+        req.put("expectedTotal", "1.00");   // 用户看到的是旧价格
+        JsonNode r = call(json(post("/api/portal/orders"), req), 409);
+        assertThat(r.get("msg").asText()).contains("价格已更新");
+
+        req.put("expectedTotal", "828100.00");   // 专业版 368000×2 + 增值服务，与服务端一致
+        assertThat(ok(json(post("/api/portal/orders"), req)).get("totalAmount").asText()).isEqualTo("828100.0");
+        req.put("expectedTotal", "828100");      // 不同写法、数值相等也算一致
+        ok(json(post("/api/portal/orders"), req));
+        req.remove("expectedTotal");            // 不带时不校验（兼容旧页面）
+        ok(json(post("/api/portal/orders"), req));
+    }
 }

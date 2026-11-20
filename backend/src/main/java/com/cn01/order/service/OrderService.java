@@ -24,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
@@ -53,6 +54,7 @@ public class OrderService {
     private final RateLimiter rateLimiter;
     private final AppProperties props;
     private final PayClient payClient;
+    private final TransactionTemplate tx;
 
     @Transactional
     public Created create(CreateReq req, String ip) {
@@ -77,6 +79,9 @@ public class OrderService {
             items.add(item(OrderItem.SERVICE, sv.getId(), sv.getName(), null, sv.getUnit(), sv.getPrice(), sel.quantity()));
         }
         BigDecimal total = items.stream().map(OrderItem::getAmount).reduce(BigDecimal.ZERO, BigDecimal::add).setScale(2, RoundingMode.HALF_UP);
+        // 用户停留在下单页期间后台改了价：不能让用户按看不到的新价格付款
+        if (req.expectedTotal() != null && req.expectedTotal().compareTo(total) != 0)
+            throw BizException.conflict("价格已更新：当前应付 ¥" + total.toPlainString() + "，请确认后重新提交");
 
         LocalDateTime now = LocalDateTime.now().withNano(0);
         Order o = new Order();
@@ -130,19 +135,20 @@ public class OrderService {
                 o.getTotalAmount(), o.getCreatedAt(), o.getPayExpireAt(), summaries.get(o.getId())));
     }
 
-    /** 用户取消待支付订单 */
-    @Transactional
+    /** 用户取消待支付订单。先在事务外关掉支付平台的订单（不让数据库事务等外部接口），再在事务里改状态、记日志。 */
     public void cancelByUser(String orderNo, String token) {
         Order o = requireAccessible(orderNo, token);
         if (o.statusEnum() != OrderStatus.PENDING_PAY) throw BizException.conflict("只有待支付的订单可以取消");
         closeRemote(o);
-        int n = orderMapper.update(new LambdaUpdateWrapper<Order>()
-                .eq(Order::getId, o.getId()).eq(Order::getStatus, OrderStatus.PENDING_PAY.name())
-                .set(Order::getStatus, OrderStatus.CANCELLED.name())
-                .set(Order::getCancelledAt, LocalDateTime.now())
-                .set(Order::getCancelReason, "用户取消"));
-        if (n == 0) throw BizException.conflict(null);
-        assembler.log(o.getId(), OrderStatus.PENDING_PAY, OrderStatus.CANCELLED, "用户取消订单", "USER", o.getContactName());
+        tx.executeWithoutResult(s -> {
+            int n = orderMapper.update(new LambdaUpdateWrapper<Order>()
+                    .eq(Order::getId, o.getId()).eq(Order::getStatus, OrderStatus.PENDING_PAY.name())
+                    .set(Order::getStatus, OrderStatus.CANCELLED.name())
+                    .set(Order::getCancelledAt, LocalDateTime.now())
+                    .set(Order::getCancelReason, "用户取消"));
+            if (n == 0) throw BizException.conflict(null);
+            assembler.log(o.getId(), OrderStatus.PENDING_PAY, OrderStatus.CANCELLED, "用户取消订单", "USER", o.getContactName());
+        });
     }
 
     /** 已向支付平台下过单的，先关掉支付平台的订单，防止关单后仍能扫码付款 */

@@ -20,7 +20,9 @@ public final class OrderDtos {
             @NotBlank(message = "请填写邮箱") @Email(message = "邮箱格式不正确") @Size(max = 100) String contactEmail,
             @Size(max = 100, message = "企业名称最多 100 字") String companyName,
             @Size(max = 500, message = "备注最多 500 字") String remark,
-            @AssertTrue(message = "请阅读并同意《产品购买服务协议》") boolean agreed) {}
+            @AssertTrue(message = "请阅读并同意《产品购买服务协议》") boolean agreed,
+            /** 下单页上显示给用户的应付金额；与服务端按当前价格算出的不一致时拒绝下单（不带则不校验） */
+            @Digits(integer = 10, fraction = 2, message = "金额格式不正确") BigDecimal expectedTotal) {}
 
     public record ServiceSel(@NotNull Long serviceId,
                              @NotNull @Min(value = 1, message = "增值服务数量至少为 1") @Max(value = 99, message = "增值服务数量最多 99") Integer quantity) {}

@@ -7,10 +7,12 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.time.Duration;
+import java.util.List;
 
 /**
  * 短信验证码：6 位数字，5 分钟有效，校验错误 5 次作废；
@@ -50,21 +52,34 @@ public class SmsCodeService {
         return props.getSms().isMock() ? code : null;
     }
 
+    /**
+     * 比对与消费在一个 Lua 脚本里原子完成：分成"读出比对 → 删除"两步时，同一个验证码并发提交可以通过多次。
+     * 返回 1 通过；-1 已过期；0 不正确；-2 错误次数达到上限（验证码作废）。
+     */
+    private static final DefaultRedisScript<Long> VERIFY = new DefaultRedisScript<>("""
+            local v = redis.call('GET', KEYS[1])
+            if not v then return -1 end
+            if v == ARGV[1] then
+              redis.call('DEL', KEYS[1], KEYS[2])
+              return 1
+            end
+            local f = redis.call('INCR', KEYS[2])
+            redis.call('EXPIRE', KEYS[2], ARGV[2])
+            if f >= tonumber(ARGV[3]) then
+              redis.call('DEL', KEYS[1])
+              return -2
+            end
+            return 0
+            """, Long.class);
+    private static final int MAX_FAILS = 5;
+
     /** 校验并消费验证码 */
     public void verify(String phone, Scene scene, String code) {
-        String expected = redis.opsForValue().get(key(phone, scene));
-        if (expected == null) throw BizException.badRequest("验证码已过期，请重新获取");
-        if (!expected.equals(code)) {
-            Long fails = redis.opsForValue().increment(failKey(phone, scene));
-            redis.expire(failKey(phone, scene), TTL);
-            if (fails != null && fails >= 5) {
-                redis.delete(key(phone, scene));
-                throw BizException.badRequest("验证码错误次数过多，请重新获取");
-            }
-            throw BizException.badRequest("验证码不正确");
-        }
-        redis.delete(key(phone, scene));
-        redis.delete(failKey(phone, scene));
+        Long r = redis.execute(VERIFY, List.of(key(phone, scene), failKey(phone, scene)),
+                code == null ? "" : code, String.valueOf(TTL.toSeconds()), String.valueOf(MAX_FAILS));
+        if (r == null || r == -1) throw BizException.badRequest("验证码已过期，请重新获取");
+        if (r == -2) throw BizException.badRequest("验证码错误次数过多，请重新获取");
+        if (r == 0) throw BizException.badRequest("验证码不正确");
     }
 
     private static String key(String phone, Scene scene) {

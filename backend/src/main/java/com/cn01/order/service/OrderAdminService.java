@@ -11,7 +11,7 @@ import com.cn01.order.entity.OrderStatus;
 import com.cn01.order.mapper.OrderMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
@@ -26,6 +26,7 @@ public class OrderAdminService {
     private final OrderAssembler assembler;
     private final OrderService orderService;
     private final OrderRefundService refundService;
+    private final TransactionTemplate tx;
 
     public PageResult<AdminListItem> page(String status, String keyword, LocalDate from, LocalDate to, long page, long size) {
         LambdaQueryWrapper<Order> q = new LambdaQueryWrapper<Order>()
@@ -46,8 +47,7 @@ public class OrderAdminService {
         return toDetail(o);
     }
 
-    /** 推进服务进度：可只写备注（toStatus 为空），也可同时改状态 */
-    @Transactional
+    /** 推进服务进度：可只写备注（toStatus 为空），也可同时改状态。取消订单时先在事务外关支付平台订单，再在事务里改状态。 */
     public AdminDetail progress(String orderNo, ProgressReq req, String adminName) {
         Order o = require(orderNo);
         OrderStatus from = o.statusEnum();
@@ -65,13 +65,15 @@ public class OrderAdminService {
         if (!from.adminCanMoveTo(to)) throw BizException.conflict("不能从「" + from.label() + "」改为「" + to.label() + "」");
         if (to == OrderStatus.CANCELLED) orderService.closeRemote(o);
 
-        LambdaUpdateWrapper<Order> u = new LambdaUpdateWrapper<Order>()
-                .eq(Order::getId, o.getId()).eq(Order::getStatus, from.name())
-                .set(Order::getStatus, to.name());
-        if (to == OrderStatus.COMPLETED) u.set(Order::getCompletedAt, LocalDateTime.now());
-        if (to == OrderStatus.CANCELLED) u.set(Order::getCancelledAt, LocalDateTime.now()).set(Order::getCancelReason, "管理员取消");
-        if (orderMapper.update(u) == 0) throw BizException.conflict(null);
-        assembler.log(o.getId(), from, to, StringUtils.hasText(req.note()) ? req.note().trim() : null, "ADMIN", adminName);
+        tx.executeWithoutResult(s -> {
+            LambdaUpdateWrapper<Order> u = new LambdaUpdateWrapper<Order>()
+                    .eq(Order::getId, o.getId()).eq(Order::getStatus, from.name())
+                    .set(Order::getStatus, to.name());
+            if (to == OrderStatus.COMPLETED) u.set(Order::getCompletedAt, LocalDateTime.now());
+            if (to == OrderStatus.CANCELLED) u.set(Order::getCancelledAt, LocalDateTime.now()).set(Order::getCancelReason, "管理员取消");
+            if (orderMapper.update(u) == 0) throw BizException.conflict(null);
+            assembler.log(o.getId(), from, to, StringUtils.hasText(req.note()) ? req.note().trim() : null, "ADMIN", adminName);
+        });
         return toDetail(orderMapper.selectById(o.getId()));
     }
 

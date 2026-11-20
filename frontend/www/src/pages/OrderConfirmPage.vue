@@ -98,6 +98,8 @@ async function submit() {
       companyName: form.companyName.trim() || undefined,
       remark: form.remark.trim() || undefined,
       agreed: form.agreed,
+      // 页面上显示的应付金额：后台若在此期间改了价，服务端会拒绝，避免按用户没看到的价格下单
+      expectedTotal: (totalCents.value / 100).toFixed(2),
     }
     const created = await api.createOrder(body)
     saveOrderToken(created.orderNo, created.accessToken)
@@ -108,6 +110,8 @@ async function submit() {
     router.replace(orderLink(`/pay/${created.orderNo}`, created.accessToken))
   } catch (e) {
     submitError.value = e.message
+    // 价格已更新（409）：重新拉取价格，页面显示新金额，用户确认后再提交
+    if (e.status === 409) await catalog.loadDetail(slug, { force: true }).catch(() => {})
   } finally {
     submitting.value = false
   }
@@ -152,7 +156,7 @@ async function submit() {
             </tbody>
           </table>
           <p class="total">应付金额 <strong>¥{{ formatCents(totalCents) }}</strong></p>
-          <p class="tip">金额以提交后服务端计算为准；订单提交后请在 30 分钟内完成支付。</p>
+          <p class="tip">如提交时价格已调整，系统会提示并显示新价格，请确认后再提交；订单提交后请在 30 分钟内完成支付。</p>
         </section>
 
         <form class="card form" novalidate @submit.prevent="submit">
