@@ -6,6 +6,7 @@ import com.cn01.common.RequestUtils;
 import com.cn01.common.Result;
 import com.cn01.order.dto.OrderDtos.*;
 import com.cn01.order.service.OrderAdminService;
+import com.cn01.order.service.OrderRefundService;
 import com.cn01.order.service.OrderService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -24,6 +25,7 @@ import java.time.LocalDate;
 public class OrderController {
     private final OrderService orderService;
     private final OrderAdminService adminService;
+    private final OrderRefundService refundService;
 
     // ---------- 前台：游客可下单，凭 token 查看/支付（token 优先放请求头 X-Order-Token；?token= 仅为兼容旧前端保留，会进访问日志） ----------
 
@@ -71,6 +73,20 @@ public class OrderController {
 
     @GetMapping("/api/admin/orders/{orderNo}")
     public Result<AdminDetail> adminDetail(@PathVariable String orderNo) {
+        return Result.ok(adminService.detail(orderNo));
+    }
+
+    /** 退订单货款（原路退回，可部分退款） */
+    @PostMapping("/api/admin/orders/{orderNo}/refunds")
+    public Result<AdminDetail> refund(@PathVariable String orderNo, @Valid @RequestBody RefundReq req) {
+        refundService.refundOrder(orderNo, req.amount(), req.reason(), AuthContext.requireAdmin().name());
+        return Result.ok(adminService.detail(orderNo));
+    }
+
+    /** 退回异常收款（重复付款、金额不符的那笔交易，整笔退回） */
+    @PostMapping("/api/admin/orders/{orderNo}/refunds/stray")
+    public Result<AdminDetail> refundStray(@PathVariable String orderNo, @Valid @RequestBody StrayRefundReq req) {
+        refundService.refundStray(orderNo, req.transactionId(), req.reason(), AuthContext.requireAdmin().name());
         return Result.ok(adminService.detail(orderNo));
     }
 

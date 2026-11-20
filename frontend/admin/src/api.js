@@ -81,6 +81,8 @@ export const api = {
   orders: (query) => request('/api/admin/orders', { query }),
   order: (orderNo) => request(`/api/admin/orders/${orderNo}`),
   progress: (orderNo, body) => request(`/api/admin/orders/${orderNo}/progress`, { method: 'POST', body }),
+  refund: (orderNo, body) => request(`/api/admin/orders/${orderNo}/refunds`, { method: 'POST', body }),
+  refundStray: (orderNo, body) => request(`/api/admin/orders/${orderNo}/refunds/stray`, { method: 'POST', body }),
 
   users: (query) => request('/api/admin/users', { query }),
   userStatus: (id, status) => request(`/api/admin/users/${id}/status`, { method: 'PUT', body: { status } }),
@@ -98,6 +100,7 @@ export const ORDER_STATUS = {
   IN_SERVICE: { label: '服务进行中', type: 'primary' },
   COMPLETED: { label: '已完成', type: 'success' },
   CANCELLED: { label: '已取消', type: 'info' },
+  REFUNDED: { label: '已退款', type: 'danger' },
 }
 
 export const money = (v) => (v === null || v === undefined ? '—' : `¥${Number(v).toLocaleString('zh-CN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`)

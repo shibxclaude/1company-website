@@ -22,6 +22,9 @@ public class Order {
     private Long solutionId;
     private String solutionName;
     private BigDecimal totalAmount;
+    /** 累计已退款金额：只在退款成功时用 setSql 累加，实体插入/更新时不写 */
+    @TableField(insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
+    private BigDecimal refundedAmount;
     private String status;
     private String agreementVersion;
     private String payChannel;

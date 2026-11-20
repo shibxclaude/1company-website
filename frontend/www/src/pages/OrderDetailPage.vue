@@ -74,10 +74,11 @@ onMounted(load)
               </template>
             </div>
           </div>
-          <ol v-if="order.status !== 'CANCELLED'" class="steps">
+          <p v-if="order.status === 'CANCELLED'" class="cancelled">订单已取消：{{ order.cancelReason }}（{{ order.cancelledAt }}）</p>
+          <p v-else-if="order.status === 'REFUNDED'" class="cancelled">订单已全额退款 {{ money(order.refundedAmount) }}，款项已原路退回您的支付账户，一般 1-3 个工作日到账。</p>
+          <ol v-else class="steps">
             <li v-for="([s, l], i) in STEPS" :key="s" :class="{ done: i <= stepIndex }">{{ l }}</li>
           </ol>
-          <p v-else class="cancelled">订单已取消：{{ order.cancelReason }}（{{ order.cancelledAt }}）</p>
         </section>
 
         <section class="card">
@@ -97,7 +98,10 @@ onMounted(load)
               </tr>
             </tbody>
           </table>
-          <p class="total">订单金额 <strong>{{ money(order.totalAmount) }}</strong></p>
+          <p class="total">
+            订单金额 <strong>{{ money(order.totalAmount) }}</strong>
+            <span v-if="Number(order.refundedAmount) > 0" class="refunded">（已退款 {{ money(order.refundedAmount) }}）</span>
+          </p>
           <p v-if="order.paidAt" class="paid">支付时间 {{ order.paidAt }}　支付方式 {{ order.payChannel === 'MOCK' ? '模拟支付' : '微信支付' }}</p>
         </section>
 
@@ -188,4 +192,5 @@ td small { margin-left: 6px; font-size: 12px; color: #999; }
   .logs li { grid-template-columns: 1fr; gap: 2px; }
   .two { grid-template-columns: 1fr; }
 }
+.refunded { color: #d03050; font-size: 14px; margin-left: 4px; }
 </style>

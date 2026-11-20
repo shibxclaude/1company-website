@@ -12,7 +12,7 @@ onMounted(async () => { d.value = await api.dashboard() })
       <el-col :xs="12" :sm="6"><el-card shadow="never"><el-statistic title="待支付订单" :value="d.ordersPendingPay" /></el-card></el-col>
       <el-col :xs="12" :sm="6"><el-card shadow="never"><el-statistic title="待服务订单（已支付/服务中）" :value="d.ordersToServe" /></el-card></el-col>
       <el-col :xs="12" :sm="6"><el-card shadow="never"><el-statistic title="今日新订单" :value="d.ordersToday" /></el-card></el-col>
-      <el-col :xs="12" :sm="6"><el-card shadow="never"><div class="stat"><span>累计成交金额</span><b>{{ money(d.paidAmountTotal) }}</b></div></el-card></el-col>
+      <el-col :xs="12" :sm="6"><el-card shadow="never"><div class="stat"><span>累计实收（已扣退款）</span><b>{{ money(d.paidAmountTotal) }}</b></div></el-card></el-col>
     </el-row>
     <el-row :gutter="16" class="row2">
       <el-col :xs="12" :sm="8"><el-card shadow="never"><el-statistic title="上架解决方案" :value="d.solutionsOnSale"><template #suffix>/ {{ d.solutionsTotal }}</template></el-statistic></el-card></el-col>

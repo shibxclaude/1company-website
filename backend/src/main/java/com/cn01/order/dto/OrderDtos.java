@@ -35,7 +35,7 @@ public final class OrderDtos {
 
     /** 订单详情（前台用户/游客、后台共用；后台多出 userId 等字段由 AdminView 承载） */
     public record OrderView(String orderNo, String status, String statusLabel, String solutionName, String solutionSlug,
-                            BigDecimal totalAmount, String contactName, String contactPhone, String contactEmail,
+                            BigDecimal totalAmount, BigDecimal refundedAmount, String contactName, String contactPhone, String contactEmail,
                             String companyName, String remark, String agreementVersion, String payChannel,
                             LocalDateTime payExpireAt, LocalDateTime paidAt, LocalDateTime cancelledAt, String cancelReason,
                             LocalDateTime completedAt, LocalDateTime createdAt, LocalDateTime serverTime,
@@ -48,7 +48,21 @@ public final class OrderDtos {
                                 BigDecimal totalAmount, String contactName, String contactPhone, String companyName,
                                 Long userId, String payChannel, LocalDateTime createdAt, LocalDateTime paidAt) {}
 
-    public record AdminDetail(OrderView order, Long userId, String transactionId, List<String> nextStatuses) {}
+    public record AdminDetail(OrderView order, Long userId, String transactionId, List<String> nextStatuses,
+                              BigDecimal refundableAmount, List<RefundView> refunds, List<AbnormalPayment> abnormalPayments) {}
+
+    public record RefundView(String refundNo, String kind, String transactionId, BigDecimal amount, String status, String statusLabel,
+                             String reason, String failReason, String operatorName, LocalDateTime createdAt, LocalDateTime finishedAt) {}
+
+    /** 异常收款：支付平台已扣款但没有入账到订单的交易（重复付款、金额不符），可整笔退回 */
+    public record AbnormalPayment(String transactionId, BigDecimal amount, String note, LocalDateTime createdAt, boolean refunded) {}
+
+    public record RefundReq(@NotNull(message = "请填写退款金额") @DecimalMin(value = "0.01", message = "退款金额必须大于 0")
+                            @Digits(integer = 10, fraction = 2, message = "退款金额最多两位小数") BigDecimal amount,
+                            @NotBlank(message = "请填写退款原因") @Size(max = 200, message = "退款原因最多 200 字") String reason) {}
+
+    public record StrayRefundReq(@NotBlank(message = "缺少交易号") String transactionId,
+                                 @NotBlank(message = "请填写退款原因") @Size(max = 200, message = "退款原因最多 200 字") String reason) {}
 
     public record ProgressReq(String toStatus, @Size(max = 500, message = "备注最多 500 字") String note) {}
 

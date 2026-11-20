@@ -49,6 +49,7 @@ public class AppProperties {
     public static class Pay {
         private String mode = "mock";
         private String notifyUrl;
+        private String refundNotifyUrl;
         private Wechat wechat = new Wechat();
 
         public boolean isMock() {

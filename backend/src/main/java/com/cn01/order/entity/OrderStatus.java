@@ -8,7 +8,9 @@ public enum OrderStatus {
     PAID("已支付"),
     IN_SERVICE("服务进行中"),
     COMPLETED("已完成"),
-    CANCELLED("已取消");
+    CANCELLED("已取消"),
+    /** 全额退款成功（由退款流程置位，不能在后台手动改） */
+    REFUNDED("已退款");
 
     private final String label;
 
@@ -16,7 +18,12 @@ public enum OrderStatus {
 
     public String label() { return label; }
 
-    /** 后台可手动推进的状态（支付与关单由系统完成） */
+    /** 可以发起订单退款的状态（已完成的订单不退） */
+    public boolean refundable() {
+        return this == PAID || this == IN_SERVICE;
+    }
+
+    /** 后台可手动推进的状态（支付、关单、退款由系统完成） */
     private static final Map<OrderStatus, Set<OrderStatus>> ADMIN_TRANSITIONS = Map.of(
             PAID, Set.of(IN_SERVICE, COMPLETED),
             IN_SERVICE, Set.of(COMPLETED),

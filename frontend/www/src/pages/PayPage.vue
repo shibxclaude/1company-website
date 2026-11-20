@@ -136,6 +136,16 @@ onBeforeUnmount(stop)
           </div>
         </section>
 
+        <!-- 已退款 -->
+        <section v-else-if="status === 'REFUNDED'" class="result" role="status">
+          <span class="icon gray" aria-hidden="true">!</span>
+          <h1>订单已退款</h1>
+          <p>款项已原路退回您的支付账户，一般 1-3 个工作日到账。</p>
+          <div class="btns">
+            <RouterLink :to="detailLink" class="primary">查看订单详情</RouterLink>
+          </div>
+        </section>
+
         <!-- 已关闭 -->
         <section v-else-if="status === 'CANCELLED'" class="result" role="status">
           <span class="icon gray" aria-hidden="true">!</span>

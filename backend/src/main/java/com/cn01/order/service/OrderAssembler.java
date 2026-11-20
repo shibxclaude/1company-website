@@ -10,6 +10,7 @@ import com.cn01.solution.mapper.SolutionMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,7 @@ public class OrderAssembler {
                         l.getNote(), l.getOperatorType(), l.getCreatedAt())).toList();
         Solution s = solutionMapper.selectById(o.getSolutionId());
         return new OrderView(o.getOrderNo(), o.getStatus(), o.statusEnum().label(), o.getSolutionName(), s == null ? null : s.getSlug(),
-                o.getTotalAmount(), o.getContactName(), o.getContactPhone(), o.getContactEmail(), o.getCompanyName(), o.getRemark(),
+                o.getTotalAmount(), o.getRefundedAmount() == null ? BigDecimal.ZERO : o.getRefundedAmount(), o.getContactName(), o.getContactPhone(), o.getContactEmail(), o.getCompanyName(), o.getRemark(),
                 o.getAgreementVersion(), o.getPayChannel(), o.getPayExpireAt(), o.getPaidAt(), o.getCancelledAt(), o.getCancelReason(),
                 o.getCompletedAt(), o.getCreatedAt(), LocalDateTime.now().withNano(0), items, logs);
     }

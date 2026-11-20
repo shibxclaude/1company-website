@@ -25,6 +25,7 @@ public class OrderAdminService {
     private final OrderMapper orderMapper;
     private final OrderAssembler assembler;
     private final OrderService orderService;
+    private final OrderRefundService refundService;
 
     public PageResult<AdminListItem> page(String status, String keyword, LocalDate from, LocalDate to, long page, long size) {
         LambdaQueryWrapper<Order> q = new LambdaQueryWrapper<Order>()
@@ -76,7 +77,8 @@ public class OrderAdminService {
 
     private AdminDetail toDetail(Order o) {
         List<String> next = Arrays.stream(OrderStatus.values()).filter(o.statusEnum()::adminCanMoveTo).map(Enum::name).toList();
-        return new AdminDetail(assembler.view(o), o.getUserId(), o.getTransactionId(), next);
+        return new AdminDetail(assembler.view(o), o.getUserId(), o.getTransactionId(), next,
+                refundService.refundable(o), refundService.refunds(o.getId()), refundService.abnormalPayments(o));
     }
 
     private Order require(String orderNo) {

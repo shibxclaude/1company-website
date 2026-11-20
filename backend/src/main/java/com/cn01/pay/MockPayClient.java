@@ -36,4 +36,15 @@ public class MockPayClient implements PayClient {
     public QueryResult query(String orderNo) {
         return QueryResult.notPaid();
     }
+
+    @Override
+    public RefundResult refund(String refundNo, String transactionId, long refundFen, long totalFen, String reason) {
+        log.info("[模拟支付] 退款 {} 交易 {} 退 {} 分 / 原 {} 分", refundNo, transactionId, refundFen, totalFen);
+        return RefundResult.success("MOCKR" + refundNo);
+    }
+
+    @Override
+    public RefundResult queryRefund(String refundNo) {
+        return RefundResult.success("MOCKR" + refundNo);
+    }
 }

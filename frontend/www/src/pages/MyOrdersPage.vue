@@ -21,6 +21,7 @@ const TABS = [
   ['IN_SERVICE', '服务进行中'],
   ['COMPLETED', '已完成'],
   ['CANCELLED', '已取消'],
+  ['REFUNDED', '已退款'],
 ]
 const status = ref(typeof route.query.status === 'string' ? route.query.status : '')
 const list = ref([])
@@ -104,7 +105,7 @@ watch(status, (s) => {
 .st--PENDING_PAY { color: #e6a23c; }
 .st--PAID, .st--IN_SERVICE { color: var(--c-brand); }
 .st--COMPLETED { color: #07a35a; }
-.st--CANCELLED { color: #aaa; }
+.st--CANCELLED, .st--REFUNDED { color: #aaa; }
 .mid { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 16px 18px; }
 .name { font-size: 16px; font-weight: 600; }
 .sum { margin-top: 6px; font-size: 13px; color: #888; }

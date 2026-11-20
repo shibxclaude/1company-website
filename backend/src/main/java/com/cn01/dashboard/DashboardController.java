@@ -34,9 +34,10 @@ public class DashboardController {
 
     @GetMapping("/api/admin/dashboard")
     public Result<Summary> summary() {
-        List<String> paidStatuses = List.of(OrderStatus.PAID.name(), OrderStatus.IN_SERVICE.name(), OrderStatus.COMPLETED.name());
+        // 实收 = 已收款订单的金额 - 已退款金额（全额退款的订单贡献为 0）
+        List<String> paidStatuses = List.of(OrderStatus.PAID.name(), OrderStatus.IN_SERVICE.name(), OrderStatus.COMPLETED.name(), OrderStatus.REFUNDED.name());
         List<Map<String, Object>> sum = orderMapper.selectMaps(new QueryWrapper<Order>()
-                .select("COALESCE(SUM(total_amount), 0) AS total").in("status", paidStatuses));
+                .select("COALESCE(SUM(total_amount - refunded_amount), 0) AS total").in("status", paidStatuses));
         Object total = sum.isEmpty() || sum.get(0) == null ? BigDecimal.ZERO : sum.get(0).get("total");
         return Result.ok(new Summary(
                 solutionMapper.selectCount(new LambdaQueryWrapper<Solution>().eq(Solution::getStatus, Status.ON)),

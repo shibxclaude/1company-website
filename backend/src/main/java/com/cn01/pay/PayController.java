@@ -6,9 +6,11 @@ import com.cn01.config.AppProperties;
 import com.cn01.order.dto.OrderDtos.PayInfo;
 import com.cn01.order.entity.Order;
 import com.cn01.order.entity.OrderStatus;
+import com.cn01.order.service.OrderRefundService;
 import com.cn01.order.service.OrderService;
 import com.wechat.pay.java.core.exception.ValidationException;
 import com.wechat.pay.java.service.payments.model.Transaction;
+import com.wechat.pay.java.service.refund.model.RefundNotification;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +28,7 @@ public class PayController {
     private final PayService payService;
     private final PaidHandler paidHandler;
     private final OrderService orderService;
+    private final OrderRefundService refundService;
     private final AppProperties props;
     private final ObjectProvider<WechatPayClient> wechat;
 
@@ -55,6 +58,29 @@ public class PayController {
                     t.getAmount() == null || t.getAmount().getTotal() == null ? -1 : t.getAmount().getTotal(), t.toString());
         } catch (Exception e) {
             log.error("处理微信回调失败 orderNo={}", t.getOutTradeNo(), e);
+            return ResponseEntity.status(500).body(Map.of("code", "FAIL", "message", "处理失败"));
+        }
+        return ResponseEntity.ok(Map.of("code", "SUCCESS", "message", "成功"));
+    }
+
+    /** 微信退款结果通知（APIv3）：验签、解密、幂等确认 */
+    @PostMapping("/api/pay/notify/wechat-refund")
+    public ResponseEntity<Map<String, String>> wechatRefundNotify(@RequestBody String body, HttpServletRequest req) {
+        WechatPayClient client = wechat.getIfAvailable();
+        if (client == null) return ResponseEntity.status(404).body(Map.of("code", "FAIL", "message", "未启用微信支付"));
+        RefundNotification n;
+        try {
+            n = client.parseRefundNotify(req.getHeader("Wechatpay-Serial"), req.getHeader("Wechatpay-Nonce"),
+                    req.getHeader("Wechatpay-Signature"), req.getHeader("Wechatpay-Timestamp"),
+                    req.getHeader("Wechatpay-Signature-Type"), body);
+        } catch (ValidationException e) {
+            log.warn("微信退款回调验签失败：{}", e.getMessage());
+            return ResponseEntity.status(401).body(Map.of("code", "FAIL", "message", "签名验证失败"));
+        }
+        try {
+            refundService.apply(n.getOutRefundNo(), WechatPayClient.toRefundResult(n.getRefundStatus(), n.getRefundId()));
+        } catch (Exception e) {
+            log.error("处理微信退款回调失败 refundNo={}", n.getOutRefundNo(), e);
             return ResponseEntity.status(500).body(Map.of("code", "FAIL", "message", "处理失败"));
         }
         return ResponseEntity.ok(Map.of("code", "SUCCESS", "message", "成功"));

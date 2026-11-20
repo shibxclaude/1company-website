@@ -4,6 +4,8 @@ import com.cn01.common.RichText;
 import com.cn01.order.entity.OrderStatus;
 import com.cn01.order.service.OrderNoGenerator;
 import com.cn01.pay.PayClient;
+import com.cn01.pay.WechatPayClient;
+import com.wechat.pay.java.service.refund.model.Status;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -47,5 +49,13 @@ class UnitTests {
                 + "<div style=\"width:expression(alert(1))\">y</div>");
         assertThat(out).contains("<p style=\"color:#333; text-align:center\">x</p>")
                 .doesNotContain("position").doesNotContain("z-index").doesNotContain("url(").doesNotContain("expression");
+    }
+
+    @Test
+    void 微信退款状态映射() {
+        assertThat(WechatPayClient.toRefundResult(Status.SUCCESS, "R1")).isEqualTo(PayClient.RefundResult.success("R1"));
+        assertThat(WechatPayClient.toRefundResult(Status.PROCESSING, "R1").state()).isEqualTo(PayClient.RefundResult.State.PROCESSING);
+        assertThat(WechatPayClient.toRefundResult(Status.CLOSED, "R1").state()).isEqualTo(PayClient.RefundResult.State.FAILED);
+        assertThat(WechatPayClient.toRefundResult(Status.ABNORMAL, "R1").message()).contains("商户平台");
     }
 }

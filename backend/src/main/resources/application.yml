@@ -83,6 +83,7 @@ app:
     # mock：模拟支付（开发/演示）；wechat：微信支付 Native
     mode: ${PAY_MODE:mock}
     notify-url: ${PAY_NOTIFY_URL:https://www.cn01.com.cn/api/pay/notify/wechat}
+    refund-notify-url: ${PAY_REFUND_NOTIFY_URL:https://www.cn01.com.cn/api/pay/notify/wechat-refund}
     wechat:
       app-id: ${WXPAY_APP_ID:}
       mch-id: ${WXPAY_MCH_ID:}
