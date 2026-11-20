@@ -1,7 +1,9 @@
 package com.cn01.config;
 
 import com.cn01.auth.AuthInterceptor;
+import com.cn01.auth.RoleGuard;
 import com.cn01.site.ShopGate;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -16,12 +18,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private final AuthInterceptor authInterceptor;
     private final ShopGate shopGate;
     private final AppProperties props;
+    private final ObjectMapper objectMapper;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 先判断购买是否开放，再鉴权：关闭时统一返回"暂未开放"，而不是 401
         registry.addInterceptor(shopGate).addPathPatterns(ShopGate.PATHS);
-        registry.addInterceptor(authInterceptor).addPathPatterns("/api/**");
+        RoleGuard.register(registry, authInterceptor, objectMapper);
     }
 
     /** 生产环境 /uploads 由 nginx 直接托管；这里让本地开发也能访问上传的图片。 */
