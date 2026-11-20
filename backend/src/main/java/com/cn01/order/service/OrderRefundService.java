@@ -148,7 +148,7 @@ public class OrderRefundService {
             orderMapper.update(new LambdaUpdateWrapper<Order>().eq(Order::getId, o.getId())
                     .setSql("refunded_amount = refunded_amount + " + r.getAmount().toPlainString()));
             BigDecimal refunded = orderMapper.selectById(o.getId()).getRefundedAmount();
-            if (refunded.compareTo(o.getTotalAmount()) >= 0 && from.refundable()) {
+            if (refunded.compareTo(o.getTotalAmount()) >= 0 && from.settlesToRefunded()) {
                 orderMapper.update(new LambdaUpdateWrapper<Order>().eq(Order::getId, o.getId())
                         .set(Order::getStatus, OrderStatus.REFUNDED.name()));
                 assembler.log(o.getId(), from, OrderStatus.REFUNDED, "退款成功 ¥" + r.getAmount().toPlainString() + "，已全额退款", "SYSTEM", null);

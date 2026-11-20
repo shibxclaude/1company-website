@@ -127,6 +127,21 @@ class RefundIT extends IntegrationTestBase {
     }
 
     @Test
+    void 退款处理中订单被改为已完成_全额到账后仍变为已退款() throws Exception {
+        String admin = adminToken();
+        Paid p = paidOrder("13400000009");
+        doReturn(RefundResult.processing(null)).when(payClient).refund(anyString(), anyString(), anyLong(), anyLong(), anyString());
+        String refundNo = refund(admin, p.orderNo(), p.total(), 200).get("data").get("refunds").get(0).get("refundNo").asText();
+
+        ok(auth(json(post("/api/admin/orders/" + p.orderNo() + "/progress"), Map.of("toStatus", "COMPLETED")), admin));
+        refundService.applySuccess(refundNo, "WX-REFUND-C");
+
+        JsonNode after = detail(admin, p.orderNo());
+        assertThat(after.get("order").get("status").asText()).isEqualTo("REFUNDED");
+        assertThat(new BigDecimal(after.get("order").get("refundedAmount").asText())).isEqualByComparingTo(p.total());
+    }
+
+    @Test
     void 支付平台拒绝退款_标记失败并释放额度() throws Exception {
         String admin = adminToken();
         Paid p = paidOrder("13400000006");

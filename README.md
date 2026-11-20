@@ -34,8 +34,8 @@ npm run dev:admin    # 管理后台 http://localhost:5174/admin/  （admin / Adm
 ## 测试
 
 ```bash
-cd backend && mvn test        # 68 个用例：45 个集成测试（*IT）由 Testcontainers 启动真实 MySQL/Redis（需要 Docker）
-                              # 没有 Docker 时只跑其余 23 个：mvn test -Dtest='!*IT' -Dsurefire.failIfNoSpecifiedTests=false
+cd backend && mvn test        # 70 个用例：46 个集成测试（*IT）由 Testcontainers 启动真实 MySQL/Redis（需要 Docker）
+                              # 没有 Docker 时只跑其余 24 个：mvn test -Dtest='!*IT' -Dsurefire.failIfNoSpecifiedTests=false
 cd frontend && npm test       # 43 个用例
 ```
 

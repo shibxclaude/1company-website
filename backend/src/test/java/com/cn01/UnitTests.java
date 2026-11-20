@@ -38,6 +38,17 @@ class UnitTests {
     }
 
     @Test
+    void 退款规则_已完成不能发起退款_但在途退款全额到账后可变为已退款() {
+        assertThat(OrderStatus.COMPLETED.refundable()).isFalse();
+        assertThat(OrderStatus.COMPLETED.settlesToRefunded()).isTrue();
+        assertThat(OrderStatus.PAID.settlesToRefunded()).isTrue();
+        assertThat(OrderStatus.IN_SERVICE.settlesToRefunded()).isTrue();
+        assertThat(OrderStatus.REFUNDED.settlesToRefunded()).isFalse();
+        assertThat(OrderStatus.CANCELLED.settlesToRefunded()).isFalse();
+        assertThat(OrderStatus.PENDING_PAY.settlesToRefunded()).isFalse();
+    }
+
+    @Test
     void 富文本清洗() {
         String out = RichText.clean("<h3 style=\"color:red\">标题</h3><a href=\"javascript:alert(1)\">x</a><iframe src=\"//evil\"></iframe><img src=\"x\" onerror=\"alert(1)\">");
         assertThat(out).contains("<h3 style=\"color:red\">标题</h3>").doesNotContain("javascript").doesNotContain("iframe").doesNotContain("onerror");

@@ -23,6 +23,14 @@ public enum OrderStatus {
         return this == PAID || this == IN_SERVICE;
     }
 
+    /**
+     * 退款全额到账后可以改为"已退款"的状态。比 refundable() 多一个已完成：
+     * 退款发起时订单是已支付/服务中，确认到账前管理员可能已把订单推进到已完成，全额退完后同样要变为已退款。
+     */
+    public boolean settlesToRefunded() {
+        return refundable() || this == COMPLETED;
+    }
+
     /** 后台可手动推进的状态（支付、关单、退款由系统完成） */
     private static final Map<OrderStatus, Set<OrderStatus>> ADMIN_TRANSITIONS = Map.of(
             PAID, Set.of(IN_SERVICE, COMPLETED),
