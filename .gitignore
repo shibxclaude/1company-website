@@ -3,6 +3,8 @@ node_modules/
 dist/
 target/
 .vite-ssg-temp/
+.deploy_staging/
+*.tar.gz
 
 # 本地上传与运行时文件
 backend/uploads/
