@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue'
-import RegionMap from '../components/RegionMap.vue'
+import EcoTreeHero from '../components/EcoTreeHero.vue'
 import SectionTitle from '../components/SectionTitle.vue'
 import PriceTag from '../components/PriceTag.vue'
 import { useSeo } from '../composables/useSeo.js'
@@ -57,7 +57,7 @@ useSeo({
         </dl>
       </div>
       <div class="hero-map">
-        <RegionMap />
+        <EcoTreeHero />
       </div>
     </div>
   </section>

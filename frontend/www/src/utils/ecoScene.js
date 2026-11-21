@@ -80,10 +80,11 @@ function dashedRing(y, radius, color) {
 
 /**
  * @param {HTMLElement} host 容器
- * @param {object} opts { layers, reducedMotion, coarsePointer }
+ * @param {object} opts { layers, reducedMotion, coarsePointer, zoom, labelMode }
+ *   zoom=false 时不响应滚轮（首页首屏用，避免抢页面滚动）；labelMode='front' 时只显示朝向镜头一侧的标签
  * @returns {{ focus(id|null), dispose() }}
  */
-export function createEcoScene(host, { layers, reducedMotion = false, coarsePointer = false }) {
+export function createEcoScene(host, { layers, reducedMotion = false, coarsePointer = false, zoom = true, labelMode = 'all' }) {
   const rand = rng(20261120)
   const width = () => host.clientWidth || 1
   const height = () => host.clientHeight || 1
@@ -113,6 +114,7 @@ export function createEcoScene(host, { layers, reducedMotion = false, coarsePoin
   controls.maxPolarAngle = Math.PI * 0.62
   controls.autoRotate = !reducedMotion
   controls.autoRotateSpeed = 0.55
+  controls.enableZoom = zoom
   if (coarsePointer) {
     // 触屏：保留横向拖动旋转，竖向滑动交给页面滚动
     controls.enableZoom = false
@@ -316,7 +318,9 @@ export function createEcoScene(host, { layers, reducedMotion = false, coarsePoin
     for (const { obj, el } of labels) {
       view.copy(obj.position).applyMatrix4(camera.matrixWorldInverse)
       const depth = -view.z - d // <0 在前，>0 在后
-      const o = THREE.MathUtils.clamp(0.9 - depth * 0.22, 0.08, 1)
+      const o = labelMode === 'front'
+        ? THREE.MathUtils.clamp(0.6 - depth * 0.6, 0, 1)
+        : THREE.MathUtils.clamp(0.9 - depth * 0.22, 0.08, 1)
       el.style.setProperty('--depth', o.toFixed(2))
     }
   }

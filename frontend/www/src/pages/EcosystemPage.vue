@@ -1,8 +1,9 @@
 <script setup>
 // 产品生态图：上半部分是 Three.js 三维"数据之树"（只在浏览器端加载），下半部分是可预渲染的分层清单。
-import { onBeforeUnmount, onMounted, ref, shallowRef } from 'vue'
+import { ref } from 'vue'
 import PageBanner from '../components/PageBanner.vue'
 import { useSeo } from '../composables/useSeo.js'
+import { useEcoScene } from '../composables/useEcoScene.js'
 import { ecoLayers, layerItems } from '../data/ecosystem.js'
 
 useSeo({
@@ -13,8 +14,7 @@ useSeo({
 
 const stage = ref(null)
 const active = ref(null)
-const status = ref('loading') // loading | ready | fallback
-const scene = shallowRef(null)
+const { status, scene } = useEcoScene(stage)
 
 const count = (layer) => layerItems(layer).length
 const unit = (layer) => (layer.id === 'net' ? '类数据' : '项')
@@ -23,25 +23,6 @@ function select(id) {
   active.value = active.value === id ? null : id
   scene.value?.focus(active.value)
 }
-
-onMounted(async () => {
-  try {
-    const probe = document.createElement('canvas')
-    if (!(probe.getContext('webgl2') || probe.getContext('webgl'))) throw new Error('no webgl')
-    const { createEcoScene } = await import('../utils/ecoScene.js')
-    if (!stage.value) return
-    scene.value = createEcoScene(stage.value, {
-      layers: ecoLayers,
-      reducedMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
-      coarsePointer: window.matchMedia('(pointer: coarse)').matches,
-    })
-    status.value = 'ready'
-  } catch {
-    status.value = 'fallback'
-  }
-})
-
-onBeforeUnmount(() => scene.value?.dispose())
 </script>
 
 <template>
@@ -215,27 +196,6 @@ onBeforeUnmount(() => scene.value?.dispose())
   background: #fff;
   border-radius: var(--radius);
 }
-.stage :deep(.eco-canvas) { position: absolute; inset: 0; display: block; outline: none; }
-.stage :deep(.eco-labels) { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
-
-/* 场景标签（由 CSS2DRenderer 定位；--depth 由场景按前后位置写入） */
-.stage :deep(.eco-label) {
-  --depth: 1;
-  padding: 2px 7px;
-  font-size: 12px;
-  line-height: 1.5;
-  white-space: nowrap;
-  color: #fff;
-  background: rgba(8, 22, 41, 0.62);
-  border-radius: 3px;
-  opacity: var(--depth);
-  transition: opacity 0.25s, background-color 0.25s;
-}
-.stage :deep(.eco-label--sense) { color: #e8dfcc; }
-.stage :deep(.eco-label--tag) { padding: 0 5px; font-size: 11px; color: #ffcf85; background: transparent; }
-.stage :deep(.eco-label.is-dim) { opacity: calc(var(--depth) * 0.12); }
-.stage :deep(.eco-label.is-active) { opacity: max(var(--depth), 0.7); background: rgba(8, 22, 41, 0.85); }
-
 /* —— 分层清单 —— */
 .ledger { max-width: var(--wide-w); margin: 0 auto; padding: 72px 24px 0; }
 .ledger-head {
@@ -295,7 +255,6 @@ onBeforeUnmount(() => scene.value?.dispose())
   .stratum-role { display: none; }
   .reset { margin: 0; }
   .stage { height: 72vh; min-height: 420px; max-height: 640px; margin-right: 0; }
-  .stage :deep(.eco-label) { padding: 1px 5px; font-size: 11px; }
   .stage-fallback { inset: 16px; width: calc(100% - 32px); height: calc(100% - 32px); }
   .hint { left: 16px; right: 16px; bottom: 10px; text-align: center; }
   .ledger { padding: 48px 16px 0; }
